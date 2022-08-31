@@ -1,3 +1,3 @@
-# Crypto-Coco Marketplace Frontend
+# Doge Marketplace Frontend
 
-This is Crypto-Coco marketplace frontend.
+This is Doge marketplace frontend.
