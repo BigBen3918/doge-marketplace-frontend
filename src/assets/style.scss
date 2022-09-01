@@ -84,6 +84,10 @@ section {
     display: block;
     overflow: hidden;
     width: 100%;
+    background: url("../../public/img/background.png");
+    background-size: 100% 100%;
+    background-position-y: 100%;
+    background-repeat: no-repeat;
 
     .wraperitem {
         width: 100%;
@@ -3331,7 +3335,7 @@ i.font60 {
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     margin-bottom: 25px;
-    background: rgba(255, 255, 255, 0.025);
+    background: rgb(0, 66, 62);
     transition: 0.7s;
     box-shadow: 0px 0px 8px 0px $white;
 
@@ -4211,7 +4215,7 @@ i.font60 {
             font-size: 14px;
             text-align: center;
             min-width: 80px;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgb(0, 151, 141);
             border-top: solid 1px rgba(0, 0, 0, 0.2);
             border-radius: 3px;
             -moz-border-radius: 3px;
@@ -4367,6 +4371,19 @@ img.img-rounded {
 .field-set label {
     color: #606060;
     font-weight: 500;
+}
+
+.field-set {
+    .contract__address {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        button {
+            border-radius: 5px;
+        }
+    }
 }
 
 .form-control {
@@ -4847,7 +4864,7 @@ img.img-rounded {
 }
 
 .card {
-    background: #00546c;
+    background: rgb(0, 66, 62);
     cursor: pointer;
 
     > div {
