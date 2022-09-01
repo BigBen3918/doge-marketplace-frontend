@@ -2,16 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBlockchainContext } from '../../context';
 import Action from '../../service';
-import BuyModal from './BuyModal';
-import { fromBigNum } from '../../utils';
 
 export default function Responsive() {
     const navigate = useNavigate();
     const [height, setHeight] = useState(0);
     const [state, { getCurrency, translateLang }] = useBlockchainContext();
     const [filter, setFilter] = useState(null);
-    const [currentItem, setCurrentItem] = useState(null);
-    const [modalShow, setModalShow] = useState(false);
 
     const onImgLoad = (e) => {
         let currentHeight = height;
@@ -31,16 +27,15 @@ export default function Responsive() {
 
         if (isClickBuyButton) {
             setCurrentItem(item);
-            setModalShow(true);
         } else if (isClickLikeButton) {
-            if (state.address === undefined) {
+            if (!state.auth.isAuth) {
                 navigate('/signPage');
                 return;
             }
             Action.nft_like({
                 collectAddress: item.collectionAddress,
                 tokenId: item.tokenID,
-                currentAddress: state.address
+                currentAddress: state.auth.address
             })
                 .then((res) => {
                     if (res) {
@@ -52,7 +47,7 @@ export default function Responsive() {
                 });
             return;
         } else {
-            if (state.address === undefined) {
+            if (state.auth.address === undefined) {
                 navigate('/signPage');
                 return;
             }
@@ -79,8 +74,7 @@ export default function Responsive() {
                 <div
                     key={index}
                     className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-4"
-                    onClick={(e) => handleItem(e, index, nft)}
-                >
+                    onClick={(e) => handleItem(e, index, nft)}>
                     <div className="nft__item m-0">
                         <div className="author_list_pp">
                             <span>
@@ -132,11 +126,10 @@ export default function Responsive() {
                                 className="nft__item_like"
                                 id={'like' + index}
                                 style={
-                                    nft.likes.indexOf(state.address) === -1
+                                    nft.likes.indexOf(state.auth.address) === -1
                                         ? null
                                         : { color: '#c5a86a' }
-                                }
-                            >
+                                }>
                                 <i className="fa fa-heart"></i>
                                 <span>{nft.likes.length}</span>
                             </div>
@@ -146,15 +139,6 @@ export default function Responsive() {
             ))}
 
             <div className="spacer-30"></div>
-
-            {currentItem !== null ? (
-                <BuyModal
-                    buyFlag={1}
-                    show={modalShow}
-                    setShow={setModalShow}
-                    correctItem={currentItem}
-                />
-            ) : null}
             {/* <ul className="pagination">
                 <li>
                     <span className="a">Prev</span>

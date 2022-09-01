@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useBlockchainContext } from '../../context';
 import Action from '../../service';
-import BuyModal from './BuyModal';
 
 const Outer = styled.div`
     display: flex;
@@ -35,8 +34,6 @@ export default function ColumnZero(props) {
     const [state, { getCurrency }] = useBlockchainContext();
     const [height, setHeight] = useState(0);
     const [filter, setFilter] = useState(null);
-    const [modalShow, setModalShow] = useState(false);
-    const [currentItem, setCurrentItem] = useState(null);
 
     const onImgLoad = (e) => {
         let currentHeight = height;
@@ -67,21 +64,19 @@ export default function ColumnZero(props) {
         var isClickLikeButton = likeButton.contains(e.target);
 
         if (isClickBuyButton) {
-            if (state.address === undefined) {
+            if (!state.auth.isAuth) {
                 navigate('/signPage');
                 return;
             }
-            setCurrentItem(item);
-            setModalShow(true);
         } else if (isClickLikeButton) {
-            if (state.address === undefined) {
+            if (!state.auth.isAuth) {
                 navigate('/signPage');
                 return;
             }
             Action.nft_like({
                 collectAddress: item.collectionAddress,
                 tokenId: item.tokenID,
-                currentAddress: state.address
+                currentAddress: state.auth.address
             })
                 .then((res) => {
                     if (res) {
@@ -105,8 +100,7 @@ export default function ColumnZero(props) {
                     <div
                         key={index}
                         className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
-                        onClick={(e) => handleItem(e, index, nft)}
-                    >
+                        onClick={(e) => handleItem(e, index, nft)}>
                         <div className="nft__item">
                             <div className="nft__item_wrap" style={{ height: `${height}px` }}>
                                 <Outer>
@@ -141,11 +135,10 @@ export default function ColumnZero(props) {
                                     className="nft__item_like"
                                     id={'like' + index}
                                     style={
-                                        nft.likes.indexOf(state.address) === -1
+                                        nft.likes.indexOf(state.auth.address) === -1
                                             ? null
                                             : { color: '#c5a86a' }
-                                    }
-                                >
+                                    }>
                                     <i className="fa fa-heart"></i>
                                     <span>{nft.likes.length}</span>
                                 </div>
@@ -153,15 +146,6 @@ export default function ColumnZero(props) {
                         </div>
                     </div>
                 ))}
-
-                {currentItem !== null ? (
-                    <BuyModal
-                        buyFlag={1}
-                        show={modalShow}
-                        setShow={setModalShow}
-                        correctItem={currentItem}
-                    />
-                ) : null}
             </div>
         </Reveal>
     );

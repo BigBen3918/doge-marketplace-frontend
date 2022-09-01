@@ -11,12 +11,11 @@ import { NotificationManager } from 'react-notifications';
 export default function Colection() {
     const { id, collection } = useParams();
     const navigate = useNavigate();
-    const [state, { bidApprove, cancelOrder, getCurrency, translateLang }] = useBlockchainContext();
+    const [state, { buyNFT, cancelOrder, translateLang, bidApprove }] = useBlockchainContext();
     const [openMenu, setOpenMenu] = useState(true);
     const [correctCollection, setCorrectCollection] = useState(null);
     const [pageFlag, setPageFlag] = useState(0); // 1 is mine, 2 is saled mine, 3 is others, 4 is saled others
     const [modalShow, setModalShow] = useState(false);
-    const [buyFlag, setBuyFlag] = useState(0); // 1 is Buy, 2 is Bid, 3 is Transfer
     const [expireTime, setExpireTime] = useState([]);
     const [timeFlag, setTimeFlag] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -49,12 +48,12 @@ export default function Colection() {
         if (itemData !== null) {
             if (itemData.owner?.toLowerCase() === state.addresses.Marketplace?.toLowerCase()) {
                 // on market
-                itemData.marketdata.owner?.toLowerCase() === state.address?.toLowerCase()
+                itemData.marketdata.owner?.toLowerCase() === state.auth.address.toLowerCase()
                     ? setPageFlag(2)
                     : setPageFlag(4);
             } else {
                 //on user
-                itemData.owner?.toLowerCase() === state.address?.toLowerCase()
+                itemData.owner?.toLowerCase() === state.auth.address.toLowerCase()
                     ? setPageFlag(1)
                     : setPageFlag(3);
             }
@@ -76,38 +75,26 @@ export default function Colection() {
         }
     }, [state.collectionNFT]);
 
-    const handleBtnClick = () => {
-        setOpenMenu(true);
-        document.getElementById('Mainbtn').classList.add('active');
-        document.getElementById('Mainbtn1').classList.remove('active');
-    };
+    const handleBuy = async () => {
+        try {
+            setLoading(true);
+            if (state.balances[0] < Number(itemData?.marketdata.price)) {
+                return;
+            }
 
-    const handleBtnClick1 = () => {
-        setOpenMenu(false);
-        document.getElementById('Mainbtn1').classList.add('active');
-        document.getElementById('Mainbtn').classList.remove('active');
-    };
-
-    const handleSell = () => {
-        navigate(`/Auction/${collection}/${id}`);
-    };
-
-    const handleBid = () => {
-        if (state.address === undefined) {
-            navigate('/signPage');
-            return;
+            await buyNFT({
+                nftAddress: itemData?.collectionAddress,
+                assetId: itemData?.tokenID,
+                price: itemData?.marketdata.price,
+                acceptedToken: itemData?.marketdata.acceptedToken
+            });
+            NotificationManager.success(translateLang('buynft_success'));
+            setLoading(false);
+        } catch (err) {
+            console.log(err.message);
+            NotificationManager.error(translateLang('buynft_error'));
+            setLoading(false);
         }
-        setBuyFlag(2);
-        setModalShow(true);
-    };
-
-    const handleBuy = () => {
-        if (state.address === undefined) {
-            navigate('/signPage');
-            return;
-        }
-        setBuyFlag(1);
-        setModalShow(true);
     };
 
     const handleApproveBid = async () => {
@@ -128,6 +115,22 @@ export default function Colection() {
         }
     };
 
+    const handleBtnClick = () => {
+        setOpenMenu(true);
+        document.getElementById('Mainbtn').classList.add('active');
+        document.getElementById('Mainbtn1').classList.remove('active');
+    };
+
+    const handleBtnClick1 = () => {
+        setOpenMenu(false);
+        document.getElementById('Mainbtn1').classList.add('active');
+        document.getElementById('Mainbtn').classList.remove('active');
+    };
+
+    const handleSell = () => {
+        navigate(`/Auction/${collection}/${id}`);
+    };
+
     const handleCancel = async () => {
         if (itemData !== null) {
             setLoading(true);
@@ -145,15 +148,6 @@ export default function Colection() {
                 setLoading(false);
             }
         }
-    };
-
-    const handleTransfer = () => {
-        if (state.address === undefined) {
-            navigate('/signPage');
-            return;
-        }
-        setBuyFlag(3);
-        setModalShow(true);
     };
 
     return (
@@ -230,15 +224,6 @@ export default function Colection() {
                                                 </div>
                                             )}
                                             <div className="spacer-10"></div>
-                                            <h3 style={{ color: '#a48b57' }}>
-                                                {itemData?.marketdata?.price === ''
-                                                    ? null
-                                                    : itemData?.marketdata?.price +
-                                                      ' ' +
-                                                      getCurrency(
-                                                          itemData.marketdata?.acceptedToken
-                                                      )?.label}
-                                            </h3>
                                             <hr />
                                         </span>
                                     )}
@@ -387,19 +372,9 @@ export default function Colection() {
                                                     <div className="attribute">
                                                         <button
                                                             className="btn-main"
-                                                            onClick={handleSell}
-                                                        >
+                                                            onClick={handleSell}>
                                                             {translateLang('btn_sell')}
                                                         </button>
-
-                                                        {!itemData.isOffchain && (
-                                                            <button
-                                                                className="btn-main"
-                                                                onClick={handleTransfer}
-                                                            >
-                                                                {'Transfer'}
-                                                            </button>
-                                                        )}
                                                     </div>
                                                 ) : pageFlag === 2 ? (
                                                     <div>
@@ -407,14 +382,12 @@ export default function Colection() {
                                                             <button className="btn-main">
                                                                 <span
                                                                     className="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"
-                                                                ></span>
+                                                                    aria-hidden="true"></span>
                                                             </button>
                                                         ) : (
                                                             <button
                                                                 className="btn-main"
-                                                                onClick={handleCancel}
-                                                            >
+                                                                onClick={handleCancel}>
                                                                 {translateLang('btn_cancel')}
                                                             </button>
                                                         )}
@@ -422,14 +395,12 @@ export default function Colection() {
                                                             <button className="btn-main">
                                                                 <span
                                                                     className="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"
-                                                                ></span>
+                                                                    aria-hidden="true"></span>
                                                             </button>
                                                         ) : (
                                                             <button
                                                                 className="btn-main"
-                                                                onClick={handleApproveBid}
-                                                            >
+                                                                onClick={handleApproveBid}>
                                                                 {translateLang('btn_approvebid')}
                                                             </button>
                                                         )}
@@ -438,14 +409,12 @@ export default function Colection() {
                                                     <div>
                                                         <button
                                                             className="btn-main"
-                                                            onClick={handleBuy}
-                                                        >
+                                                            onClick={handleBuy}>
                                                             {translateLang('btn_buynow')}
                                                         </button>
                                                         <button
                                                             className="btn-main"
-                                                            onClick={handleBid}
-                                                        >
+                                                            onClick={() => setModalShow(true)}>
                                                             {translateLang('btn_makeoffer')}
                                                         </button>
                                                     </div>
@@ -457,12 +426,7 @@ export default function Colection() {
                             </div>
                         </div>
 
-                        <BuyModal
-                            buyFlag={buyFlag}
-                            show={modalShow}
-                            setShow={setModalShow}
-                            correctItem={itemData}
-                        />
+                        <BuyModal show={modalShow} setShow={setModalShow} correctItem={itemData} />
                     </>
                 )}
             </section>

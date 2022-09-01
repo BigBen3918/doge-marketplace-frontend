@@ -5,10 +5,9 @@ import Footer from '../menu/footer';
 import Action from '../../service';
 import { useBlockchainContext } from '../../context';
 import Addresses from '../../contracts/contracts/addresses.json';
-import ConfirmModal from '../components/ConfirmModal';
 
 export default function Createpage() {
-    const [state, { mintNFT, estimateMintNFT, translateLang }] = useBlockchainContext();
+    const [state, { mintNFT, translateLang }] = useBlockchainContext();
     const [image, _setImage] = useState(null);
     const [selectedFile, setSeletedFile] = useState(null);
     const [name, setName] = useState('');
@@ -22,12 +21,11 @@ export default function Createpage() {
     const [collections, setCollections] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentCollection, setCurrentCollection] = useState(Addresses.NFT1);
-    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         setCollections([]);
         for (let i = 0; i < state.collectionNFT.length; i++) {
-            if (state.collectionNFT[i].metadata.fee_recipent === state.address) {
+            if (state.collectionNFT[i].metadata.fee_recipent === state.auth.address) {
                 let data = {
                     name: state.collectionNFT[i].metadata.name,
                     owner: state.collectionNFT[i].address
@@ -38,7 +36,6 @@ export default function Createpage() {
     }, [state]);
 
     const handleSubmit = async () => {
-        setModalShow(false);
         try {
             if (!selectedFile) {
                 NotificationManager.error(translateLang('chooseimage_error'));
@@ -100,11 +97,6 @@ export default function Createpage() {
             }
             setLoading(false);
         }
-    };
-
-    const HandleEstimateMint = async () => {
-        let gas = await estimateMintNFT('test', currentCollection);
-        return gas;
     };
 
     const reset = () => {
@@ -310,8 +302,7 @@ export default function Createpage() {
                                 <p>This is the collection where your item will appear.</p>
                                 <select
                                     className="form-control"
-                                    onChange={(e) => handleCollectionChange(e)}
-                                >
+                                    onChange={(e) => handleCollectionChange(e)}>
                                     <option value={Addresses.NFT1}>Crypto-Coco Art</option>
                                     {collections.map((item, index) => (
                                         <option key={index} value={item.owner}>
@@ -330,8 +321,7 @@ export default function Createpage() {
                                             type="button"
                                             className="form-control-button"
                                             style={{ flex: '1 1 0' }}
-                                            onClick={() => deleteItem(item)}
-                                        >
+                                            onClick={() => deleteItem(item)}>
                                             <i className="bg-color-2 i-boxed icon_close" />
                                         </button>
                                         <input
@@ -370,8 +360,7 @@ export default function Createpage() {
                                             type="button"
                                             className="form-control-button"
                                             style={{ flex: '1 1 0' }}
-                                            onClick={addItem}
-                                        >
+                                            onClick={addItem}>
                                             <i className="bg-color-2 i-boxed icon_plus" />
                                         </button>
                                     </div>
@@ -384,14 +373,13 @@ export default function Createpage() {
                                         id="submit"
                                         className="btn-main"
                                         value={translateLang('btn_createitem')}
-                                        onClick={() => setModalShow(true)}
+                                        onClick={handleSubmit}
                                     />
                                 ) : (
                                     <button className="btn-main">
                                         <span
                                             className="spinner-border spinner-border-sm"
-                                            aria-hidden="true"
-                                        ></span>
+                                            aria-hidden="true"></span>
                                     </button>
                                 )}
                             </div>
@@ -437,13 +425,6 @@ export default function Createpage() {
                     </div>
                 </div>
             </section>
-
-            <ConfirmModal
-                show={modalShow}
-                setShow={setModalShow}
-                actionFunc={handleSubmit}
-                estimateFunc={HandleEstimateMint}
-            />
 
             <Footer />
         </div>

@@ -2,19 +2,18 @@ import React, { createContext, useContext, useReducer, useMemo, useEffect } from
 import { ethers } from 'ethers';
 import { useQuery } from '@apollo/client';
 import decode from 'jwt-decode';
-import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
     getNFTContract,
     getTokenContract,
     marketplaceContract,
     storeFontContract,
-    provider,
-    testToken
+    provider
 } from '../contracts';
-import { fromBigNum, toBigNum } from '../utils';
-import { GET_ALLNFTS, GET_USERSINFO, GET_COLLECTIONNFTS, GET_PRICES } from '../components/gql';
+import { toBigNum } from '../utils';
+import { GET_ALLNFTS, GET_USERSINFO, GET_COLLECTIONNFTS } from '../components/gql';
 import addresses from '../contracts/contracts/addresses.json';
+import Action from '../service';
 
 import { translations } from '../components/language/translate';
 import { useWallet } from 'use-wallet';
@@ -32,51 +31,34 @@ function reducer(state, { type, payload }) {
     };
 }
 
-const Currency = [
-    {
-        label: 'ETH',
-        value: addresses.WETH
-    },
-    {
-        label: 'BUSD',
-        value: addresses.TestToken
-    }
-];
-
 const INIT_STATE = {
     allNFT: [],
     collectionNFT: [],
     provider: provider,
     usersInfo: {},
-    addresses: addresses,
     auth: {
         isAuth: false,
         user: '',
         address: '',
         bio: '',
-        signer: {},
-        privateKey: '',
         image: ''
     },
-    balances: [0, 0],
-    currencies: Currency,
     lang: 'en',
-    prices: {},
-    gasPrice: 0
+    addresses: addresses
 };
 
 export default function Provider({ children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [state, dispatch] = useReducer(reducer, INIT_STATE);
-    var balanceLoop = null;
-
     const wallet = useWallet();
+
     useEffect(() => {
         (async () => {
             if (wallet.status === 'connected') {
                 const provider = new ethers.providers.Web3Provider(wallet.ethereum);
-                const signer = await provider.getSigner();
+                const signer = provider.getSigner();
+
                 dispatch({
                     type: 'signer',
                     payload: signer
@@ -89,17 +71,12 @@ export default function Provider({ children }) {
                     type: 'provider',
                     payload: provider
                 });
+
+                const result = await Action.user_login(wallet.account);
+                updateAuth(result);
             }
         })();
     }, [wallet.status]);
-
-    useEffect(() => {
-        getGasPrice();
-
-        let savedLang = localStorage.getItem('lang');
-        if (savedLang) setLanguage({ newLang: savedLang });
-        else setLanguage({ newLang: 'en' });
-    }, []);
 
     /** Begin GraphQL Query */
     const {
@@ -125,14 +102,6 @@ export default function Provider({ children }) {
     } = useQuery(GET_USERSINFO, {
         pollInterval: 500
     });
-
-    const {
-        data: priceData,
-        loading: priceLoading,
-        error: priceError
-    } = useQuery(GET_PRICES, {
-        pollInterval: 500
-    });
     /** End GraphQL Query */
 
     useEffect(() => {
@@ -155,7 +124,6 @@ export default function Provider({ children }) {
         });
     }, [nftsCollectionData, nftsCollectionLoading, nftsCollectionError]);
 
-    // users info
     useEffect(() => {
         if (usersLoading || usersError) {
             return;
@@ -173,47 +141,6 @@ export default function Provider({ children }) {
         });
     }, [usersData, usersLoading, usersError]);
 
-    useEffect(() => {
-        if (priceLoading || priceError) {
-            return;
-        }
-        dispatch({
-            type: 'prices',
-            payload: priceData.getPrice
-        });
-        console.log(state.prices);
-    }, [priceData, priceLoading, priceError]);
-
-    useEffect(() => {
-        if (state.auth.isAuth) {
-            balanceLoop = setInterval(() => {
-                checkBalances([state.currencies[0].value, state.currencies[1].value]);
-            }, 5000);
-        } else {
-            clearInterval(balanceLoop);
-        }
-    }, [state.auth]);
-
-    useEffect(() => {
-        const session = localStorage.getItem('marketplace_session');
-
-        if (session) {
-            updateAuth(session);
-        }
-    }, []);
-
-    // get gas price
-    const getGasPrice = async () => {
-        if (state.provider) {
-            const gasPrice = await state.provider.getGasPrice();
-
-            dispatch({
-                type: 'gasPrice',
-                payload: fromBigNum(gasPrice, 9)
-            });
-        }
-    };
-
     // set language
     const setLanguage = (props) => {
         const { newLang } = props;
@@ -230,9 +157,7 @@ export default function Provider({ children }) {
     };
 
     // auth
-    const updateAuth = (token) => {
-        var data = decode(token);
-        let userWallet = new ethers.Wallet(data.privateKey, state.provider);
+    const updateAuth = (data) => {
         dispatch({
             type: 'auth',
             payload: {
@@ -240,166 +165,22 @@ export default function Provider({ children }) {
                 name: data.name,
                 email: data.email,
                 bio: data.bio,
-                address: data.address,
-                privateKey: data.privateKey,
-                signer: userWallet,
+                address: wallet.account,
                 image: data.image
             }
         });
-        axios.defaults.headers.common['Authorization'] = token;
 
         const origin = location.state?.from?.pathname || '/';
         navigate(origin);
-
-        localStorage.setItem('marketplace_session', token);
     };
 
     /* ------------ NFT Section ------------- */
-    // coin check
-    const checkBalances = async (tokenaddresses) => {
-        try {
-            let balances = [];
-            if (state.auth.isAuth) {
-                for (let i = 0; i < tokenaddresses.length; i++) {
-                    //native coin
-                    if (
-                        tokenaddresses[i].toLowerCase() === state.currencies[0].value.toLowerCase()
-                    ) {
-                        let balance = await state.provider.getBalance(state.address);
-
-                        balances.push(fromBigNum(balance, 18));
-                    } else {
-                        var token = getTokenContract(tokenaddresses[i]);
-                        let balance = await token.balanceOf(state.address);
-                        balances.push(fromBigNum(balance, 18));
-                    }
-                }
-
-                dispatch({
-                    type: 'balances',
-                    payload: balances
-                });
-            } else {
-                balances.push(0);
-                balances.push(0);
-                dispatch({
-                    type: 'balances',
-                    payload: balances
-                });
-            }
-        } catch (err) {
-            console.log('checkBalances error: ', err.message);
-            return new Array(tokenaddresses.length).fill('0');
-        }
-    };
-
-    const CoinTransfer = async (props) => {
-        const { coinType, toAddress, amount } = props;
-
-        try {
-            if (coinType === 'ETH') {
-                const tx = {
-                    from: state.address,
-                    to: toAddress,
-                    value: ethers.utils.parseEther(amount)
-                };
-
-                await state.signer.sendTransaction(tx);
-            } else {
-                const signedTestToken = testToken.connect(state.signer);
-                const tx = await signedTestToken.approve(toAddress, amount);
-                await tx.wait();
-
-                const tx1 = await signedTestToken.transferFrom(state.address, toAddress, amount);
-                await tx1.wait();
-            }
-
-            return true;
-        } catch (err) {
-            console.log(err);
-            return false;
-        }
-    };
-    const NFTTransfer = async (props) => {
-        try {
-            const { id, collectionAddress, toAddress } = props;
-            const NFTContract = getNFTContract(collectionAddress);
-
-            const signedNFTContract = NFTContract.connect(state.signer);
-            if (id.includes('0x')) {
-                const tx = await signedNFTContract.transferFrom(state.address, toAddress, id);
-                await tx.wait();
-            } else {
-                const tx = await signedNFTContract.transferFrom(
-                    state.address,
-                    toAddress,
-                    toBigNum(id, 0)
-                );
-                await tx.wait();
-            }
-
-            return true;
-        } catch (err) {
-            console.log(err);
-            return false;
-        }
-    };
-
-    const NFTTransferGas = async (props) => {
-        try {
-            const { id, collectionAddress, toAddress } = props;
-
-            const NFTContract = getNFTContract(collectionAddress);
-            const signedNFTContract = NFTContract.connect(state.signer);
-            let gas = 0;
-            if (id.includes('0x')) {
-                gas = await signedNFTContract.estimateGas.transferFrom(
-                    state.address,
-                    toAddress,
-                    id
-                );
-            } else {
-                gas = await signedNFTContract.estimateGas.transferFrom(
-                    state.address,
-                    toAddress,
-                    toBigNum(id, 0)
-                );
-            }
-
-            return fromBigNum(gas, 0);
-        } catch (err) {
-            console.log(err);
-            return 0;
-        }
-    };
-
-    // NFT mint
     const mintNFT = async (url, collection) => {
         const NFTContract1 = getNFTContract(collection);
 
         const signedNFTContract1 = NFTContract1.connect(state.signer);
         const tx = await signedNFTContract1.mint(url);
         await tx.wait();
-    };
-    const estimateMintNFT = async (url, collection) => {
-        const NFTContract1 = getNFTContract(collection);
-
-        const signedNFTContract1 = NFTContract1.connect(state.signer);
-        const gas = await signedNFTContract1.estimateGas.mint(url);
-
-        return fromBigNum(gas, 0);
-    };
-    const estimateMintContract = async () => {
-        try {
-            const gas = await axios.post(
-                process.env.REACT_APP_SERVERENDPOINT + '/api/get-contractgas'
-            );
-
-            return fromBigNum(gas.data.gas, 0);
-        } catch (err) {
-            console.log(err);
-            return 0;
-        }
     };
 
     // NFT on sale
@@ -410,7 +191,7 @@ export default function Provider({ children }) {
             const signedMarketplaceContract = marketplaceContract.connect(state.signer);
             const tx = await signedMarketplaceContract.createOrder(
                 nftAddress,
-                state.address,
+                state.auth.address,
                 assetId,
                 currency,
                 toBigNum(price, 18),
@@ -459,24 +240,6 @@ export default function Provider({ children }) {
         }
     };
 
-    const ApproveNFTGas = async (props) => {
-        try {
-            const { assetId, nftAddress } = props;
-
-            const NFTContract = getNFTContract(nftAddress);
-            const signedNFTContract1 = NFTContract.connect(state.signer);
-
-            const gas = await signedNFTContract1.estimateGas.approve(
-                addresses.Marketplace,
-                assetId
-            );
-
-            return fromBigNum(gas, 0);
-        } catch (err) {
-            console.log(err);
-            return 0;
-        }
-    };
     // on sale lazy nfts
     const onsaleLazyNFT = async (props) => {
         const { tokenId, priceGwei, currency, expiresAt, singature } = props;
@@ -493,39 +256,6 @@ export default function Provider({ children }) {
         await tx.wait();
 
         return true;
-    };
-
-    const onSaleGas = async (props) => {
-        const { nftAddress, assetId, currency, price, expiresAt } = props;
-
-        const signedMarketplaceContract = marketplaceContract.connect(state.signer);
-        const gas = await signedMarketplaceContract.estimateGas.createOrder(
-            nftAddress,
-            state.address,
-            assetId,
-            currency,
-            toBigNum(price, 18),
-            expiresAt
-        );
-
-        return fromBigNum(gas, 0);
-    };
-
-    const onLazySaleGas = async (props) => {
-        const { tokenId, priceGwei, currency, expiresAt, singature } = props;
-
-        console.log(props);
-        const signedLazyContract = storeFontContract.connect(state.signer);
-        const gas = await signedLazyContract.estimateGas.mintAndOnsale(
-            tokenId,
-            addresses.Marketplace,
-            currency,
-            priceGwei,
-            expiresAt,
-            singature
-        );
-
-        return fromBigNum(gas, 0);
     };
 
     const cancelOrder = async (props) => {
@@ -569,26 +299,6 @@ export default function Provider({ children }) {
         }
     };
 
-    const buyNFTGas = async (props) => {
-        try {
-            const { nftAddress, assetId, price } = props;
-
-            console.log(props);
-
-            const signedMarketplaceContract = marketplaceContract.connect(state.signer);
-            const gas = await signedMarketplaceContract.estimateGas.ExecuteOrder(
-                nftAddress,
-                assetId,
-                toBigNum(price, 18),
-                { value: toBigNum(price, 18) }
-            );
-            return fromBigNum(gas, 0);
-        } catch (err) {
-            console.log(err);
-            return 0;
-        }
-    };
-
     const bidNFT = async (props) => {
         const { nftAddress, assetId, price, expiresAt, acceptedToken } = props;
 
@@ -623,26 +333,6 @@ export default function Provider({ children }) {
         }
     };
 
-    const bidNFTGas = async (props) => {
-        try {
-            const { nftAddress, assetId, price, expiresAt } = props;
-
-            const signedMarketplaceContract = marketplaceContract.connect(state.signer);
-            const gas = await signedMarketplaceContract.estimateGas.PlaceBid(
-                nftAddress,
-                assetId,
-                toBigNum(price, 18),
-                expiresAt,
-                { value: toBigNum(price, 18) }
-            );
-
-            return fromBigNum(gas, 0);
-        } catch (err) {
-            console.log(err);
-            return 0;
-        }
-    };
-
     const bidApprove = async (props) => {
         try {
             const { address, id, price } = props;
@@ -658,24 +348,6 @@ export default function Provider({ children }) {
         }
     };
 
-    // show method
-    const getCurrency = (tokenaddress = '') => {
-        try {
-            let currency = state.currencies.filter(
-                (c) => c.value.toLowerCase() === tokenaddress.toLowerCase()
-            );
-            if (currency.length === 0) {
-                throw new Error('unsupported currency');
-            }
-            return currency[0];
-        } catch (err) {
-            return {
-                label: 'Invalid Currency',
-                value: 'Unknown'
-            };
-        }
-    };
-
     return (
         <BlockchainContext.Provider
             value={useMemo(
@@ -683,7 +355,6 @@ export default function Provider({ children }) {
                     state,
                     {
                         dispatch,
-                        checkBalances,
                         mintNFT,
                         onsaleNFT,
                         onsaleLazyNFT,
@@ -692,28 +363,15 @@ export default function Provider({ children }) {
                         bidNFT,
                         bidApprove,
                         updateAuth,
-                        getCurrency,
                         setLanguage,
                         translateLang,
-                        CoinTransfer,
-                        NFTTransfer,
-                        getGasPrice,
-                        estimateMintNFT,
-                        estimateMintContract,
-                        buyNFTGas,
-                        bidNFTGas,
-                        NFTTransferGas,
-                        onSaleGas,
-                        onLazySaleGas,
                         approveNFT,
-                        ApproveNFTGas,
                         checkNFTApprove
                     }
                 ],
                 [
                     state,
                     dispatch,
-                    checkBalances,
                     mintNFT,
                     onsaleNFT,
                     onsaleLazyNFT,
@@ -724,22 +382,10 @@ export default function Provider({ children }) {
                     updateAuth,
                     setLanguage,
                     translateLang,
-                    CoinTransfer,
-                    NFTTransfer,
-                    getGasPrice,
-                    estimateMintNFT,
-                    estimateMintContract,
-                    buyNFTGas,
-                    bidNFTGas,
-                    NFTTransferGas,
-                    onSaleGas,
-                    onLazySaleGas,
                     approveNFT,
-                    ApproveNFTGas,
                     checkNFTApprove
                 ]
-            )}
-        >
+            )}>
             {children}
         </BlockchainContext.Provider>
     );

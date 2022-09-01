@@ -6,29 +6,15 @@ import { NotificationManager } from 'react-notifications';
 import { useNavigate } from 'react-router-dom';
 import Action from '../../service';
 import { toBigNum } from '../../utils';
-import ConfirmModal from './ConfirmModal';
 
 export default function Responsive(props) {
     const navigate = useNavigate();
     const { id, collection } = props;
-    const [
-        state,
-        {
-            onsaleNFT,
-            onsaleLazyNFT,
-            translateLang,
-            approveNFT,
-            onSaleGas,
-            ApproveNFTGas,
-            onLazySaleGas,
-            checkNFTApprove
-        }
-    ] = useBlockchainContext();
+    const [state, { onsaleNFT, onsaleLazyNFT, translateLang, approveNFT, checkNFTApprove }] =
+        useBlockchainContext();
     const [correctCollection, setCorrectCollection] = useState(null);
-    const [currency, setCurrency] = useState(state.currencies[0].value);
     const [price, setPrice] = useState('');
     const [date, setDate] = useState(new Date());
-    const [modalShow, setModalShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const [approveFlag, setApproveFlag] = useState(false);
 
@@ -69,7 +55,6 @@ export default function Responsive(props) {
     const handlelist = async () => {
         if (price === '') return;
         if (!moment(date).isValid()) return;
-        setModalShow(false);
 
         try {
             setLoading(true);
@@ -77,7 +62,6 @@ export default function Responsive(props) {
                 let txOnSale = await onsaleNFT({
                     nftAddress: collection,
                     assetId: correctCollection.tokenID,
-                    currency: currency,
                     price: price,
                     expiresAt: moment(date).valueOf()
                 });
@@ -104,7 +88,6 @@ export default function Responsive(props) {
                 let txOnSale = await onsaleLazyNFT({
                     tokenId: correctCollection.tokenID,
                     priceGwei: toBigNum(price, 18),
-                    currency: currency,
                     expiresAt: moment(date).valueOf(),
                     singature: lazyAction.result
                 });
@@ -122,38 +105,7 @@ export default function Responsive(props) {
         }
     };
 
-    const ListGas = async () => {
-        let gas = 0;
-        if (correctCollection.isOffchain) {
-            const lazyAction = await Action.lazy_onsale({
-                nftAddress: collection,
-                assetId: correctCollection.tokenID,
-                priceGwei: toBigNum(price, 18),
-                expiresAt: moment(date).valueOf()
-            });
-
-            gas = await onLazySaleGas({
-                tokenId: correctCollection.tokenID,
-                priceGwei: toBigNum(price, 18),
-                currency: currency,
-                expiresAt: moment(date).valueOf(),
-                singature: lazyAction.result
-            });
-        } else {
-            gas = await onSaleGas({
-                nftAddress: collection,
-                assetId: correctCollection.tokenID,
-                currency: currency,
-                price: price,
-                expiresAt: moment(date).valueOf()
-            });
-        }
-
-        return gas;
-    };
-
     const handleApprove = async () => {
-        setModalShow(false);
         setLoading(true);
         let txOnSale = await approveNFT({
             nftAddress: collection,
@@ -165,17 +117,6 @@ export default function Responsive(props) {
             setApproveFlag(true);
         } else NotificationManager.error('Failed Approve');
         setLoading(false);
-    };
-
-    const ApproveGas = async () => {
-        if (correctCollection) {
-            let gas = await ApproveNFTGas({
-                nftAddress: collection,
-                assetId: correctCollection.tokenID
-            });
-
-            return gas;
-        }
     };
 
     return (
@@ -193,13 +134,12 @@ export default function Responsive(props) {
                                         <p
                                             className="form-control"
                                             style={{
-                                                backgroundColor: '#ffc0c0',
+                                                backgroundColor: '#00423e',
                                                 boxShadow: '0 0 5 0 #d05e3c',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 gap: '10px'
-                                            }}
-                                        >
+                                            }}>
                                             <i
                                                 className="arrow_right-up"
                                                 style={{
@@ -211,24 +151,6 @@ export default function Responsive(props) {
                                         <div className="spacer-single"></div>
                                         <h5>{translateLang('sellprice')}</h5>
                                         <div className="price">
-                                            <div
-                                                style={{
-                                                    flex: '1 1 0'
-                                                }}
-                                            >
-                                                <select
-                                                    className="form-control"
-                                                    onChange={(e) => {
-                                                        setCurrency(e.target.value);
-                                                    }}
-                                                >
-                                                    {state.currencies.map((currency, index) => (
-                                                        <option value={currency.value} key={index}>
-                                                            {currency.label}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
                                             <input
                                                 type="number"
                                                 name="item_price"
@@ -269,8 +191,7 @@ export default function Responsive(props) {
                                         <button className="btn-main">
                                             <span
                                                 className="spinner-border spinner-border-sm"
-                                                aria-hidden="true"
-                                            ></span>
+                                                aria-hidden="true"></span>
                                         </button>
                                     ) : approveFlag || correctCollection.isOffchain ? (
                                         <button
@@ -280,15 +201,11 @@ export default function Responsive(props) {
                                                     ? true
                                                     : false
                                             }
-                                            onClick={() => setModalShow(true)}
-                                        >
+                                            onClick={handlelist}>
                                             {translateLang('btn_completelisting')}
                                         </button>
                                     ) : (
-                                        <button
-                                            className="btn-main"
-                                            onClick={() => setModalShow(true)}
-                                        >
+                                        <button className="btn-main" onClick={handleApprove}>
                                             {'Approve'}
                                         </button>
                                     )}
@@ -359,15 +276,6 @@ export default function Responsive(props) {
                     </div>
                 )}
             </section>
-
-            {modalShow && (
-                <ConfirmModal
-                    show={modalShow}
-                    setShow={setModalShow}
-                    actionFunc={approveFlag ? handlelist : handleApprove}
-                    estimateFunc={approveFlag ? ListGas : ApproveGas}
-                />
-            )}
         </>
     );
 }

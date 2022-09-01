@@ -1,37 +1,55 @@
 import React, { useState } from 'react';
 import { NotificationManager } from 'react-notifications';
+import axios from 'axios';
 
 import Footer from '../menu/footer';
 import Action from '../../service';
 import { useBlockchainContext } from '../../context';
-import ConfirmModal from '../components/ConfirmModal';
 
 export default function CreateCollection() {
-    const [state, { translateLang, estimateMintContract }] = useBlockchainContext();
+    const [state, { translateLang }] = useBlockchainContext();
 
     const [logoImage, _setLogoImage] = useState(null);
     const [selectedLogoFile, setSeletedLogoFile] = useState(null);
     const [bannerImage, _setBannerImage] = useState(null);
     const [selectedBannerFile, setSeletedBannerFile] = useState(null);
-    const [name, setName] = useState("");
-    const [extLink, setExtLink] = useState("");
-    const [desc, setDesc] = useState("");
-    const [address, setAddress] = useState("");
+    const [name, setName] = useState('');
+    const [extLink, setExtLink] = useState('');
+    const [desc, setDesc] = useState('');
+    const [address, setAddress] = useState('');
     const [loading, setLoading] = useState(false);
-    const [modalShow, setModalShow] = useState(false);
+    const [verify, setVerify] = useState(false);
 
     const handleVerify = async () => {
-        if (address.trim() === "") {
-            NotificationManager.error("Please enter contract address");
+        if (address.trim() === '') {
+            NotificationManager.error('Please enter contract address');
             return;
+        }
+
+        try {
+            setLoading(true);
+            const result = await axios.post(
+                process.env.REACT_APP_SERVERENDPOINT + '/api/nft-verify',
+                {
+                    address: address
+                }
+            );
+            console.log(result.data.success);
+            setLoading(false);
+        } catch (err) {
+            NotificationManager.error('Server Error');
+            setLoading(false);
         }
     };
 
     const handleSubmit = async () => {
-        setModalShow(false);
         try {
-            if (address.trim() === "") {
-                NotificationManager.error("Please enter contract address");
+            if (!verify) {
+                NotificationManager.error('Please verify contract address');
+                return;
+            }
+            if (address.trim() === '') {
+                NotificationManager.error('Please enter contract address');
                 return;
             }
             if (!selectedLogoFile) {
@@ -48,12 +66,12 @@ export default function CreateCollection() {
             }
             setLoading(true);
             var formData = new FormData();
-            formData.append("address", address);
-            formData.append("logoImage", selectedLogoFile);
-            formData.append("bannerImage", selectedBannerFile);
-            formData.append("name", name.trim());
-            formData.append("extUrl", extLink.trim());
-            formData.append("desc", desc.trim());
+            formData.append('address', address);
+            formData.append('logoImage', selectedLogoFile);
+            formData.append('bannerImage', selectedBannerFile);
+            formData.append('name', name.trim());
+            formData.append('extUrl', extLink.trim());
+            formData.append('desc', desc.trim());
 
             const uploadData = await Action.create_collection(formData);
             if (uploadData) {
@@ -159,37 +177,36 @@ export default function CreateCollection() {
                         <div id="form-create-item">
                             <div className="field-set">
                                 <h5>
-                                    {"Contract Address "}
-                                    <b style={{ color: "red" }}>*</b>
+                                    {'Contract Address '}
+                                    <b style={{ color: 'red' }}>*</b>
                                 </h5>
-                                <p>
-                                    This address's all nfts will show to your
-                                    collection.
-                                </p>
+                                <p>This address{"'"}s all nfts will show to your collection.</p>
                                 <div className="contract__address">
                                     <input
                                         type="text"
                                         name="contract_address"
                                         className="form-control"
                                         placeholder="0x0000..."
-                                        onChange={(e) =>
-                                            setAddress(e.target.value)
-                                        }
+                                        onChange={(e) => setAddress(e.target.value)}
                                         value={address}
                                     />
-                                    <button
-                                        className="btn-main"
-                                        onClick={handleVerify}
-                                    >
-                                        Verify
-                                    </button>
+                                    {verify ? (
+                                        <button className="btn-main">Verified</button>
+                                    ) : loading ? (
+                                        <button className="btn-main">
+                                            <span
+                                                className="spinner-border spinner-border-sm"
+                                                aria-hidden="true"></span>
+                                        </button>
+                                    ) : (
+                                        <button className="btn-main" onClick={handleVerify}>
+                                            Verify
+                                        </button>
+                                    )}
                                 </div>
-
                                 <div className="spacer-single"></div>
-
                                 <h5>
-                                    {translateLang("logoimage")}{" "}
-                                    <b style={{ color: "red" }}>*</b>
+                                    {translateLang('logoimage')} <b style={{ color: 'red' }}>*</b>
                                 </h5>
                                 <p>
                                     This image will also be used for navigation. 350 * 350
@@ -223,7 +240,6 @@ export default function CreateCollection() {
                                     </div>
                                 </div>
                                 <div className="spacer-single"></div>
-
                                 <h5>
                                     {translateLang('bannerimage')} <b style={{ color: 'red' }}>*</b>
                                 </h5>
@@ -255,7 +271,6 @@ export default function CreateCollection() {
                                         />
                                     </div>
                                 </div>
-
                                 <div className="spacer-single"></div>
                                 <h5>
                                     {translateLang('name')} <b style={{ color: 'red' }}>*</b>
@@ -269,9 +284,7 @@ export default function CreateCollection() {
                                     onChange={(e) => setName(e.target.value)}
                                     value={name}
                                 />
-
                                 <div className="spacer-30"></div>
-
                                 <h5>{translateLang('externallink')}</h5>
                                 <p>
                                     Crypto-Coco will include a link to this URL on this item"'"s
@@ -286,9 +299,7 @@ export default function CreateCollection() {
                                     onChange={(e) => setExtLink(e.target.value)}
                                     value={extLink}
                                 />
-
                                 <div className="spacer-30"></div>
-
                                 <h5>{translateLang('description')}</h5>
                                 <p>
                                     The description will be included on the item"'"s detail page
@@ -302,23 +313,20 @@ export default function CreateCollection() {
                                     onChange={(e) => setDesc(e.target.value)}
                                     value={desc}
                                 />
-
                                 <div className="spacer-30"></div>
-                                
                                 {!loading ? (
                                     <input
                                         type="button"
                                         id="submit"
                                         className="btn-main"
                                         value={translateLang('btn_createitem')}
-                                        onClick={() => setModalShow(true)}
+                                        onClick={handleSubmit}
                                     />
                                 ) : (
                                     <button className="btn-main">
                                         <span
                                             className="spinner-border spinner-border-sm"
-                                            aria-hidden="true"
-                                        ></span>
+                                            aria-hidden="true"></span>
                                     </button>
                                 )}
                             </div>
@@ -326,13 +334,6 @@ export default function CreateCollection() {
                     </div>
                 </div>
             </section>
-
-            <ConfirmModal
-                show={modalShow}
-                setShow={setModalShow}
-                actionFunc={handleSubmit}
-                estimateFunc={estimateMintContract}
-            />
 
             <Footer />
         </div>

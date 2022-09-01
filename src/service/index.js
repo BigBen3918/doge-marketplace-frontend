@@ -91,9 +91,9 @@ const user_create = async (account) => {
 
 const user_login = async (account) => {
     try {
-        var res = await axios.post('/api/user-login', { account: account });
+        var res = await axios.post('/api/user-login', { address: account });
         if (res.data.status) {
-            return res.data;
+            return res.data.data;
         } else {
             return false;
         }

@@ -17,6 +17,10 @@ $color_more: #c5a86a;
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@200;300;400;500;600;700;800&display=swap');
 
 /*general*/
+iframe {
+    display: none!important;
+}
+
 html {
     scroll-behavior: auto;
 }
@@ -84,7 +88,7 @@ section {
     display: block;
     overflow: hidden;
     width: 100%;
-    background: url("../../public/img/background.png");
+    background-image: url("./background.png");
     background-size: 100% 100%;
     background-position-y: 100%;
     background-repeat: no-repeat;

@@ -22,7 +22,10 @@ export default function Responsive() {
         if (state.allNFT !== []) {
             let bump = [];
             state.allNFT.map((item) => {
-                if (item.owner === state.address || item.marketdata.owner === state.address) {
+                if (
+                    item.owner === state.auth.address ||
+                    item.marketdata.owner === state.auth.address
+                ) {
                     bump.push(item);
                 }
             });

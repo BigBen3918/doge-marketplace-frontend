@@ -9,18 +9,15 @@ import ScrollToTopBtn from './menu/ScrollToTop';
 import Header from './menu/header';
 import Home from './pages/home';
 import Explore from './pages/explore';
-import Helpcenter from './pages/helpcenter';
 import Collection from './pages/colection';
 import ItemDetail from './pages/ItemDetail';
 import Author from './pages/Author';
-import Sign from './pages/Sign';
+import Wallet from './pages/wallet';
 import CreateCollection from './pages/createcollection';
 import Create from './pages/create';
 import LazyCreate from './pages/lazycreate';
 import Auction from './pages/Auction';
-import Contact from './pages/contact';
 import Collections from './pages/collections';
-// import Rangking from "./pages/rangking";
 import { useBlockchainContext } from '../context';
 import Provider from '../context';
 
@@ -48,7 +45,7 @@ const client = new ApolloClient({
 const PrivateRoute = ({ children }) => {
     const location = useLocation();
 
-    const [state, { }] = useBlockchainContext();
+    const [state, {}] = useBlockchainContext();
 
     if (!state.auth.isAuth) {
         return <Navigate to="/signPage" replace state={{ from: location }} />;
@@ -66,30 +63,23 @@ export default function App() {
                         chainId={4002}
                         connectors={{
                             walletconnect: {
-                                rpcUrl: "https://rpc.testnet.fantom.network/",
-                            },
-                        }}
-                    >
+                                rpcUrl: 'https://rpc.testnet.fantom.network/'
+                            }
+                        }}>
                         <Provider>
                             <GlobalStyles />
                             <Header />
                             <Routes>
                                 <Route exact path="/" element={<Home />} />
                                 <Route path="/explore" element={<Explore />} />
-                                <Route path="/helpcenter" element={<Helpcenter />} />
-                                <Route path="/contact" element={<Contact />} />
                                 <Route path="/Collections" element={<Collections />} />
-                                <Route path="/signPage" element={<Sign />} />
-
+                                <Route path="/signPage" element={<Wallet />} />
                                 <Route
                                     exact
                                     path="/collection/:collection"
-                                    element={
-                                        <PrivateRoute>
-                                            <Collection />
-                                        </PrivateRoute>
-                                    }
+                                    element={<Collection />}
                                 />
+
                                 <Route
                                     exact
                                     path="/ItemDetail/:collection/:id"

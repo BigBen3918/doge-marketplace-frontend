@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import MyNFT from "../components/mynfts";
-import Profile from "../components/profile";
-import Footer from "../menu/footer";
-import { createGlobalStyle } from "styled-components";
-import { useBlockchainContext } from "../../context";
+import MyNFT from '../components/mynfts';
+import Profile from '../components/profile';
+import Footer from '../menu/footer';
+import { createGlobalStyle } from 'styled-components';
+import { useBlockchainContext } from '../../context';
 
 const GlobalStyles = createGlobalStyle`
   header#myHeader.navbar.white {
@@ -16,25 +16,15 @@ export default function Author() {
     const [state, { translateLang }] = useBlockchainContext();
     const [openMenu, setOpenMenu] = useState(0);
 
-    useEffect(() => {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const path = urlParams.get('path');
-
-        if (path === 'wallet') {
-            setOpenMenu(2);
-        }
-    }, []);
-
     const handleBtnClick = () => {
         setOpenMenu(0);
-        document.getElementById("Mainbtn0").classList.add("active");
-        document.getElementById("Mainbtn1").classList.remove("active");
+        document.getElementById('Mainbtn0').classList.add('active');
+        document.getElementById('Mainbtn1').classList.remove('active');
     };
     const handleBtnClick1 = () => {
         setOpenMenu(1);
-        document.getElementById("Mainbtn0").classList.remove("active");
-        document.getElementById("Mainbtn1").classList.add("active");
+        document.getElementById('Mainbtn0').classList.remove('active');
+        document.getElementById('Mainbtn1').classList.add('active');
     };
 
     return (
@@ -61,7 +51,7 @@ export default function Author() {
                                                     : state.auth.email}
                                             </span>
                                             <span id="wallet" className="profile_wallet">
-                                                {state.address}
+                                                {state.auth.address}
                                             </span>
                                         </h4>
                                     </div>

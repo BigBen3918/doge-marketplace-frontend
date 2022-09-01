@@ -56,10 +56,20 @@ export default function Header() {
         closeMenu3();
     });
 
-
     const handleConnect = () => {
         if (wallet.status == 'connected') {
             wallet.reset();
+            dispatch({
+                type: 'auth',
+                payload: {
+                    isAuth: false,
+                    name: '',
+                    email: '',
+                    bio: '',
+                    address: '',
+                    image: null
+                }
+            });
         } else {
             wallet.connect();
         }
@@ -121,8 +131,7 @@ export default function Header() {
                                         <div ref={ref1}>
                                             <div
                                                 className="dropdown-custom dropdown-toggle btn"
-                                                onClick={handleBtnClick1}
-                                            >
+                                                onClick={handleBtnClick1}>
                                                 {translateLang('explore')}
                                                 <span className="lines"></span>
                                             </div>
@@ -131,14 +140,12 @@ export default function Header() {
                                                     <div className="dropdown" onClick={closeMenu1}>
                                                         <NavLink
                                                             to="/explore"
-                                                            onClick={() => btn_icon(!showmenu)}
-                                                        >
+                                                            onClick={() => btn_icon(!showmenu)}>
                                                             {translateLang('allnfts')}
                                                         </NavLink>
                                                         <NavLink
                                                             to="/Collections"
-                                                            onClick={() => btn_icon(!showmenu)}
-                                                        >
+                                                            onClick={() => btn_icon(!showmenu)}>
                                                             {translateLang('collection')}
                                                         </NavLink>
                                                     </div>
@@ -158,8 +165,7 @@ export default function Header() {
                                         <div ref={ref2}>
                                             <div
                                                 className="dropdown-custom dropdown-toggle btn"
-                                                onClick={handleBtnClick2}
-                                            >
+                                                onClick={handleBtnClick2}>
                                                 {translateLang('create')}
                                                 <span className="lines"></span>
                                             </div>
@@ -168,14 +174,12 @@ export default function Header() {
                                                     <div className="dropdown" onClick={closeMenu2}>
                                                         <NavLink
                                                             to="/create/nft"
-                                                            onClick={() => btn_icon(!showmenu)}
-                                                        >
+                                                            onClick={() => btn_icon(!showmenu)}>
                                                             {translateLang('createnft')}
                                                         </NavLink>
                                                         <NavLink
                                                             to="/create/collection"
-                                                            onClick={() => btn_icon(!showmenu)}
-                                                        >
+                                                            onClick={() => btn_icon(!showmenu)}>
                                                             {translateLang('createcollection')}
                                                         </NavLink>
                                                     </div>
@@ -204,8 +208,7 @@ export default function Header() {
                                         <div
                                             className="dropdown-custom dropdown-toggle btn"
                                             onMouseEnter={handleBtnClick1}
-                                            onMouseLeave={closeMenu1}
-                                        >
+                                            onMouseLeave={closeMenu1}>
                                             {translateLang('explore')}
                                             <span className="lines"></span>
                                             {openMenu1 && (
@@ -234,8 +237,7 @@ export default function Header() {
                                         <div
                                             className="dropdown-custom dropdown-toggle btn"
                                             onMouseEnter={handleBtnClick2}
-                                            onMouseLeave={closeMenu2}
-                                        >
+                                            onMouseLeave={closeMenu2}>
                                             {translateLang('create')}
                                             <span className="lines"></span>
                                             {openMenu2 && (
@@ -267,10 +269,8 @@ export default function Header() {
                     <div className="mainside">
                         <button className="btn-main" onClick={handleConnect}>
                             {wallet.status != 'connected'
-                                ? "Connect"
-                                : wallet.account.slice(0, 4) + '...' + wallet.account.slice(-4)
-                            }
-
+                                ? 'Connect'
+                                : wallet.account.slice(0, 4) + '...' + wallet.account.slice(-4)}
                         </button>
                     </div>
                 </div>

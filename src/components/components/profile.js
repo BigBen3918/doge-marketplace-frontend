@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { NotificationManager } from 'react-notifications';
 import axios from 'axios';
-
 import { useBlockchainContext } from '../../context';
 import { copyToClipboard } from '../../utils';
 
@@ -35,7 +34,7 @@ export default function Profile() {
     // };
 
     const handleaddressCopy = () => {
-        copyToClipboard(state.address)
+        copyToClipboard(state.auth.address)
             .then((res) => {
                 NotificationManager.success(translateLang('addresscopy_success'));
             })
@@ -48,16 +47,22 @@ export default function Profile() {
         setLoadItem(true);
         try {
             if (!selectedFile) {
-                throw new Error('Please choose image');
+                NotificationManager.warn('Please choose image');
+                return;
             }
+
+            const signMessage = await state.signer.signMessage(newName);
+
             var formData = new FormData();
             formData.append('newimage', selectedFile);
             formData.append('previousImage', state.auth.image);
             formData.append('name', newName);
             formData.append('bio', newBio);
             formData.append('email', newEmail);
+            formData.append('signature', signMessage);
 
             var res = await axios.post('/api/user-update', formData);
+            console.log(res);
             updateAuth(res.data.data);
 
             NotificationManager.success(translateLang('update_success'));
@@ -108,9 +113,8 @@ export default function Profile() {
                         <div
                             className="text_copy noselect"
                             style={{ color: 'grey', textAlign: 'left' }}
-                            onClick={handleaddressCopy}
-                        >
-                            <span>{state.address}</span>
+                            onClick={handleaddressCopy}>
+                            <span>{state.auth.address}</span>
                             <span style={{ padding: '0 10px' }}>
                                 <i className="bg-color-2 i-boxed icon_pencil-edit"></i>
                             </span>
@@ -205,8 +209,7 @@ export default function Profile() {
                             <div
                                 className="profile-btn"
                                 style={{ marginRight: '10px' }}
-                                onClick={editOnclick}
-                            >
+                                onClick={editOnclick}>
                                 {translateLang('btn_edit')}
                             </div>
                         </div>
