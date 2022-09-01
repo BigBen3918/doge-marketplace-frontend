@@ -163,7 +163,7 @@ export default function CreateCollection() {
                                     <b style={{ color: "red" }}>*</b>
                                 </h5>
                                 <p>
-                                    This address's all nfts will show to your
+                                    This address{"'"}s all nfts will show to your
                                     collection.
                                 </p>
                                 <div className="contract__address">
@@ -304,8 +304,6 @@ export default function CreateCollection() {
                                 />
 
                                 <div className="spacer-30"></div>
-=======
->>>>>>> 6fb26d7c8068b19f647173410145ff3fa0f3b614
                                 {!loading ? (
                                     <input
                                         type="button"
