@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useBlockchainContext } from "../../context";
-import Action from "../../service";
-import BuyModal from "./BuyModal";
-import { fromBigNum } from "../../utils";
+import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useBlockchainContext } from '../../context';
+import Action from '../../service';
+import BuyModal from './BuyModal';
+import { fromBigNum } from '../../utils';
 
 export default function NFTLists() {
     const navigate = useNavigate();
@@ -21,8 +21,8 @@ export default function NFTLists() {
     };
 
     const handleItem = (e, param, item) => {
-        var buyButton = document.getElementById("buy" + param);
-        var likeButton = document.getElementById("like" + param);
+        var buyButton = document.getElementById('buy' + param);
+        var likeButton = document.getElementById('like' + param);
 
         if (buyButton) {
             var isClickBuyButton = buyButton.contains(e.target);
@@ -33,14 +33,14 @@ export default function NFTLists() {
             setCurrentItem(item);
             setModalShow(true);
         } else if (isClickLikeButton) {
-            if (state.auth.address === undefined) {
-                navigate("/signPage");
+            if (state.address === undefined) {
+                navigate('/signPage');
                 return;
             }
             Action.nft_like({
                 collectAddress: item.collectionAddress,
                 tokenId: item.tokenID,
-                currentAddress: state.auth.address,
+                currentAddress: state.address
             })
                 .then((res) => {
                     if (res) {
@@ -52,8 +52,8 @@ export default function NFTLists() {
                 });
             return;
         } else {
-            if (state.auth.address === undefined) {
-                navigate("/signPage");
+            if (state.address === undefined) {
+                navigate('/signPage');
                 return;
             }
             navigate(`/ItemDetail/${item.collectionAddress}/${item.tokenID}`);
@@ -62,13 +62,10 @@ export default function NFTLists() {
     };
 
     const NFTs = useMemo(() => {
-        if (!filter)
-            return state.allNFT;
+        if (!filter) return state.allNFT;
         else {
             return state.allNFT.filter(
-                (item) =>
-                    item.owner.toLowerCase() ==
-                    state.addresses.Marketplace.toLowerCase()
+                (item) => item.owner.toLowerCase() == state.addresses.Marketplace.toLowerCase()
             );
         }
     }, [state.allNFT, filter]);
@@ -93,24 +90,18 @@ export default function NFTLists() {
                                         //         .image
                                         //     : state.usersInfo[nft.owner]
                                         //         .image ||
-                                        "./img/author/author-1.jpg"
+                                        './img/author/author-1.jpg'
                                     }
                                     alt=""
                                 />
                                 <i className="fa fa-check"></i>
                             </span>
                         </div>
-                        <div
-                            className="nft__item_wrap"
-                            style={{ height: `${height}px` }}
-                        >
+                        <div className="nft__item_wrap" style={{ height: `${height}px` }}>
                             <span>
                                 <img
                                     onLoad={(e) => onImgLoad(e)}
-                                    src={
-                                        nft.metadata.image ||
-                                        "./img/collections/coll-item-3.jpg"
-                                    }
+                                    src={nft.metadata.image || './img/collections/coll-item-3.jpg'}
                                     className="lazy nft__item_preview"
                                     alt=""
                                 />
@@ -121,30 +112,26 @@ export default function NFTLists() {
                                 <h4>{nft.metadata.name}</h4>
                             </span>
                             <div className="nft__item_price">
-                                {nft.marketdata.price === ""
+                                {nft.marketdata.price === ''
                                     ? null
                                     : nft.marketdata.price +
-                                      getCurrency(nft.marketdata.acceptedToken)
-                                          ?.label}
+                                      getCurrency(nft.marketdata.acceptedToken)?.label}
                                 <span>
-                                    {nft.marketdata.bidders.length}{" "}
-                                    {translateLang("bid")}
+                                    {nft.marketdata.bidders.length} {translateLang('bid')}
                                 </span>
                             </div>
                             <div className="nft__item_action">
-                                {nft.marketdata.price === "" ? null : (
-                                    <span id={"buy" + index}>
-                                        {translateLang("buynow")}
-                                    </span>
+                                {nft.marketdata.price === '' ? null : (
+                                    <span id={'buy' + index}>{translateLang('buynow')}</span>
                                 )}
                             </div>
                             <div
                                 className="nft__item_like"
-                                id={"like" + index}
+                                id={'like' + index}
                                 style={
-                                    nft.likes.indexOf(state.auth.address) === -1
+                                    nft.likes.indexOf(state.address) === -1
                                         ? null
-                                        : { color: "#c5a86a" }
+                                        : { color: '#c5a86a' }
                                 }
                             >
                                 <i className="fa fa-heart"></i>

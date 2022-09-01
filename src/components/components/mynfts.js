@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useBlockchainContext } from "../../context";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useBlockchainContext } from '../../context';
 
 const Outer = styled.div`
     display: flex;
@@ -22,10 +22,7 @@ export default function Responsive() {
         if (state.allNFT !== []) {
             let bump = [];
             state.allNFT.map((item) => {
-                if (
-                    item.owner === state.auth.address ||
-                    item.marketdata.owner === state.auth.address
-                ) {
+                if (item.owner === state.address || item.marketdata.owner === state.address) {
                     bump.push(item);
                 }
             });
@@ -54,10 +51,7 @@ export default function Responsive() {
                           onClick={() => handleItem(nft)}
                       >
                           <div className="nft__item">
-                              <div
-                                  className="nft__item_wrap"
-                                  style={{ height: `${height}px` }}
-                              >
+                              <div className="nft__item_wrap" style={{ height: `${height}px` }}>
                                   <Outer>
                                       <span>
                                           <img
@@ -82,10 +76,7 @@ export default function Responsive() {
                                   <div className="nft__item_action">
                                       <span>Place a bid</span>
                                   </div> */}
-                                  <div
-                                      className="nft__item_like"
-                                      style={{ color: "#c5a86a" }}
-                                  >
+                                  <div className="nft__item_like" style={{ color: '#c5a86a' }}>
                                       <i className="fa fa-heart"></i>
                                       <span>{nft.likes.length}</span>
                                   </div>
@@ -93,7 +84,7 @@ export default function Responsive() {
                           </div>
                       </div>
                   ))
-                : "No Data..."}
+                : 'No Data...'}
         </div>
     );
 }

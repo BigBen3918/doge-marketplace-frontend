@@ -1453,29 +1453,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         animation-timing-function: ease-out;
     }
     40% {
-        -webkit-transform: perspective(400px) translateZ(150px) rotateY(170deg)
-            scale(1);
+        -webkit-transform: perspective(400px) translateZ(150px) rotateY(170deg) scale(1);
         transform: perspective(400px) translateZ(150px) rotateY(170deg) scale(1);
         -webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
     }
     50% {
-        -webkit-transform: perspective(400px) translateZ(150px) rotateY(190deg)
-            scale(1);
+        -webkit-transform: perspective(400px) translateZ(150px) rotateY(190deg) scale(1);
         transform: perspective(400px) translateZ(150px) rotateY(190deg) scale(1);
         -webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
     }
     80% {
-        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg)
-            scale(0.95);
+        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg) scale(0.95);
         transform: perspective(400px) translateZ(0) rotateY(360deg) scale(0.95);
         -webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
     }
     100% {
-        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg)
-            scale(1);
+        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg) scale(1);
         transform: perspective(400px) translateZ(0) rotateY(360deg) scale(1);
         -webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
@@ -1490,35 +1486,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         animation-timing-function: ease-out;
     }
     40% {
-        -webkit-transform: perspective(400px) translateZ(150px) rotateY(170deg)
-            scale(1);
-        -ms-transform: perspective(400px) translateZ(150px) rotateY(170deg)
-            scale(1);
+        -webkit-transform: perspective(400px) translateZ(150px) rotateY(170deg) scale(1);
+        -ms-transform: perspective(400px) translateZ(150px) rotateY(170deg) scale(1);
         transform: perspective(400px) translateZ(150px) rotateY(170deg) scale(1);
         -webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
     }
     50% {
-        -webkit-transform: perspective(400px) translateZ(150px) rotateY(190deg)
-            scale(1);
-        -ms-transform: perspective(400px) translateZ(150px) rotateY(190deg)
-            scale(1);
+        -webkit-transform: perspective(400px) translateZ(150px) rotateY(190deg) scale(1);
+        -ms-transform: perspective(400px) translateZ(150px) rotateY(190deg) scale(1);
         transform: perspective(400px) translateZ(150px) rotateY(190deg) scale(1);
         -webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
     }
     80% {
-        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg)
-            scale(0.95);
-        -ms-transform: perspective(400px) translateZ(0) rotateY(360deg)
-            scale(0.95);
+        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg) scale(0.95);
+        -ms-transform: perspective(400px) translateZ(0) rotateY(360deg) scale(0.95);
         transform: perspective(400px) translateZ(0) rotateY(360deg) scale(0.95);
         -webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
     }
     100% {
-        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg)
-            scale(1);
+        -webkit-transform: perspective(400px) translateZ(0) rotateY(360deg) scale(1);
         -ms-transform: perspective(400px) translateZ(0) rotateY(360deg) scale(1);
         transform: perspective(400px) translateZ(0) rotateY(360deg) scale(1);
         -webkit-animation-timing-function: ease-in;
@@ -2686,24 +2675,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 .shine {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: -50px;
-    background: -webkit-linear-gradient(
-        top,
-        transparent,
-        rgba(255, 255, 255, 0.2) 5%,
-        transparent
-    );
-    background: linear-gradient(
-        to bottom,
-        transparent,
-        rgba(255, 255, 255, 0.2) 5%,
-        transparent
-    );
+    background: -webkit-linear-gradient(top, transparent, rgba(255, 255, 255, 0.2) 5%, transparent);
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2) 5%, transparent);
     -webkit-transform: rotateZ(60deg) translate(-1em, 5.5em);
     transform: rotateZ(60deg) translate(-1em, 5.5em);
 }

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 /* ----- Query ----- */
 const GET_COLLECTIONNFTS = gql`

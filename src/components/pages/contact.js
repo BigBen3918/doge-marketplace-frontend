@@ -1,33 +1,26 @@
-import React from "react";
-import emailjs from "emailjs-com";
-import Footer from "../menu/footer";
+import React from 'react';
+import emailjs from 'emailjs-com';
+import Footer from '../menu/footer';
 
 const contact = function () {
     function sendEmail(e) {
-        const success = document.getElementById("success");
-        const button = document.getElementById("buttonsent");
-        const failed = document.getElementById("failed");
+        const success = document.getElementById('success');
+        const button = document.getElementById('buttonsent');
+        const failed = document.getElementById('failed');
         e.preventDefault();
 
-        emailjs
-            .sendForm(
-                "gmail",
-                "template_csfdEZiA",
-                e.target,
-                "user_zu7p2b3lDibMCDutH5hif"
-            )
-            .then(
-                (result) => {
-                    console.log(result.text);
-                    success.classList.add("show");
-                    button.classList.add("show");
-                    failed.classList.remove("show");
-                },
-                (error) => {
-                    console.log(error.text);
-                    failed.classList.add("show");
-                }
-            );
+        emailjs.sendForm('gmail', 'template_csfdEZiA', e.target, 'user_zu7p2b3lDibMCDutH5hif').then(
+            (result) => {
+                console.log(result.text);
+                success.classList.add('show');
+                button.classList.add('show');
+                failed.classList.remove('show');
+            },
+            (error) => {
+                console.log(error.text);
+                failed.classList.add('show');
+            }
+        );
     }
 
     return (
@@ -108,15 +101,11 @@ const contact = function () {
                                 </span>
                                 <span>
                                     <i className="id-color fa fa-envelope-o fa-lg"></i>
-                                    <span className="btn">
-                                        contact@example.com
-                                    </span>
+                                    <span className="btn">contact@example.com</span>
                                 </span>
                                 <span>
                                     <i className="id-color fa fa-file-pdf-o fa-lg"></i>
-                                    <span className="btn">
-                                        Download Brochure
-                                    </span>
+                                    <span className="btn">Download Brochure</span>
                                 </span>
                             </address>
                         </div>
@@ -129,20 +118,15 @@ const contact = function () {
                                     100 Mainstreet Center, Sydney
                                 </span>
                                 <span>
-                                    <i className="fa fa-phone fa-lg"></i>+61 333
-                                    9296
+                                    <i className="fa fa-phone fa-lg"></i>+61 333 9296
                                 </span>
                                 <span>
                                     <i className="fa fa-envelope-o fa-lg"></i>
-                                    <span className="btn">
-                                        contact@example.com
-                                    </span>
+                                    <span className="btn">contact@example.com</span>
                                 </span>
                                 <span>
                                     <i className="fa fa-file-pdf-o fa-lg"></i>
-                                    <span className="btn">
-                                        Download Brochure
-                                    </span>
+                                    <span className="btn">Download Brochure</span>
                                 </span>
                             </address>
                         </div>

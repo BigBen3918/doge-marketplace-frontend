@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVERENDPOINT;
 
 // NFT manage
 const create_collection = async (formData) => {
     try {
-        var res = await axios.post("/api/create-collection", formData);
+        var res = await axios.post('/api/create-collection', formData);
 
         if (!res.data.success) {
             return false;
@@ -20,7 +20,7 @@ const create_collection = async (formData) => {
 
 const nft_mint = async (formData) => {
     try {
-        var res = await axios.post("/api/mint-nft", formData);
+        var res = await axios.post('/api/mint-nft', formData);
 
         if (!res.data.success) {
             return false;
@@ -34,7 +34,7 @@ const nft_mint = async (formData) => {
 
 const nft_like = async (data) => {
     try {
-        var res = await axios.post("/api/nft-like", data);
+        var res = await axios.post('/api/nft-like', data);
 
         if (!res.data.success) {
             return false;
@@ -48,7 +48,7 @@ const nft_like = async (data) => {
 
 const lazy_mint = async (data) => {
     try {
-        var res = await axios.post("/api/lazy-mint", data);
+        var res = await axios.post('/api/lazy-mint', data);
 
         if (!res.data.success) {
             return false;
@@ -62,7 +62,7 @@ const lazy_mint = async (data) => {
 
 const lazy_onsale = async (data) => {
     try {
-        var res = await axios.post("/api/lazy-onsale", data);
+        var res = await axios.post('/api/lazy-onsale', data);
 
         if (!res.data.success) {
             return false;
@@ -77,7 +77,7 @@ const lazy_onsale = async (data) => {
 // User Manage
 const user_create = async (account) => {
     try {
-        var res = await axios.post("/api/user-create", { account: account });
+        var res = await axios.post('/api/user-create', { account: account });
         if (!res.data.status) {
             return false;
         }
@@ -91,7 +91,7 @@ const user_create = async (account) => {
 
 const user_login = async (account) => {
     try {
-        var res = await axios.post("/api/user-login", { account: account });
+        var res = await axios.post('/api/user-login', { account: account });
         if (res.data.status) {
             return res.data;
         } else {
@@ -104,7 +104,7 @@ const user_login = async (account) => {
 
 const buy_credit = async (param) => {
     try {
-        var res = await axios.post("/api/payment/session-initiate", param);
+        var res = await axios.post('/api/payment/session-initiate', param);
 
         return res;
     } catch (err) {
@@ -115,7 +115,7 @@ const buy_credit = async (param) => {
 
 const getRequests = async () => {
     try {
-        var res = await axios.post("/api/payment/request");
+        var res = await axios.post('/api/payment/request');
 
         return res;
     } catch (err) {
@@ -134,7 +134,7 @@ const Action = {
     user_create,
     user_login,
     buy_credit,
-    getRequests,
+    getRequests
 };
 
 export default Action;

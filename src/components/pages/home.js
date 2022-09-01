@@ -1,13 +1,13 @@
-import React from "react";
-import SliderCarousel from "../components/SliderCarouselsingle";
-import FeatureBox from "../components/FeatureBox";
-import CarouselCollection from "../components/CarouselCollection";
-import Footer from "../menu/footer";
-import { createGlobalStyle } from "styled-components";
-import Reveal from "react-awesome-reveal";
-import { keyframes } from "@emotion/react";
-import { Link } from "react-router-dom";
-import { useBlockchainContext } from "../../context";
+import React from 'react';
+import SliderCarousel from '../components/SliderCarouselsingle';
+import FeatureBox from '../components/FeatureBox';
+import CarouselCollection from '../components/CarouselCollection';
+import Footer from '../menu/footer';
+import { createGlobalStyle } from 'styled-components';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from '@emotion/react';
+import { Link } from 'react-router-dom';
+import { useBlockchainContext } from '../../context';
 
 const fadeInUp = keyframes`
   0% {
@@ -89,8 +89,7 @@ export default function Homethree() {
                             >
                                 <h6 className="">
                                     <span className="text-uppercase color">
-                                        Crypto-Coco NFT{" "}
-                                        {translateLang("marketplace")}
+                                        Crypto-Coco NFT {translateLang('marketplace')}
                                     </span>
                                 </h6>
                             </Reveal>
@@ -102,9 +101,7 @@ export default function Homethree() {
                                 duration={600}
                                 triggerOnce
                             >
-                                <h1 className="">
-                                    {translateLang("home_txt1")}
-                                </h1>
+                                <h1 className="">{translateLang('home_txt1')}</h1>
                             </Reveal>
                             <Reveal
                                 className="onStep"
@@ -113,9 +110,7 @@ export default function Homethree() {
                                 duration={600}
                                 triggerOnce
                             >
-                                <p className=" lead">
-                                    {translateLang("home_txt2")}
-                                </p>
+                                <p className=" lead">{translateLang('home_txt2')}</p>
                             </Reveal>
                             <div className="spacer-10"></div>
                             <Reveal
@@ -126,7 +121,7 @@ export default function Homethree() {
                                 triggerOnce
                             >
                                 <Link to="/explore" className="btn-main lead">
-                                    {translateLang("explore")}
+                                    {translateLang('explore')}
                                 </Link>
                                 <div className="mb-sm-30"></div>
                             </Reveal>
@@ -139,9 +134,7 @@ export default function Homethree() {
             <section className="container no-top">
                 <div className="row">
                     <div className="col-lg-12">
-                        <h2 className="style-2">
-                            {translateLang("notablecollection")}
-                        </h2>
+                        <h2 className="style-2">{translateLang('notablecollection')}</h2>
                     </div>
                 </div>
                 <div className="container no-top">
@@ -178,9 +171,7 @@ export default function Homethree() {
             <section className="container no-top">
                 <div className="row">
                     <div className="col-lg-12">
-                        <h2 className="style-2">
-                            {translateLang("createandsell")}
-                        </h2>
+                        <h2 className="style-2">{translateLang('createandsell')}</h2>
                     </div>
                 </div>
                 <div className="container px-0">

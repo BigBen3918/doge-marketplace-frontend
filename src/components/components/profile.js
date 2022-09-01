@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-import { NotificationManager } from "react-notifications";
-import axios from "axios";
+import React, { useState, useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import { NotificationManager } from 'react-notifications';
+import axios from 'axios';
 
-import { useBlockchainContext } from "../../context";
-import { copyToClipboard } from "../../utils";
+import { useBlockchainContext } from '../../context';
+import { copyToClipboard } from '../../utils';
 
 const Outer = styled.div`
     display: flex;
@@ -16,11 +16,10 @@ const Outer = styled.div`
 `;
 
 export default function Profile() {
-    const [state, { updateAuth, setLanguage, translateLang }] =
-        useBlockchainContext();
-    const [newName, setNewName] = useState("");
-    const [newBio, setNewBio] = useState("");
-    const [newEmail, setNewEmail] = useState("");
+    const [state, { updateAuth, setLanguage, translateLang }] = useBlockchainContext();
+    const [newName, setNewName] = useState('');
+    const [newBio, setNewBio] = useState('');
+    const [newEmail, setNewEmail] = useState('');
     const [image, _setImage] = useState(null);
     const [selectedFile, setSeletedFile] = useState(null);
     const [loading, setLoadItem] = useState(false);
@@ -28,13 +27,7 @@ export default function Profile() {
     const fileRef = useRef(null);
 
     useEffect(() => {
-        init(
-            state.auth.name,
-            state.auth.bio ? state.auth.bio : "",
-            state.auth.email,
-            null,
-            null
-        );
+        init(state.auth.name, state.auth.bio ? state.auth.bio : '', state.auth.email, null, null);
     }, []);
 
     const setLang = (e) => {
@@ -42,14 +35,12 @@ export default function Profile() {
     };
 
     const handleaddressCopy = () => {
-        copyToClipboard(state.auth.address)
+        copyToClipboard(state.address)
             .then((res) => {
-                NotificationManager.success(
-                    translateLang("addresscopy_success")
-                );
+                NotificationManager.success(translateLang('addresscopy_success'));
             })
             .catch((err) => {
-                NotificationManager.success(translateLang("operation_error"));
+                NotificationManager.success(translateLang('operation_error'));
             });
     };
 
@@ -57,22 +48,22 @@ export default function Profile() {
         setLoadItem(true);
         try {
             if (!selectedFile) {
-                throw new Error("Please choose image");
+                throw new Error('Please choose image');
             }
             var formData = new FormData();
-            formData.append("newimage", selectedFile);
-            formData.append("previousImage", state.auth.image);
-            formData.append("name", newName);
-            formData.append("bio", newBio);
-            formData.append("email", newEmail);
+            formData.append('newimage', selectedFile);
+            formData.append('previousImage', state.auth.image);
+            formData.append('name', newName);
+            formData.append('bio', newBio);
+            formData.append('email', newEmail);
 
-            var res = await axios.post("/api/user-update", formData);
+            var res = await axios.post('/api/user-update', formData);
             updateAuth(res.data.data);
 
-            NotificationManager.success(translateLang("update_success"));
+            NotificationManager.success(translateLang('update_success'));
         } catch (err) {
             console.log(err.message);
-            NotificationManager.error(translateLang("operation_error"));
+            NotificationManager.error(translateLang('operation_error'));
             setLoadItem(false);
         }
         setLoadItem(false);
@@ -98,7 +89,7 @@ export default function Profile() {
                 setSeletedFile(newImage);
             } catch (err) {
                 console.log(err);
-                NotificationManager.error(translateLang("imageloading_error"));
+                NotificationManager.error(translateLang('imageloading_error'));
             }
         }
     };
@@ -112,40 +103,39 @@ export default function Profile() {
             <div className="row">
                 <div className="col-lg-5 col-md-6 col-sm-6 col-xs-12">
                     <div className="field-set">
-                        <h5>{translateLang("mybalance")}</h5>
+                        <h5>{translateLang('mybalance')}</h5>
                         <select className="form-control" defaultChecked={1}>
                             {state.currencies.map((item, index) => (
                                 <option key={index}>
                                     {Number(state.balances[index]).toFixed(2)}
-                                    {"  "}
+                                    {'  '}
                                     {item.label}
-                                    {"   "}(
+                                    {'   '}(
                                     {index === 0
                                         ? Number(
-                                              state.balances[index] *
-                                                  state.prices["ETHEURPrice"]
-                                          ).toFixed(2) + "$"
-                                        : state.balances[index] + "$"}
+                                              state.balances[index] * state.prices['ETHEURPrice']
+                                          ).toFixed(2) + '$'
+                                        : state.balances[index] + '$'}
                                     )
                                 </option>
                             ))}
                         </select>
                         <div className="spacer-20"></div>
-                        <h5>{translateLang("walletaddress")}</h5>
+                        <h5>{translateLang('walletaddress')}</h5>
                         <div
                             className="text_copy noselect"
-                            style={{ color: "grey", textAlign: "left" }}
+                            style={{ color: 'grey', textAlign: 'left' }}
                             onClick={handleaddressCopy}
                         >
-                            <span>{state.auth.address}</span>
-                            <span style={{ padding: "0 10px" }}>
+                            <span>{state.address}</span>
+                            <span style={{ padding: '0 10px' }}>
                                 <i className="bg-color-2 i-boxed icon_pencil-edit"></i>
                             </span>
                         </div>
 
                         <div className="spacer-20"></div>
 
-                        <h5>{translateLang("language")}</h5>
+                        <h5>{translateLang('language')}</h5>
                         <select
                             className="form-control"
                             onChange={(e) => setLang(e)}
@@ -158,7 +148,7 @@ export default function Profile() {
                         <div className="spacer-20"></div>
                         {edit ? (
                             <>
-                                <h5>{translateLang("username")}</h5>
+                                <h5>{translateLang('username')}</h5>
                                 <input
                                     type="text"
                                     name="item_name"
@@ -171,7 +161,7 @@ export default function Profile() {
 
                                 <div className="spacer-20"></div>
 
-                                <h5>{translateLang("bio")}</h5>
+                                <h5>{translateLang('bio')}</h5>
                                 <textarea
                                     name="item_bio"
                                     id="item_bio"
@@ -183,16 +173,14 @@ export default function Profile() {
 
                                 <div className="spacer-20"></div>
 
-                                <h5>{translateLang("emailaddress")}</h5>
+                                <h5>{translateLang('emailaddress')}</h5>
                                 <input
                                     type="text"
                                     name="item_email"
                                     id="item_email"
                                     className="form-control"
                                     placeholder="your bio details"
-                                    onChange={(e) =>
-                                        setNewEmail(e.target.value)
-                                    }
+                                    onChange={(e) => setNewEmail(e.target.value)}
                                     value={newEmail}
                                 />
 
@@ -202,7 +190,7 @@ export default function Profile() {
                                     type="button"
                                     id="submit"
                                     className="btn-main"
-                                    value={translateLang("btn_save")}
+                                    value={translateLang('btn_save')}
                                     onClick={handleSave}
                                     disabled={loading}
                                 />
@@ -211,38 +199,32 @@ export default function Profile() {
                             </>
                         ) : (
                             <>
-                                <h5>{translateLang("username")}</h5>
-                                <div className="userInfo_input">
-                                    {state.auth?.name}
-                                </div>
+                                <h5>{translateLang('username')}</h5>
+                                <div className="userInfo_input">{state.auth?.name}</div>
 
                                 {state.auth?.bio ? (
                                     <div>
-                                        <h5>{translateLang("bio")}</h5>
-                                        <div className="userInfo_input">
-                                            {state.auth?.bio}
-                                        </div>
+                                        <h5>{translateLang('bio')}</h5>
+                                        <div className="userInfo_input">{state.auth?.bio}</div>
                                     </div>
                                 ) : (
-                                    ""
+                                    ''
                                 )}
 
-                                <h5>{translateLang("emailaddress")}</h5>
-                                <div className="userInfo_input">
-                                    {state.auth?.email}
-                                </div>
+                                <h5>{translateLang('emailaddress')}</h5>
+                                <div className="userInfo_input">{state.auth?.email}</div>
 
                                 <div className="spacer-10"></div>
                             </>
                         )}
 
-                        <div style={{ display: "flex" }}>
+                        <div style={{ display: 'flex' }}>
                             <div
                                 className="profile-btn"
-                                style={{ marginRight: "10px" }}
+                                style={{ marginRight: '10px' }}
                                 onClick={editOnclick}
                             >
-                                {translateLang("btn_edit")}
+                                {translateLang('btn_edit')}
                             </div>
                         </div>
                         <div className="spacer-20"></div>
@@ -256,10 +238,7 @@ export default function Profile() {
                                 <div className="nft__item_wrap">
                                     <Outer>
                                         <img
-                                            src={
-                                                image ||
-                                                "./img/author/author-1.jpg"
-                                            }
+                                            src={image || './img/author/author-1.jpg'}
                                             className="lazy nft__item_preview noselect"
                                             alt=""
                                             onClick={handleSelect}
@@ -284,9 +263,7 @@ export default function Profile() {
                             <div className="nft__item_wrap">
                                 <Outer>
                                     <img
-                                        src={
-                                            image || "./img/author/author-1.jpg"
-                                        }
+                                        src={image || './img/author/author-1.jpg'}
                                         className="lazy nft__item_preview noselect"
                                         alt=""
                                     />

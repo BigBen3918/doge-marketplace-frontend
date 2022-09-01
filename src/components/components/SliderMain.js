@@ -1,6 +1,6 @@
-import React from "react";
-import Reveal from "react-awesome-reveal";
-import { keyframes } from "@emotion/react";
+import React from 'react';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from '@emotion/react';
 
 const fadeInUp = keyframes`
   0% {
@@ -36,9 +36,7 @@ const slidermain = () => (
                     triggerOnce
                 >
                     <h6 className="">
-                        <span className="text-uppercase color">
-                            Gigaland Market
-                        </span>
+                        <span className="text-uppercase color">Gigaland Market</span>
                     </h6>
                 </Reveal>
                 <div className="spacer-10"></div>
@@ -59,9 +57,8 @@ const slidermain = () => (
                     triggerOnce
                 >
                     <p className=" lead">
-                        Unit of data stored on a digital ledger, called a
-                        blockchain, that certifies a digital asset to be unique
-                        and therefore not interchangeable
+                        Unit of data stored on a digital ledger, called a blockchain, that certifies
+                        a digital asset to be unique and therefore not interchangeable
                     </p>
                 </Reveal>
                 <div className="spacer-10"></div>
@@ -72,10 +69,7 @@ const slidermain = () => (
                     duration={900}
                     triggerOnce
                 >
-                    <span
-                        onClick={() => window.open("/#", "_self")}
-                        className="btn-main lead"
-                    >
+                    <span onClick={() => window.open('/#', '_self')} className="btn-main lead">
                         Explore
                     </span>
                     <div className="mb-sm-30"></div>
@@ -89,11 +83,7 @@ const slidermain = () => (
                     duration={1500}
                     triggerOnce
                 >
-                    <img
-                        src="./img/misc/nft.png"
-                        className="lazy img-fluid"
-                        alt=""
-                    />
+                    <img src="./img/misc/nft.png" className="lazy img-fluid" alt="" />
                 </Reveal>
             </div>
         </div>

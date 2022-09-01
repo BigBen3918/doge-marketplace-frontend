@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { useBlockchainContext } from "../../context";
+import React, { Component } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { useBlockchainContext } from '../../context';
 
 class CustomSlide extends Component {
     render() {
@@ -24,42 +24,42 @@ const settings = {
             settings: {
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                infinite: true,
-            },
+                infinite: true
+            }
         },
         {
             breakpoint: 1600,
             settings: {
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                infinite: true,
-            },
+                infinite: true
+            }
         },
         {
             breakpoint: 1024,
             settings: {
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                infinite: true,
-            },
+                infinite: true
+            }
         },
         {
             breakpoint: 600,
             settings: {
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                initialSlide: 2,
-            },
+                initialSlide: 2
+            }
         },
         {
             breakpoint: 480,
             settings: {
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                dots: true,
-            },
-        },
-    ],
+                dots: true
+            }
+        }
+    ]
 };
 export default function SlideCarousel() {
     const [state, {}] = useBlockchainContext();
@@ -72,12 +72,8 @@ export default function SlideCarousel() {
                         <div className="nft_pic_wrap">
                             <img
                                 src={
-                                    state.allNFT[
-                                        Math.floor(
-                                            Math.random() * state.allNFT.length
-                                        )
-                                    ]?.metadata?.image ||
-                                    "../img/collections/coll-item-3.jpg"
+                                    state.allNFT[Math.floor(Math.random() * state.allNFT.length)]
+                                        ?.metadata?.image || '../img/collections/coll-item-3.jpg'
                                 }
                                 className="lazy img-fluid"
                                 alt=""

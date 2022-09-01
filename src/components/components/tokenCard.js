@@ -6,7 +6,7 @@ export default function TokenCard(props) {
                 {balance} {label}
             </span>
 
-            <span>{">"}</span>
+            <span>{'>'}</span>
         </div>
     );
 }

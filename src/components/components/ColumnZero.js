@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from "react";
-import Reveal from "react-awesome-reveal";
-import { keyframes } from "@emotion/react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useBlockchainContext } from "../../context";
-import Action from "../../service";
-import BuyModal from "./BuyModal";
+import React, { useMemo, useState } from 'react';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from '@emotion/react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useBlockchainContext } from '../../context';
+import Action from '../../service';
+import BuyModal from './BuyModal';
 
 const Outer = styled.div`
     display: flex;
@@ -48,22 +48,18 @@ export default function ColumnZero(props) {
     const NFTs = useMemo(() => {
         if (!filter)
             return correctItem.items.filter(
-                (item) =>
-                    item.owner.toLowerCase() ===
-                    state.addresses.Marketplace.toLowerCase()
+                (item) => item.owner.toLowerCase() === state.addresses.Marketplace.toLowerCase()
             );
         else {
             return correctItem.items.filter(
-                (item) =>
-                    item.owner.toLowerCase() ===
-                    state.addresses.Marketplace.toLowerCase()
+                (item) => item.owner.toLowerCase() === state.addresses.Marketplace.toLowerCase()
             );
         }
     }, [correctItem, filter]);
 
     const handleItem = (e, param, item) => {
-        var buyButton = document.getElementById("buy" + param);
-        var likeButton = document.getElementById("like" + param);
+        var buyButton = document.getElementById('buy' + param);
+        var likeButton = document.getElementById('like' + param);
 
         if (buyButton) {
             var isClickBuyButton = buyButton.contains(e.target);
@@ -71,21 +67,21 @@ export default function ColumnZero(props) {
         var isClickLikeButton = likeButton.contains(e.target);
 
         if (isClickBuyButton) {
-            if (state.auth.address === undefined) {
-                navigate("/signPage");
+            if (state.address === undefined) {
+                navigate('/signPage');
                 return;
             }
             setCurrentItem(item);
             setModalShow(true);
         } else if (isClickLikeButton) {
-            if (state.auth.address === undefined) {
-                navigate("/signPage");
+            if (state.address === undefined) {
+                navigate('/signPage');
                 return;
             }
             Action.nft_like({
                 collectAddress: item.collectionAddress,
                 tokenId: item.tokenID,
-                currentAddress: state.auth.address,
+                currentAddress: state.address
             })
                 .then((res) => {
                     if (res) {
@@ -103,12 +99,7 @@ export default function ColumnZero(props) {
     };
 
     return (
-        <Reveal
-            className="onStep"
-            keyframes={fadeInUp}
-            delay={300}
-            duration={600}
-        >
+        <Reveal className="onStep" keyframes={fadeInUp} delay={300} duration={600}>
             <div className="row">
                 {NFTs.map((nft, index) => (
                     <div
@@ -117,10 +108,7 @@ export default function ColumnZero(props) {
                         onClick={(e) => handleItem(e, index, nft)}
                     >
                         <div className="nft__item">
-                            <div
-                                className="nft__item_wrap"
-                                style={{ height: `${height}px` }}
-                            >
+                            <div className="nft__item_wrap" style={{ height: `${height}px` }}>
                                 <Outer>
                                     <span>
                                         <img
@@ -137,31 +125,25 @@ export default function ColumnZero(props) {
                                     <h4>{nft.metadata.name}</h4>
                                 </span>
                                 <div className="nft__item_price">
-                                    {nft.marketdata.price === ""
+                                    {nft.marketdata.price === ''
                                         ? null
                                         : nft.marketdata.price +
-                                          " " +
-                                          getCurrency(
-                                              nft.marketdata?.acceptedToken
-                                          )?.label}
-                                    <span>
-                                        {nft.marketdata.bidders.length} bids
-                                    </span>
+                                          ' ' +
+                                          getCurrency(nft.marketdata?.acceptedToken)?.label}
+                                    <span>{nft.marketdata.bidders.length} bids</span>
                                 </div>
                                 <div className="nft__item_action">
-                                    {nft.marketdata.price === "" ? null : (
-                                        <span id={"buy" + index}>Buy Now</span>
+                                    {nft.marketdata.price === '' ? null : (
+                                        <span id={'buy' + index}>Buy Now</span>
                                     )}
                                 </div>
                                 <div
                                     className="nft__item_like"
-                                    id={"like" + index}
+                                    id={'like' + index}
                                     style={
-                                        nft.likes.indexOf(
-                                            state.auth.address
-                                        ) === -1
+                                        nft.likes.indexOf(state.address) === -1
                                             ? null
-                                            : { color: "#c5a86a" }
+                                            : { color: '#c5a86a' }
                                     }
                                 >
                                     <i className="fa fa-heart"></i>

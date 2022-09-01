@@ -1,7 +1,7 @@
-import React from "react";
-import Footer from "../menu/footer";
-import { Link } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
+import React from 'react';
+import Footer from '../menu/footer';
+import { Link } from 'react-router-dom';
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   .navbar {
@@ -28,7 +28,7 @@ const logintwo = () => (
                                         name="name_1"
                                         placeholder="type your question here"
                                         type="text"
-                                    />{" "}
+                                    />{' '}
                                     <button id="btn-submit">
                                         <i className="arrow_right"></i>
                                     </button>
@@ -36,9 +36,7 @@ const logintwo = () => (
                             </form>
                             <div className="spacer-20"></div>
 
-                            <p className="mt-0">
-                                eg. create item, create wallet.
-                            </p>
+                            <p className="mt-0">eg. create item, create wallet.</p>
                         </div>
                     </div>
                 </div>
@@ -52,9 +50,8 @@ const logintwo = () => (
                         <div className="text">
                             <h4>Getting Started</h4>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error
-                                sit voluptatem accusantium doloremque
-                                laudantium, totam.
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                                accusantium doloremque laudantium, totam.
                             </p>
                             <Link to="" className="btn-main m-auto">
                                 Read more
@@ -68,9 +65,8 @@ const logintwo = () => (
                         <div className="text">
                             <h4>Buying</h4>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error
-                                sit voluptatem accusantium doloremque
-                                laudantium, totam.
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                                accusantium doloremque laudantium, totam.
                             </p>
                             <Link to="" className="btn-main m-auto">
                                 Read more
@@ -84,9 +80,8 @@ const logintwo = () => (
                         <div className="text">
                             <h4>Selling</h4>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error
-                                sit voluptatem accusantium doloremque
-                                laudantium, totam.
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                                accusantium doloremque laudantium, totam.
                             </p>
                             <Link to="" className="btn-main m-auto">
                                 Read more
@@ -100,9 +95,8 @@ const logintwo = () => (
                         <div className="text">
                             <h4>Creating</h4>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error
-                                sit voluptatem accusantium doloremque
-                                laudantium, totam.
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                                accusantium doloremque laudantium, totam.
                             </p>
                             <Link to="" className="btn-main m-auto">
                                 Read more
@@ -116,9 +110,8 @@ const logintwo = () => (
                         <div className="text">
                             <h4>Partners</h4>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error
-                                sit voluptatem accusantium doloremque
-                                laudantium, totam.
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                                accusantium doloremque laudantium, totam.
                             </p>
                             <Link to="" className="btn-main m-auto">
                                 Read more
@@ -132,9 +125,8 @@ const logintwo = () => (
                         <div className="text">
                             <h4>Developers</h4>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error
-                                sit voluptatem accusantium doloremque
-                                laudantium, totam.
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                                accusantium doloremque laudantium, totam.
                             </p>
                             <Link to="" className="btn-main m-auto">
                                 Read more

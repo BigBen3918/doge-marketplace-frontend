@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from "react";
-import Reveal from "react-awesome-reveal";
-import { keyframes } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { useBlockchainContext } from "../../context";
-import Action from "../../service";
+import React, { useMemo, useState } from 'react';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useBlockchainContext } from '../../context';
+import Action from '../../service';
 
 const fadeInUp = keyframes`
   0% {
@@ -45,32 +45,28 @@ export default function ColumnOne(props) {
     const NFTs = useMemo(() => {
         if (!filter)
             return correctItem.items.filter(
-                (item) =>
-                    item.owner.toLowerCase() !==
-                    state.addresses.Marketplace.toLowerCase()
+                (item) => item.owner.toLowerCase() !== state.addresses.Marketplace.toLowerCase()
             );
         else {
             return correctItem.items.filter(
-                (item) =>
-                    item.owner.toLowerCase() !==
-                    state.addresses.Marketplace.toLowerCase()
+                (item) => item.owner.toLowerCase() !== state.addresses.Marketplace.toLowerCase()
             );
         }
     }, [correctItem, filter]);
 
     const handleItem = (e, param, item) => {
-        var likeButton = document.getElementById("like" + param);
+        var likeButton = document.getElementById('like' + param);
         var isClickLikeButton = likeButton.contains(e.target);
 
         if (isClickLikeButton) {
-            if (state.auth.address === undefined) {
-                navigate("/signPage");
+            if (state.address === undefined) {
+                navigate('/signPage');
                 return;
             }
             Action.nft_like({
                 collectAddress: item.collectionAddress,
                 tokenId: item.tokenID,
-                currentAddress: state.auth.address,
+                currentAddress: state.address
             })
                 .then((res) => {
                     if (res) {
@@ -88,12 +84,7 @@ export default function ColumnOne(props) {
     };
 
     return (
-        <Reveal
-            className="onStep"
-            keyframes={fadeInUp}
-            delay={800}
-            duration={600}
-        >
+        <Reveal className="onStep" keyframes={fadeInUp} delay={800} duration={600}>
             <div className="row">
                 {NFTs.map((nft, index) => (
                     <div
@@ -102,10 +93,7 @@ export default function ColumnOne(props) {
                         onClick={(e) => handleItem(e, index, nft)}
                     >
                         <div className="nft__item">
-                            <div
-                                className="nft__item_wrap"
-                                style={{ height: `${height}px` }}
-                            >
+                            <div className="nft__item_wrap" style={{ height: `${height}px` }}>
                                 <Outer>
                                     <span>
                                         <img
@@ -122,22 +110,22 @@ export default function ColumnOne(props) {
                                     <h4>{nft.metadata.name}</h4>
                                 </span>
                                 <div className="nft__item_price">
-                                    {nft.marketdata.price === ""
+                                    {nft.marketdata.price === ''
                                         ? null
-                                        : nft.marketdata.price + " " + getCurrency(nft.marketdata?.acceptedToken)?.label}
-                                    <span>
-                                        {nft.marketdata.bidders.length} bids
-                                    </span>
+                                        : nft.marketdata.price +
+                                          ' ' +
+                                          getCurrency(nft.marketdata?.acceptedToken)?.label}
+                                    <span>{nft.marketdata.bidders.length} bids</span>
                                 </div>
                                 <div className="nft__item_action">
-                                    {nft.marketdata.price === "" ? null : (
-                                        <span id={"buy" + index}>Buy Now</span>
+                                    {nft.marketdata.price === '' ? null : (
+                                        <span id={'buy' + index}>Buy Now</span>
                                     )}
                                 </div>
                                 <div
                                     className="nft__item_like"
-                                    id={"like" + index}
-                                    style={{ color: "#c5a86a" }}
+                                    id={'like' + index}
+                                    style={{ color: '#c5a86a' }}
                                 >
                                     <i className="fa fa-heart"></i>
                                     <span>{nft.likes.length}</span>

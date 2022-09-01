@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Modal } from "react-bootstrap";
-import DateTimeField from "@1stquad/react-bootstrap-datetimepicker";
-import { NotificationManager } from "react-notifications";
-import { useBlockchainContext } from "../../context";
-import moment from "moment";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
+import DateTimeField from '@1stquad/react-bootstrap-datetimepicker';
+import { NotificationManager } from 'react-notifications';
+import { useBlockchainContext } from '../../context';
+import moment from 'moment';
 
 export default function BuyModal(props) {
     const { buyFlag, show, setShow, correctItem } = props;
@@ -19,13 +19,13 @@ export default function BuyModal(props) {
             NFTTransfer,
             buyNFTGas,
             bidNFTGas,
-            NFTTransferGas,
-        },
+            NFTTransferGas
+        }
     ] = useBlockchainContext();
     const [price, setPrice] = useState(0);
-    const [currency, setCurrency] = useState("ETH");
+    const [currency, setCurrency] = useState('ETH');
     const [date, setDate] = useState(new Date());
-    const [sendAddress, setSendAddress] = useState("");
+    const [sendAddress, setSendAddress] = useState('');
     const [bidBtnFlag, setBidBtnFlag] = useState(true);
     const [buyBtnFlag, setBuyBtnFlag] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -58,9 +58,7 @@ export default function BuyModal(props) {
 
     useEffect(() => {
         const b = async () => {
-            let accpetedCurrency = getCurrency(
-                correctItem.marketdata?.acceptedToken
-            );
+            let accpetedCurrency = getCurrency(correctItem.marketdata?.acceptedToken);
             setCurrency(accpetedCurrency.label);
         };
         b();
@@ -68,11 +66,7 @@ export default function BuyModal(props) {
 
     useEffect(() => {
         if (correctItem) {
-            if (
-                state.balances[0] > price &&
-                price > 0 &&
-                moment(date).isValid()
-            ) {
+            if (state.balances[0] > price && price > 0 && moment(date).isValid()) {
                 setBidBtnFlag(false);
             } else {
                 setBidBtnFlag(true);
@@ -91,8 +85,8 @@ export default function BuyModal(props) {
     };
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(state.auth.address);
-        NotificationManager.success(translateLang("addresscopy_success"));
+        navigator.clipboard.writeText(state.address);
+        NotificationManager.success(translateLang('addresscopy_success'));
     };
 
     const handleBuy = async () => {
@@ -106,14 +100,14 @@ export default function BuyModal(props) {
                 nftAddress: correctItem?.collectionAddress,
                 assetId: correctItem?.tokenID,
                 price: correctItem?.marketdata.price,
-                acceptedToken: correctItem?.marketdata.acceptedToken,
+                acceptedToken: correctItem?.marketdata.acceptedToken
             });
-            NotificationManager.success(translateLang("buynft_success"));
+            NotificationManager.success(translateLang('buynft_success'));
             setLoading(false);
             setShow(false);
         } catch (err) {
             console.log(err.message);
-            NotificationManager.error(translateLang("buynft_error"));
+            NotificationManager.error(translateLang('buynft_error'));
             setLoading(false);
         }
     };
@@ -122,7 +116,7 @@ export default function BuyModal(props) {
         let gas = await buyNFTGas({
             nftAddress: correctItem?.collectionAddress,
             assetId: correctItem?.tokenID,
-            price: correctItem?.marketdata.price,
+            price: correctItem?.marketdata.price
         });
         return gas;
     };
@@ -133,7 +127,7 @@ export default function BuyModal(props) {
                 return;
             }
             if (price < Number(correctItem?.marketdata.bidPrice)) {
-                NotificationManager.warning(translateLang("increasebid_warn"));
+                NotificationManager.warning(translateLang('increasebid_warn'));
                 return;
             }
 
@@ -143,14 +137,14 @@ export default function BuyModal(props) {
                 assetId: correctItem?.tokenID,
                 price: price,
                 acceptedToken: correctItem?.marketdata.acceptedToken,
-                expiresAt: moment(date).valueOf(),
+                expiresAt: moment(date).valueOf()
             });
-            NotificationManager.success(translateLang("bid_success"));
+            NotificationManager.success(translateLang('bid_success'));
             setLoading(false);
             setShow(false);
         } catch (err) {
             console.log(err.message);
-            NotificationManager.error(translateLang("bid_error"));
+            NotificationManager.error(translateLang('bid_error'));
             setLoading(false);
         }
     };
@@ -160,14 +154,14 @@ export default function BuyModal(props) {
             nftAddress: correctItem?.collectionAddress,
             assetId: correctItem?.tokenID,
             price: 1,
-            expiresAt: moment(date).valueOf(),
+            expiresAt: moment(date).valueOf()
         });
         return gas;
     };
 
     const HandleTransfer = async () => {
-        if (sendAddress.trim() === "") {
-            NotificationManager.error("Please enter sending address");
+        if (sendAddress.trim() === '') {
+            NotificationManager.error('Please enter sending address');
             return;
         }
 
@@ -175,15 +169,15 @@ export default function BuyModal(props) {
         let result = await NFTTransfer({
             id: correctItem?.tokenID,
             toAddress: sendAddress,
-            collectionAddress: correctItem?.collectionAddress,
+            collectionAddress: correctItem?.collectionAddress
         });
 
         if (result) {
-            NotificationManager.success("Successfully Transfer");
+            NotificationManager.success('Successfully Transfer');
             setLoading(false);
             setShow(false);
         } else {
-            NotificationManager.error("Failed Transfer");
+            NotificationManager.error('Failed Transfer');
             setLoading(false);
         }
     };
@@ -191,8 +185,8 @@ export default function BuyModal(props) {
     const HandleTransferGas = async () => {
         let gas = await NFTTransferGas({
             id: correctItem?.tokenID,
-            toAddress: "0x1111111111111111111111111111111111111111",
-            collectionAddress: correctItem?.collectionAddress,
+            toAddress: '0x1111111111111111111111111111111111111111',
+            collectionAddress: correctItem?.collectionAddress
         });
         return gas;
     };
@@ -208,42 +202,37 @@ export default function BuyModal(props) {
             {buyFlag === 1 ? (
                 <>
                     <Modal.Header>
-                        <Modal.Title>
-                            {translateLang("buyingnft_title")}
-                        </Modal.Title>
+                        <Modal.Title>{translateLang('buyingnft_title')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <span className="spacer-single"></span>
                         <h4 className="text-center">
-                            {translateLang("youneed")}{" "}
-                            {correctItem?.marketdata.price} {currency} +{" "}
+                            {translateLang('youneed')} {correctItem?.marketdata.price} {currency} +{' '}
                             <b>{gasFee}</b> {currency}
                         </h4>
                         <span className="spacer-10"></span>
                         <p className="text-center">
-                            Buy any NFT with {currency} token. It can take up to
-                            a minute for your balance update.
+                            Buy any NFT with {currency} token. It can take up to a minute for your
+                            balance update.
                         </p>
                         <span className="spacer-single"></span>
                         <div>
-                            <span style={{ justifyContent: "space-between" }}>
-                                <h5>{translateLang("walletaddress")}</h5>
+                            <span style={{ justifyContent: 'space-between' }}>
+                                <h5>{translateLang('walletaddress')}</h5>
                                 <p>
-                                    {translateLang("mybalance")}:{" "}
-                                    {state.balances[1]} {currency}
+                                    {translateLang('mybalance')}: {state.balances[1]} {currency}
                                 </p>
                                 <p>
-                                    {translateLang("mybalance")}:{" "}
-                                    {state.balances[0]} ETH
+                                    {translateLang('mybalance')}: {state.balances[0]} ETH
                                 </p>
                             </span>
                             <div
                                 className="text_copy noselect"
-                                style={{ color: "grey", textAlign: "left" }}
+                                style={{ color: 'grey', textAlign: 'left' }}
                                 onClick={handleCopy}
                             >
-                                <span>{state.auth.address}</span>
-                                <span style={{ padding: "0 10px" }}>
+                                <span>{state.address}</span>
+                                <span style={{ padding: '0 10px' }}>
                                     <i className="bg-color-2 i-boxed icon_pencil-edit"></i>
                                 </span>
                             </div>
@@ -260,12 +249,8 @@ export default function BuyModal(props) {
                                 ></span>
                             </button>
                         ) : (
-                            <button
-                                className="btn-main"
-                                onClick={handleBuy}
-                                disabled={buyBtnFlag}
-                            >
-                                {translateLang("checkout")}
+                            <button className="btn-main" onClick={handleBuy} disabled={buyBtnFlag}>
+                                {translateLang('checkout')}
                             </button>
                         )}
                         <div className="spacer-10"></div>
@@ -274,32 +259,28 @@ export default function BuyModal(props) {
             ) : buyFlag === 2 ? (
                 <>
                     <Modal.Header>
-                        <Modal.Title>
-                            {translateLang("btn_makeoffer")}
-                        </Modal.Title>
+                        <Modal.Title>{translateLang('btn_makeoffer')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <span className="spacer-single"></span>
                         <h4 className="text-center">
-                            {translateLang("youneed")} {price} {currency} +{" "}
-                            <b>{gasFee}</b> {currency}
+                            {translateLang('youneed')} {price} {currency} + <b>{gasFee}</b>{' '}
+                            {currency}
                         </h4>
-                        <p className="text-center">
-                            {translateLang("bidnote")}
-                        </p>
-                        <h5>{translateLang("sellprice")}</h5>
+                        <p className="text-center">{translateLang('bidnote')}</p>
+                        <h5>{translateLang('sellprice')}</h5>
                         <div className="price">
                             <div
                                 className="form-control"
                                 style={{
-                                    flex: "1 1 0",
+                                    flex: '1 1 0'
                                 }}
                             >
                                 <img
                                     src="../../img/logo.png"
                                     alt=""
                                     style={{
-                                        width: "25px",
+                                        width: '25px'
                                     }}
                                 />
                                 <span>{currency}</span>
@@ -310,29 +291,29 @@ export default function BuyModal(props) {
                                 id="item_price"
                                 className="form-control"
                                 style={{
-                                    flex: "4 4 0",
+                                    flex: '4 4 0'
                                 }}
                                 placeholder="Amount"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </div>
-                        <p style={{ float: "right" }}>
-                            {"Available Price: "}
-                            {state.balances[0] + " " + currency}
+                        <p style={{ float: 'right' }}>
+                            {'Available Price: '}
+                            {state.balances[0] + ' ' + currency}
                         </p>
                         <div className="spacer-30"></div>
 
-                        <h5>{translateLang("offerexpiration")}</h5>
+                        <h5>{translateLang('offerexpiration')}</h5>
                         <DateTimeField
                             dateTime={date}
                             onChange={handle}
-                            mode={"datetime"}
-                            format={"MM/DD/YYYY hh:mm A"}
-                            inputFormat={"DD/MM/YYYY hh:mm A"}
+                            mode={'datetime'}
+                            format={'MM/DD/YYYY hh:mm A'}
+                            inputFormat={'DD/MM/YYYY hh:mm A'}
                             minDate={new Date()}
                             showToday={true}
-                            startOfWeek={"week"}
+                            startOfWeek={'week'}
                             readonly
                         />
                         <div className="spacer-20"></div>
@@ -347,12 +328,8 @@ export default function BuyModal(props) {
                                 ></span>
                             </button>
                         ) : (
-                            <button
-                                className="btn-main"
-                                onClick={handleBid}
-                                disabled={bidBtnFlag}
-                            >
-                                {translateLang("btn_makeoffer")}
+                            <button className="btn-main" onClick={handleBid} disabled={bidBtnFlag}>
+                                {translateLang('btn_makeoffer')}
                             </button>
                         )}
                         <div className="spacer-10"></div>
@@ -361,21 +338,20 @@ export default function BuyModal(props) {
             ) : (
                 <>
                     <Modal.Header>
-                        <Modal.Title>{"NFT Transfer"}</Modal.Title>
+                        <Modal.Title>{'NFT Transfer'}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <span className="spacer-single"></span>
                         <h4 className="text-center">
-                            {"You need "}{" "}
-                            <b style={{ color: "#111" }}>{gasFee}</b> {" ETH"}
+                            {'You need '} <b style={{ color: '#111' }}>{gasFee}</b> {' ETH'}
                         </h4>
-                        <p>{"Sending Address: "}</p>
+                        <p>{'Sending Address: '}</p>
                         <div className="price">
                             <input
                                 type="text"
                                 className="form-control"
                                 style={{
-                                    flex: "4 4 0",
+                                    flex: '4 4 0'
                                 }}
                                 value={sendAddress}
                                 onChange={(e) => setSendAddress(e.target.value)}
@@ -383,11 +359,10 @@ export default function BuyModal(props) {
                         </div>
 
                         <div className="spacer-single"></div>
-                        <div className="m-10-hor" style={{ padding: "0 30px" }}>
+                        <div className="m-10-hor" style={{ padding: '0 30px' }}>
                             <h5 className="jumbomain">Your ETH wallet:</h5>
                             <h5 className="jumbomain">
-                                Balance:{" "}
-                                <b>{Number(state.balances[0]).toFixed(4)}</b>
+                                Balance: <b>{Number(state.balances[0]).toFixed(4)}</b>
                             </h5>
                             <Link to="/author?path=wallet">
                                 <button className="btn-main">Add funds</button>
@@ -404,11 +379,8 @@ export default function BuyModal(props) {
                                 ></span>
                             </button>
                         ) : (
-                            <button
-                                className="btn-main"
-                                onClick={HandleTransfer}
-                            >
-                                {"Transfer"}
+                            <button className="btn-main" onClick={HandleTransfer}>
+                                {'Transfer'}
                             </button>
                         )}
                         <div className="spacer-10"></div>

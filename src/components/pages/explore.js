@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // import Select from "react-select";
 
-import NFTLists from "../components/NFTLists";
-import Footer from "../menu/footer";
-import { useBlockchainContext } from "../../context";
+import NFTLists from '../components/NFTLists';
+import Footer from '../menu/footer';
+import { useBlockchainContext } from '../../context';
 
 // const customStyles = {
 //     option: (base, state) => ({
@@ -50,7 +50,7 @@ import { useBlockchainContext } from "../../context";
 
 export default function Explore() {
     const [state, { translateLang }] = useBlockchainContext();
-    const [searchWord, setSearchWord] = useState("");
+    const [searchWord, setSearchWord] = useState('');
 
     return (
         <div>
@@ -59,9 +59,7 @@ export default function Explore() {
                     <div className="container">
                         <div className="row m-10-hor">
                             <div className="col-12">
-                                <h1 className="text-center">
-                                    {translateLang("allnft_title")}
-                                </h1>
+                                <h1 className="text-center">{translateLang('allnft_title')}</h1>
                             </div>
                         </div>
                     </div>
@@ -83,10 +81,8 @@ export default function Explore() {
                                         className="form-control"
                                         id="name_1"
                                         name="name_1"
-                                        placeholder={translateLang("seachtext")}
-                                        onChange={(e) =>
-                                            setSearchWord(e.target.value)
-                                        }
+                                        placeholder={translateLang('seachtext')}
+                                        onChange={(e) => setSearchWord(e.target.value)}
                                         value={searchWord}
                                     />
                                     <button id="btn-submit">

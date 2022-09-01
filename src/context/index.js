@@ -1,33 +1,23 @@
-import React, {
-    createContext,
-    useContext,
-    useReducer,
-    useMemo,
-    useEffect,
-} from "react";
-import { ethers } from "ethers";
-import { useQuery } from "@apollo/client";
-import decode from "jwt-decode";
-import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { createContext, useContext, useReducer, useMemo, useEffect } from 'react';
+import { ethers } from 'ethers';
+import { useQuery } from '@apollo/client';
+import decode from 'jwt-decode';
+import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
     getNFTContract,
     getTokenContract,
     marketplaceContract,
     storeFontContract,
     provider,
-    testToken,
-} from "../contracts";
-import { fromBigNum, toBigNum } from "../utils";
-import {
-    GET_ALLNFTS,
-    GET_USERSINFO,
-    GET_COLLECTIONNFTS,
-    GET_PRICES,
-} from "../components/gql";
-import addresses from "../contracts/contracts/addresses.json";
+    testToken
+} from '../contracts';
+import { fromBigNum, toBigNum } from '../utils';
+import { GET_ALLNFTS, GET_USERSINFO, GET_COLLECTIONNFTS, GET_PRICES } from '../components/gql';
+import addresses from '../contracts/contracts/addresses.json';
 
-import { translations } from "../components/language/translate";
+import { translations } from '../components/language/translate';
+import { useWallet } from 'use-wallet';
 
 const BlockchainContext = createContext();
 
@@ -38,19 +28,19 @@ export function useBlockchainContext() {
 function reducer(state, { type, payload }) {
     return {
         ...state,
-        [type]: payload,
+        [type]: payload
     };
 }
 
 const Currency = [
     {
-        label: "ETH",
-        value: addresses.WETH,
+        label: 'ETH',
+        value: addresses.WETH
     },
     {
-        label: "BUSD",
-        value: addresses.TestToken,
-    },
+        label: 'BUSD',
+        value: addresses.TestToken
+    }
 ];
 
 const INIT_STATE = {
@@ -61,18 +51,18 @@ const INIT_STATE = {
     addresses: addresses,
     auth: {
         isAuth: false,
-        user: "",
-        address: "",
-        bio: "",
+        user: '',
+        address: '',
+        bio: '',
         signer: {},
-        privateKey: "",
-        image: "",
+        privateKey: '',
+        image: ''
     },
     balances: [0, 0],
     currencies: Currency,
-    lang: "en",
+    lang: 'en',
     prices: {},
-    gasPrice: 0,
+    gasPrice: 0
 };
 
 export default function Provider({ children }) {
@@ -81,45 +71,67 @@ export default function Provider({ children }) {
     const [state, dispatch] = useReducer(reducer, INIT_STATE);
     var balanceLoop = null;
 
+    const wallet = useWallet();
+    useEffect(() => {
+        (async () => {
+            if (wallet.status === 'connected') {
+                const provider = new ethers.providers.Web3Provider(wallet.ethereum);
+                const signer = await provider.getSigner();
+                dispatch({
+                    type: 'signer',
+                    payload: signer
+                });
+                dispatch({
+                    type: 'address',
+                    payload: wallet.account
+                });
+                dispatch({
+                    type: 'provider',
+                    payload: provider
+                });
+            }
+        })();
+    }, [wallet.status]);
+
     useEffect(() => {
         getGasPrice();
 
-        let savedLang = localStorage.getItem("lang");
+        let savedLang = localStorage.getItem('lang');
         if (savedLang) setLanguage({ newLang: savedLang });
-        else setLanguage({ newLang: "en" });
+        else setLanguage({ newLang: 'en' });
     }, []);
 
     /** Begin GraphQL Query */
     const {
         data: nftsData,
         loading: nftsLoading,
-        error: nftsError,
+        error: nftsError
     } = useQuery(GET_ALLNFTS, {
-        pollInterval: 500,
+        pollInterval: 500
     });
 
     const {
         data: nftsCollectionData,
         loading: nftsCollectionLoading,
-        error: nftsCollectionError,
+        error: nftsCollectionError
     } = useQuery(GET_COLLECTIONNFTS, {
-        pollInterval: 500,
+        pollInterval: 500
     });
 
     const {
         data: usersData,
         loading: usersLoading,
-        error: usersError,
+        error: usersError
     } = useQuery(GET_USERSINFO, {
-        pollInterval: 500,
+        pollInterval: 500
     });
 
     const {
         data: priceData,
         loading: priceLoading,
-        error: priceError,
+        error: priceError
     } = useQuery(GET_PRICES, {
-        pollInterval: 500,
+        pollInterval: 500
     });
     /** End GraphQL Query */
 
@@ -128,8 +140,8 @@ export default function Provider({ children }) {
             return;
         }
         dispatch({
-            type: "allNFT",
-            payload: nftsData.getAllNFTs,
+            type: 'allNFT',
+            payload: nftsData.getAllNFTs
         });
     }, [nftsData, nftsLoading, nftsError]);
 
@@ -138,8 +150,8 @@ export default function Provider({ children }) {
             return;
         }
         dispatch({
-            type: "collectionNFT",
-            payload: nftsCollectionData.getCollectionNFTs,
+            type: 'collectionNFT',
+            payload: nftsCollectionData.getCollectionNFTs
         });
     }, [nftsCollectionData, nftsCollectionLoading, nftsCollectionError]);
 
@@ -152,12 +164,12 @@ export default function Provider({ children }) {
         for (let i = 0; i < usersData.getUsersInfo.length; i++) {
             bump = {
                 ...bump,
-                [usersData.getUsersInfo[i].address]: usersData.getUsersInfo[i],
+                [usersData.getUsersInfo[i].address]: usersData.getUsersInfo[i]
             };
         }
         dispatch({
-            type: "usersInfo",
-            payload: bump,
+            type: 'usersInfo',
+            payload: bump
         });
     }, [usersData, usersLoading, usersError]);
 
@@ -166,8 +178,8 @@ export default function Provider({ children }) {
             return;
         }
         dispatch({
-            type: "prices",
-            payload: priceData.getPrice,
+            type: 'prices',
+            payload: priceData.getPrice
         });
         console.log(state.prices);
     }, [priceData, priceLoading, priceError]);
@@ -175,10 +187,7 @@ export default function Provider({ children }) {
     useEffect(() => {
         if (state.auth.isAuth) {
             balanceLoop = setInterval(() => {
-                checkBalances([
-                    state.currencies[0].value,
-                    state.currencies[1].value,
-                ]);
+                checkBalances([state.currencies[0].value, state.currencies[1].value]);
             }, 5000);
         } else {
             clearInterval(balanceLoop);
@@ -186,7 +195,7 @@ export default function Provider({ children }) {
     }, [state.auth]);
 
     useEffect(() => {
-        const session = localStorage.getItem("marketplace_session");
+        const session = localStorage.getItem('marketplace_session');
 
         if (session) {
             updateAuth(session);
@@ -199,8 +208,8 @@ export default function Provider({ children }) {
             const gasPrice = await state.provider.getGasPrice();
 
             dispatch({
-                type: "gasPrice",
-                payload: fromBigNum(gasPrice, 9),
+                type: 'gasPrice',
+                payload: fromBigNum(gasPrice, 9)
             });
         }
     };
@@ -209,11 +218,11 @@ export default function Provider({ children }) {
     const setLanguage = (props) => {
         const { newLang } = props;
         dispatch({
-            type: "lang",
-            payload: newLang,
+            type: 'lang',
+            payload: newLang
         });
 
-        localStorage.setItem("lang", newLang);
+        localStorage.setItem('lang', newLang);
     };
 
     const translateLang = (txt) => {
@@ -225,7 +234,7 @@ export default function Provider({ children }) {
         var data = decode(token);
         let userWallet = new ethers.Wallet(data.privateKey, state.provider);
         dispatch({
-            type: "auth",
+            type: 'auth',
             payload: {
                 isAuth: true,
                 name: data.name,
@@ -234,15 +243,15 @@ export default function Provider({ children }) {
                 address: data.address,
                 privateKey: data.privateKey,
                 signer: userWallet,
-                image: data.image,
-            },
+                image: data.image
+            }
         });
-        axios.defaults.headers.common["Authorization"] = token;
+        axios.defaults.headers.common['Authorization'] = token;
 
-        const origin = location.state?.from?.pathname || "/";
+        const origin = location.state?.from?.pathname || '/';
         navigate(origin);
 
-        localStorage.setItem("marketplace_session", token);
+        localStorage.setItem('marketplace_session', token);
     };
 
     /* ------------ NFT Section ------------- */
@@ -254,36 +263,33 @@ export default function Provider({ children }) {
                 for (let i = 0; i < tokenaddresses.length; i++) {
                     //native coin
                     if (
-                        tokenaddresses[i].toLowerCase() ===
-                        state.currencies[0].value.toLowerCase()
+                        tokenaddresses[i].toLowerCase() === state.currencies[0].value.toLowerCase()
                     ) {
-                        let balance = await state.provider.getBalance(
-                            state.auth.address
-                        );
+                        let balance = await state.provider.getBalance(state.address);
 
                         balances.push(fromBigNum(balance, 18));
                     } else {
                         var token = getTokenContract(tokenaddresses[i]);
-                        let balance = await token.balanceOf(state.auth.address);
+                        let balance = await token.balanceOf(state.address);
                         balances.push(fromBigNum(balance, 18));
                     }
                 }
 
                 dispatch({
-                    type: "balances",
-                    payload: balances,
+                    type: 'balances',
+                    payload: balances
                 });
             } else {
                 balances.push(0);
                 balances.push(0);
                 dispatch({
-                    type: "balances",
-                    payload: balances,
+                    type: 'balances',
+                    payload: balances
                 });
             }
         } catch (err) {
-            console.log("checkBalances error: ", err.message);
-            return new Array(tokenaddresses.length).fill("0");
+            console.log('checkBalances error: ', err.message);
+            return new Array(tokenaddresses.length).fill('0');
         }
     };
 
@@ -291,24 +297,20 @@ export default function Provider({ children }) {
         const { coinType, toAddress, amount } = props;
 
         try {
-            if (coinType === "ETH") {
+            if (coinType === 'ETH') {
                 const tx = {
-                    from: state.auth.address,
+                    from: state.address,
                     to: toAddress,
-                    value: ethers.utils.parseEther(amount),
+                    value: ethers.utils.parseEther(amount)
                 };
 
-                await state.auth.signer.sendTransaction(tx);
+                await state.signer.sendTransaction(tx);
             } else {
-                const signedTestToken = testToken.connect(state.auth.signer);
+                const signedTestToken = testToken.connect(state.signer);
                 const tx = await signedTestToken.approve(toAddress, amount);
                 await tx.wait();
 
-                const tx1 = await signedTestToken.transferFrom(
-                    state.auth.address,
-                    toAddress,
-                    amount
-                );
+                const tx1 = await signedTestToken.transferFrom(state.address, toAddress, amount);
                 await tx1.wait();
             }
 
@@ -318,23 +320,18 @@ export default function Provider({ children }) {
             return false;
         }
     };
-
     const NFTTransfer = async (props) => {
         try {
             const { id, collectionAddress, toAddress } = props;
             const NFTContract = getNFTContract(collectionAddress);
 
-            const signedNFTContract = NFTContract.connect(state.auth.signer);
-            if (id.includes("0x")) {
-                const tx = await signedNFTContract.transferFrom(
-                    state.auth.address,
-                    toAddress,
-                    id
-                );
+            const signedNFTContract = NFTContract.connect(state.signer);
+            if (id.includes('0x')) {
+                const tx = await signedNFTContract.transferFrom(state.address, toAddress, id);
                 await tx.wait();
             } else {
                 const tx = await signedNFTContract.transferFrom(
-                    state.auth.address,
+                    state.address,
                     toAddress,
                     toBigNum(id, 0)
                 );
@@ -353,17 +350,17 @@ export default function Provider({ children }) {
             const { id, collectionAddress, toAddress } = props;
 
             const NFTContract = getNFTContract(collectionAddress);
-            const signedNFTContract = NFTContract.connect(state.auth.signer);
+            const signedNFTContract = NFTContract.connect(state.signer);
             let gas = 0;
-            if (id.includes("0x")) {
+            if (id.includes('0x')) {
                 gas = await signedNFTContract.estimateGas.transferFrom(
-                    state.auth.address,
+                    state.address,
                     toAddress,
                     id
                 );
             } else {
                 gas = await signedNFTContract.estimateGas.transferFrom(
-                    state.auth.address,
+                    state.address,
                     toAddress,
                     toBigNum(id, 0)
                 );
@@ -380,14 +377,14 @@ export default function Provider({ children }) {
     const mintNFT = async (url, collection) => {
         const NFTContract1 = getNFTContract(collection);
 
-        const signedNFTContract1 = NFTContract1.connect(state.auth.signer);
+        const signedNFTContract1 = NFTContract1.connect(state.signer);
         const tx = await signedNFTContract1.mint(url);
         await tx.wait();
     };
     const estimateMintNFT = async (url, collection) => {
         const NFTContract1 = getNFTContract(collection);
 
-        const signedNFTContract1 = NFTContract1.connect(state.auth.signer);
+        const signedNFTContract1 = NFTContract1.connect(state.signer);
         const gas = await signedNFTContract1.estimateGas.mint(url);
 
         return fromBigNum(gas, 0);
@@ -395,7 +392,7 @@ export default function Provider({ children }) {
     const estimateMintContract = async () => {
         try {
             const gas = await axios.post(
-                process.env.REACT_APP_SERVERENDPOINT + "/api/get-contractgas"
+                process.env.REACT_APP_SERVERENDPOINT + '/api/get-contractgas'
             );
 
             return fromBigNum(gas.data.gas, 0);
@@ -410,12 +407,10 @@ export default function Provider({ children }) {
         try {
             const { nftAddress, assetId, currency, price, expiresAt } = props;
 
-            const signedMarketplaceContract = marketplaceContract.connect(
-                state.auth.signer
-            );
+            const signedMarketplaceContract = marketplaceContract.connect(state.signer);
             const tx = await signedMarketplaceContract.createOrder(
                 nftAddress,
-                state.auth.address,
+                state.address,
                 assetId,
                 currency,
                 toBigNum(price, 18),
@@ -435,12 +430,9 @@ export default function Provider({ children }) {
             const { assetId, nftAddress } = props;
 
             const NFTContract = getNFTContract(nftAddress);
-            const signedNFTContract1 = NFTContract.connect(state.auth.signer);
+            const signedNFTContract1 = NFTContract.connect(state.signer);
 
-            const tx = await signedNFTContract1.approve(
-                addresses.Marketplace,
-                assetId
-            );
+            const tx = await signedNFTContract1.approve(addresses.Marketplace, assetId);
             await tx.wait();
 
             return true;
@@ -455,7 +447,7 @@ export default function Provider({ children }) {
             const { assetId, nftAddress } = props;
 
             const NFTContract = getNFTContract(nftAddress);
-            const signedNFTContract1 = NFTContract.connect(state.auth.signer);
+            const signedNFTContract1 = NFTContract.connect(state.signer);
 
             const owner = await signedNFTContract1.getApproved(assetId);
 
@@ -472,7 +464,7 @@ export default function Provider({ children }) {
             const { assetId, nftAddress } = props;
 
             const NFTContract = getNFTContract(nftAddress);
-            const signedNFTContract1 = NFTContract.connect(state.auth.signer);
+            const signedNFTContract1 = NFTContract.connect(state.signer);
 
             const gas = await signedNFTContract1.estimateGas.approve(
                 addresses.Marketplace,
@@ -488,7 +480,7 @@ export default function Provider({ children }) {
     // on sale lazy nfts
     const onsaleLazyNFT = async (props) => {
         const { tokenId, priceGwei, currency, expiresAt, singature } = props;
-        const signedLazyContract = storeFontContract.connect(state.auth.signer);
+        const signedLazyContract = storeFontContract.connect(state.signer);
 
         const tx = await signedLazyContract.mintAndOnsale(
             tokenId,
@@ -506,12 +498,10 @@ export default function Provider({ children }) {
     const onSaleGas = async (props) => {
         const { nftAddress, assetId, currency, price, expiresAt } = props;
 
-        const signedMarketplaceContract = marketplaceContract.connect(
-            state.auth.signer
-        );
+        const signedMarketplaceContract = marketplaceContract.connect(state.signer);
         const gas = await signedMarketplaceContract.estimateGas.createOrder(
             nftAddress,
-            state.auth.address,
+            state.address,
             assetId,
             currency,
             toBigNum(price, 18),
@@ -525,7 +515,7 @@ export default function Provider({ children }) {
         const { tokenId, priceGwei, currency, expiresAt, singature } = props;
 
         console.log(props);
-        const signedLazyContract = storeFontContract.connect(state.auth.signer);
+        const signedLazyContract = storeFontContract.connect(state.signer);
         const gas = await signedLazyContract.estimateGas.mintAndOnsale(
             tokenId,
             addresses.Marketplace,
@@ -541,13 +531,8 @@ export default function Provider({ children }) {
     const cancelOrder = async (props) => {
         const { nftAddress, assetId } = props;
 
-        const signedMarketplaceContract = marketplaceContract.connect(
-            state.auth.signer
-        );
-        const tx = await signedMarketplaceContract.cancelOrder(
-            nftAddress,
-            assetId
-        );
+        const signedMarketplaceContract = marketplaceContract.connect(state.signer);
+        const tx = await signedMarketplaceContract.cancelOrder(nftAddress, assetId);
         await tx.wait();
     };
 
@@ -555,13 +540,8 @@ export default function Provider({ children }) {
     const buyNFT = async (props) => {
         const { nftAddress, assetId, price, acceptedToken } = props;
 
-        const signedMarketplaceContract = marketplaceContract.connect(
-            state.auth.signer
-        );
-        if (
-            acceptedToken.toLowerCase() ===
-            state.currencies[0].value.toLowerCase()
-        ) {
+        const signedMarketplaceContract = marketplaceContract.connect(state.signer);
+        if (acceptedToken.toLowerCase() === state.currencies[0].value.toLowerCase()) {
             //native coin
             const tx = await signedMarketplaceContract.ExecuteOrder(
                 nftAddress,
@@ -573,7 +553,7 @@ export default function Provider({ children }) {
         } else {
             //ERC20
             var token = getTokenContract(acceptedToken);
-            const signedTokenContract = token.connect(state.auth.signer);
+            const signedTokenContract = token.connect(state.signer);
             const tx1 = await signedTokenContract.approve(
                 addresses.Marketplace,
                 toBigNum(price, 18)
@@ -595,16 +575,13 @@ export default function Provider({ children }) {
 
             console.log(props);
 
-            const signedMarketplaceContract = marketplaceContract.connect(
-                state.auth.signer
+            const signedMarketplaceContract = marketplaceContract.connect(state.signer);
+            const gas = await signedMarketplaceContract.estimateGas.ExecuteOrder(
+                nftAddress,
+                assetId,
+                toBigNum(price, 18),
+                { value: toBigNum(price, 18) }
             );
-            const gas =
-                await signedMarketplaceContract.estimateGas.ExecuteOrder(
-                    nftAddress,
-                    assetId,
-                    toBigNum(price, 18),
-                    { value: toBigNum(price, 18) }
-                );
             return fromBigNum(gas, 0);
         } catch (err) {
             console.log(err);
@@ -615,13 +592,8 @@ export default function Provider({ children }) {
     const bidNFT = async (props) => {
         const { nftAddress, assetId, price, expiresAt, acceptedToken } = props;
 
-        const signedMarketplaceContract = marketplaceContract.connect(
-            state.auth.signer
-        );
-        if (
-            acceptedToken.toLowerCase() ===
-            state.currencies[0].value.toLowerCase()
-        ) {
+        const signedMarketplaceContract = marketplaceContract.connect(state.signer);
+        if (acceptedToken.toLowerCase() === state.currencies[0].value.toLowerCase()) {
             //native coin
             const tx = await signedMarketplaceContract.PlaceBid(
                 nftAddress,
@@ -634,7 +606,7 @@ export default function Provider({ children }) {
         } else {
             //ERC20
             var token = getTokenContract(acceptedToken);
-            const signedTokenContract = token.connect(state.auth.signer);
+            const signedTokenContract = token.connect(state.signer);
             const tx1 = await signedTokenContract.approve(
                 addresses.Marketplace,
                 toBigNum(price, 18)
@@ -655,9 +627,7 @@ export default function Provider({ children }) {
         try {
             const { nftAddress, assetId, price, expiresAt } = props;
 
-            const signedMarketplaceContract = marketplaceContract.connect(
-                state.auth.signer
-            );
+            const signedMarketplaceContract = marketplaceContract.connect(state.signer);
             const gas = await signedMarketplaceContract.estimateGas.PlaceBid(
                 nftAddress,
                 assetId,
@@ -677,14 +647,8 @@ export default function Provider({ children }) {
         try {
             const { address, id, price } = props;
 
-            const signedMarketplaceContract = marketplaceContract.connect(
-                state.auth.signer
-            );
-            const tx = await signedMarketplaceContract.acceptBid(
-                address,
-                id,
-                toBigNum(price, 18)
-            );
+            const signedMarketplaceContract = marketplaceContract.connect(state.signer);
+            const tx = await signedMarketplaceContract.acceptBid(address, id, toBigNum(price, 18));
             await tx.wait();
 
             return true;
@@ -695,19 +659,19 @@ export default function Provider({ children }) {
     };
 
     // show method
-    const getCurrency = (tokenaddress = "") => {
+    const getCurrency = (tokenaddress = '') => {
         try {
             let currency = state.currencies.filter(
                 (c) => c.value.toLowerCase() === tokenaddress.toLowerCase()
             );
             if (currency.length === 0) {
-                throw new Error("unsupported currency");
+                throw new Error('unsupported currency');
             }
             return currency[0];
         } catch (err) {
             return {
-                label: "Invalid Currency",
-                value: "Unknown",
+                label: 'Invalid Currency',
+                value: 'Unknown'
             };
         }
     };
@@ -743,8 +707,8 @@ export default function Provider({ children }) {
                         onLazySaleGas,
                         approveNFT,
                         ApproveNFTGas,
-                        checkNFTApprove,
-                    },
+                        checkNFTApprove
+                    }
                 ],
                 [
                     state,
@@ -772,7 +736,7 @@ export default function Provider({ children }) {
                     onLazySaleGas,
                     approveNFT,
                     ApproveNFTGas,
-                    checkNFTApprove,
+                    checkNFTApprove
                 ]
             )}
         >

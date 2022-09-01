@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { Component } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 class CustomSlide extends Component {
     render() {
@@ -25,42 +25,42 @@ export default class Responsive extends Component {
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 1,
-                        infinite: true,
-                    },
+                        infinite: true
+                    }
                 },
                 {
                     breakpoint: 1600,
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 1,
-                        infinite: true,
-                    },
+                        infinite: true
+                    }
                 },
                 {
                     breakpoint: 1024,
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 1,
-                        infinite: true,
-                    },
+                        infinite: true
+                    }
                 },
                 {
                     breakpoint: 600,
                     settings: {
                         slidesToShow: 2,
                         slidesToScroll: 1,
-                        initialSlide: 2,
-                    },
+                        initialSlide: 2
+                    }
                 },
                 {
                     breakpoint: 480,
                     settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1,
-                        dots: true,
-                    },
-                },
-            ],
+                        dots: true
+                    }
+                }
+            ]
         };
 
         return (
@@ -70,12 +70,8 @@ export default class Responsive extends Component {
                         <div className="nft_pic">
                             <span>
                                 <span className="nft_pic_info">
-                                    <span className="nft_pic_title">
-                                        live Arts
-                                    </span>
-                                    <span className="nft_pic_by">
-                                        Nicholas Daniels
-                                    </span>
+                                    <span className="nft_pic_title">live Arts</span>
+                                    <span className="nft_pic_by">Nicholas Daniels</span>
                                 </span>
                             </span>
                             <div className="nft_pic_wrap">
@@ -92,12 +88,8 @@ export default class Responsive extends Component {
                         <div className="nft_pic">
                             <span>
                                 <span className="nft_pic_info">
-                                    <span className="nft_pic_title">
-                                        Red Ocean
-                                    </span>
-                                    <span className="nft_pic_by">
-                                        Monica Lucas
-                                    </span>
+                                    <span className="nft_pic_title">Red Ocean</span>
+                                    <span className="nft_pic_by">Monica Lucas</span>
                                 </span>
                             </span>
                             <div className="nft_pic_wrap">
@@ -114,12 +106,8 @@ export default class Responsive extends Component {
                         <div className="nft_pic">
                             <span>
                                 <span className="nft_pic_info">
-                                    <span className="nft_pic_title">
-                                        Hot Lava
-                                    </span>
-                                    <span className="nft_pic_by">
-                                        Nicholas Daniels
-                                    </span>
+                                    <span className="nft_pic_title">Hot Lava</span>
+                                    <span className="nft_pic_by">Nicholas Daniels</span>
                                 </span>
                             </span>
                             <div className="nft_pic_wrap">
@@ -136,12 +124,8 @@ export default class Responsive extends Component {
                         <div className="nft_pic">
                             <span>
                                 <span className="nft_pic_info">
-                                    <span className="nft_pic_title">
-                                        Loop Donut
-                                    </span>
-                                    <span className="nft_pic_by">
-                                        Lori Hart
-                                    </span>
+                                    <span className="nft_pic_title">Loop Donut</span>
+                                    <span className="nft_pic_by">Lori Hart</span>
                                 </span>
                             </span>
                             <div className="nft_pic_wrap">
@@ -158,12 +142,8 @@ export default class Responsive extends Component {
                         <div className="nft_pic">
                             <span>
                                 <span className="nft_pic_info">
-                                    <span className="nft_pic_title">
-                                        I Believe I Can Fly
-                                    </span>
-                                    <span className="nft_pic_by">
-                                        Fred Ryan
-                                    </span>
+                                    <span className="nft_pic_title">I Believe I Can Fly</span>
+                                    <span className="nft_pic_by">Fred Ryan</span>
                                 </span>
                             </span>
                             <div className="nft_pic_wrap">

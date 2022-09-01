@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Breakpoint, {
-    BreakpointProvider,
-    setDefaultBreakpoints,
-} from "react-socks";
-import { useNavigate, Link } from "react-router-dom";
-import useOnclickOutside from "react-cool-onclickoutside";
-import { useBlockchainContext } from "../../context";
+import React, { useEffect, useState } from 'react';
+import Breakpoint, { BreakpointProvider, setDefaultBreakpoints } from 'react-socks';
+import { useNavigate, Link } from 'react-router-dom';
+import useOnclickOutside from 'react-cool-onclickoutside';
+import { useBlockchainContext } from '../../context';
+import { useWallet } from 'use-wallet';
 
 setDefaultBreakpoints([{ xs: 0 }, { l: 1199 }, { xl: 1200 }]);
 
@@ -16,7 +14,7 @@ const NavLink = (props) => (
             // the object returned here is passed to the
             // anchor element's props
             return {
-                className: isCurrent ? "active" : "non-active",
+                className: isCurrent ? 'active' : 'non-active'
             };
         }}
     />
@@ -27,6 +25,8 @@ export default function Header() {
     const [openMenu1, setOpenMenu1] = useState(false);
     const [openMenu2, setOpenMenu2] = useState(false);
     const [openMenu3, setOpenMenu3] = useState(false);
+
+    const wallet = useWallet();
 
     const handleBtnClick1 = () => {
         setOpenMenu1(!openMenu1);
@@ -55,36 +55,37 @@ export default function Header() {
     const ref3 = useOnclickOutside(() => {
         closeMenu3();
     });
-    const logout = () => {
-        dispatch({
-            type: "auth",
-            payload: {
-                isAuth: false,
-            },
-        });
+
+
+    const handleConnect = () => {
+        if (wallet.status == 'connected') {
+            wallet.reset();
+        } else {
+            wallet.connect();
+        }
     };
 
     const [showmenu, btn_icon] = useState(false);
 
     useEffect(() => {
-        const header = document.getElementById("myHeader");
-        const totop = document.getElementById("scroll-to-top");
+        const header = document.getElementById('myHeader');
+        const totop = document.getElementById('scroll-to-top');
         const sticky = header.offsetTop;
-        const scrollCallBack = window.addEventListener("scroll", () => {
+        const scrollCallBack = window.addEventListener('scroll', () => {
             btn_icon(false);
             if (window.pageYOffset > sticky) {
-                header.classList.add("sticky");
-                totop.classList.add("show");
+                header.classList.add('sticky');
+                totop.classList.add('show');
             } else {
-                header.classList.remove("sticky");
-                totop.classList.remove("show");
+                header.classList.remove('sticky');
+                totop.classList.remove('show');
             }
             if (window.pageYOffset > sticky) {
                 closeMenu1();
             }
         });
         return () => {
-            window.removeEventListener("scroll", scrollCallBack);
+            window.removeEventListener('scroll', scrollCallBack);
         };
     }, []);
 
@@ -95,21 +96,9 @@ export default function Header() {
                     <div className="logo px-0">
                         <div className="navbar-title navbar-item">
                             <NavLink to="/">
-                                <img
-                                    src="/img/logo.png"
-                                    className="d-block"
-                                    alt="#"
-                                />
-                                <img
-                                    src="/img/logo.png"
-                                    className="d-3"
-                                    alt="#"
-                                />
-                                <img
-                                    src="/img/logo.png"
-                                    className="d-none"
-                                    alt="#"
-                                />
+                                <img src="/img/logo.png" className="d-block" alt="#" />
+                                <img src="/img/logo.png" className="d-3" alt="#" />
+                                <img src="/img/logo.png" className="d-none" alt="#" />
                             </NavLink>
                         </div>
                     </div>
@@ -134,38 +123,23 @@ export default function Header() {
                                                 className="dropdown-custom dropdown-toggle btn"
                                                 onClick={handleBtnClick1}
                                             >
-                                                {translateLang("explore")}
+                                                {translateLang('explore')}
                                                 <span className="lines"></span>
                                             </div>
                                             {openMenu1 && (
                                                 <div className="item-dropdown">
-                                                    <div
-                                                        className="dropdown"
-                                                        onClick={closeMenu1}
-                                                    >
+                                                    <div className="dropdown" onClick={closeMenu1}>
                                                         <NavLink
                                                             to="/explore"
-                                                            onClick={() =>
-                                                                btn_icon(
-                                                                    !showmenu
-                                                                )
-                                                            }
+                                                            onClick={() => btn_icon(!showmenu)}
                                                         >
-                                                            {translateLang(
-                                                                "allnfts"
-                                                            )}
+                                                            {translateLang('allnfts')}
                                                         </NavLink>
                                                         <NavLink
                                                             to="/Collections"
-                                                            onClick={() =>
-                                                                btn_icon(
-                                                                    !showmenu
-                                                                )
-                                                            }
+                                                            onClick={() => btn_icon(!showmenu)}
                                                         >
-                                                            {translateLang(
-                                                                "collection"
-                                                            )}
+                                                            {translateLang('collection')}
                                                         </NavLink>
                                                     </div>
                                                 </div>
@@ -174,11 +148,8 @@ export default function Header() {
                                     </div>
 
                                     <div className="navbar-item">
-                                        <NavLink
-                                            to="/Author"
-                                            onClick={() => btn_icon(!showmenu)}
-                                        >
-                                            {translateLang("profile")}
+                                        <NavLink to="/Author" onClick={() => btn_icon(!showmenu)}>
+                                            {translateLang('profile')}
                                             <span className="lines"></span>
                                         </NavLink>
                                     </div>
@@ -189,38 +160,23 @@ export default function Header() {
                                                 className="dropdown-custom dropdown-toggle btn"
                                                 onClick={handleBtnClick2}
                                             >
-                                                {translateLang("create")}
+                                                {translateLang('create')}
                                                 <span className="lines"></span>
                                             </div>
                                             {openMenu2 && (
                                                 <div className="item-dropdown">
-                                                    <div
-                                                        className="dropdown"
-                                                        onClick={closeMenu2}
-                                                    >
+                                                    <div className="dropdown" onClick={closeMenu2}>
                                                         <NavLink
                                                             to="/create/nft"
-                                                            onClick={() =>
-                                                                btn_icon(
-                                                                    !showmenu
-                                                                )
-                                                            }
+                                                            onClick={() => btn_icon(!showmenu)}
                                                         >
-                                                            {translateLang(
-                                                                "createnft"
-                                                            )}
+                                                            {translateLang('createnft')}
                                                         </NavLink>
                                                         <NavLink
                                                             to="/create/collection"
-                                                            onClick={() =>
-                                                                btn_icon(
-                                                                    !showmenu
-                                                                )
-                                                            }
+                                                            onClick={() => btn_icon(!showmenu)}
                                                         >
-                                                            {translateLang(
-                                                                "createcollection"
-                                                            )}
+                                                            {translateLang('createcollection')}
                                                         </NavLink>
                                                     </div>
                                                 </div>
@@ -233,7 +189,7 @@ export default function Header() {
                                             to="/lazy-mint"
                                             onClick={() => btn_icon(!showmenu)}
                                         >
-                                            {translateLang("lazymint")}
+                                            {translateLang('lazymint')}
                                             <span className="lines"></span>
                                         </NavLink>
                                     </div>
@@ -250,23 +206,16 @@ export default function Header() {
                                             onMouseEnter={handleBtnClick1}
                                             onMouseLeave={closeMenu1}
                                         >
-                                            {translateLang("explore")}
+                                            {translateLang('explore')}
                                             <span className="lines"></span>
                                             {openMenu1 && (
                                                 <div className="item-dropdown">
-                                                    <div
-                                                        className="dropdown"
-                                                        onClick={closeMenu1}
-                                                    >
+                                                    <div className="dropdown" onClick={closeMenu1}>
                                                         <NavLink to="/explore">
-                                                            {translateLang(
-                                                                "allnfts"
-                                                            )}
+                                                            {translateLang('allnfts')}
                                                         </NavLink>
                                                         <NavLink to="/Collections">
-                                                            {translateLang(
-                                                                "collection"
-                                                            )}
+                                                            {translateLang('collection')}
                                                         </NavLink>
                                                     </div>
                                                 </div>
@@ -276,7 +225,7 @@ export default function Header() {
                                 </div>
                                 <div className="navbar-item">
                                     <NavLink to="/Author">
-                                        {translateLang("profile")}
+                                        {translateLang('profile')}
                                         <span className="lines"></span>
                                     </NavLink>
                                 </div>
@@ -287,23 +236,16 @@ export default function Header() {
                                             onMouseEnter={handleBtnClick2}
                                             onMouseLeave={closeMenu2}
                                         >
-                                            {translateLang("create")}
+                                            {translateLang('create')}
                                             <span className="lines"></span>
                                             {openMenu2 && (
                                                 <div className="item-dropdown">
-                                                    <div
-                                                        className="dropdown"
-                                                        onClick={closeMenu2}
-                                                    >
+                                                    <div className="dropdown" onClick={closeMenu2}>
                                                         <NavLink to="/create/nft">
-                                                            {translateLang(
-                                                                "createnft"
-                                                            )}
+                                                            {translateLang('createnft')}
                                                         </NavLink>
                                                         <NavLink to="/create/collection">
-                                                            {translateLang(
-                                                                "createcollection"
-                                                            )}
+                                                            {translateLang('createcollection')}
                                                         </NavLink>
                                                     </div>
                                                 </div>
@@ -314,7 +256,7 @@ export default function Header() {
 
                                 <div className="navbar-item">
                                     <NavLink to="/lazy-mint">
-                                        {translateLang("lazymint")}
+                                        {translateLang('lazymint')}
                                         <span className="lines"></span>
                                     </NavLink>
                                 </div>
@@ -323,22 +265,17 @@ export default function Header() {
                     </BreakpointProvider>
 
                     <div className="mainside">
-                        {!state.auth.isAuth ? (
-                            <Link to="/signPage" className="btn-main">
-                                {translateLang("btn_login")}
-                            </Link>
-                        ) : (
-                            <button className="btn-main" onClick={logout}>
-                                {translateLang("btn_logout")}
-                            </button>
-                        )}
+                        <button className="btn-main" onClick={handleConnect}>
+                            {wallet.status != 'connected'
+                                ? "Connect"
+                                : wallet.account.slice(0, 4) + '...' + wallet.account.slice(-4)
+                            }
+
+                        </button>
                     </div>
                 </div>
 
-                <button
-                    className="nav-icon"
-                    onClick={() => btn_icon(!showmenu)}
-                >
+                <button className="nav-icon" onClick={() => btn_icon(!showmenu)}>
                     <div className="menu-line white"></div>
                     <div className="menu-line1 white"></div>
                     <div className="menu-line2 white"></div>

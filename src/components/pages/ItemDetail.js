@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import Footer from "../menu/footer";
-import moment from "moment";
-import M_itemdetailRedux from "../components/M_ItemdetailRedex";
-import { useBlockchainContext } from "../../context";
-import BuyModal from "../components/BuyModal";
-import { styledAddress } from "../../utils";
-import { NotificationManager } from "react-notifications";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import Footer from '../menu/footer';
+import moment from 'moment';
+import M_itemdetailRedux from '../components/M_ItemdetailRedex';
+import { useBlockchainContext } from '../../context';
+import BuyModal from '../components/BuyModal';
+import { styledAddress } from '../../utils';
+import { NotificationManager } from 'react-notifications';
 
 export default function Colection() {
     const { id, collection } = useParams();
     const navigate = useNavigate();
-    const [state, { bidApprove, cancelOrder, getCurrency, translateLang }] =
-        useBlockchainContext();
+    const [state, { bidApprove, cancelOrder, getCurrency, translateLang }] = useBlockchainContext();
     const [openMenu, setOpenMenu] = useState(true);
     const [correctCollection, setCorrectCollection] = useState(null);
     const [pageFlag, setPageFlag] = useState(0); // 1 is mine, 2 is saled mine, 3 is others, 4 is saled others
@@ -27,7 +26,7 @@ export default function Colection() {
 
     useEffect(() => {
         if (itemData !== null)
-            if (itemData.marketdata.endTime !== "")
+            if (itemData.marketdata.endTime !== '')
                 setInterval(() => {
                     let endTime = moment(Number(itemData.marketdata.endTime));
                     let nowTime = moment(new Date());
@@ -36,14 +35,10 @@ export default function Colection() {
                     else {
                         let ms = moment(endTime.diff(nowTime));
                         let bump = [];
-                        bump.push(
-                            Math.floor(moment.duration(ms).asHours() / 24)
-                        );
-                        bump.push(
-                            Math.floor(moment.duration(ms).asHours()) % 24
-                        );
-                        bump.push(moment.utc(ms).format("mm"));
-                        bump.push(moment.utc(ms).format("ss"));
+                        bump.push(Math.floor(moment.duration(ms).asHours() / 24));
+                        bump.push(Math.floor(moment.duration(ms).asHours()) % 24);
+                        bump.push(moment.utc(ms).format('mm'));
+                        bump.push(moment.utc(ms).format('ss'));
                         setExpireTime(bump);
                         setTimeFlag(false);
                     }
@@ -52,19 +47,14 @@ export default function Colection() {
 
     useEffect(() => {
         if (itemData !== null) {
-            if (
-                itemData.owner?.toLowerCase() ===
-                state.addresses.Marketplace?.toLowerCase()
-            ) {
+            if (itemData.owner?.toLowerCase() === state.addresses.Marketplace?.toLowerCase()) {
                 // on market
-                itemData.marketdata.owner?.toLowerCase() ===
-                state.auth.address?.toLowerCase()
+                itemData.marketdata.owner?.toLowerCase() === state.address?.toLowerCase()
                     ? setPageFlag(2)
                     : setPageFlag(4);
             } else {
                 //on user
-                itemData.owner?.toLowerCase() ===
-                state.auth.address?.toLowerCase()
+                itemData.owner?.toLowerCase() === state.address?.toLowerCase()
                     ? setPageFlag(1)
                     : setPageFlag(3);
             }
@@ -78,10 +68,8 @@ export default function Colection() {
                 if (!state.collectionNFT[i].items[id]) {
                     //go to 404 page
                 }
-                var itemData = state.collectionNFT[i].items.find(
-                    (item) => item.tokenID === id
-                );
-                if (!itemData) navigate("/Auction");
+                var itemData = state.collectionNFT[i].items.find((item) => item.tokenID === id);
+                if (!itemData) navigate('/Auction');
                 else setItemData(itemData);
                 break;
             }
@@ -90,14 +78,14 @@ export default function Colection() {
 
     const handleBtnClick = () => {
         setOpenMenu(true);
-        document.getElementById("Mainbtn").classList.add("active");
-        document.getElementById("Mainbtn1").classList.remove("active");
+        document.getElementById('Mainbtn').classList.add('active');
+        document.getElementById('Mainbtn1').classList.remove('active');
     };
 
     const handleBtnClick1 = () => {
         setOpenMenu(false);
-        document.getElementById("Mainbtn1").classList.add("active");
-        document.getElementById("Mainbtn").classList.remove("active");
+        document.getElementById('Mainbtn1').classList.add('active');
+        document.getElementById('Mainbtn').classList.remove('active');
     };
 
     const handleSell = () => {
@@ -105,8 +93,8 @@ export default function Colection() {
     };
 
     const handleBid = () => {
-        if (state.auth.address === undefined) {
-            navigate("/signPage");
+        if (state.address === undefined) {
+            navigate('/signPage');
             return;
         }
         setBuyFlag(2);
@@ -114,8 +102,8 @@ export default function Colection() {
     };
 
     const handleBuy = () => {
-        if (state.auth.address === undefined) {
-            navigate("/signPage");
+        if (state.address === undefined) {
+            navigate('/signPage');
             return;
         }
         setBuyFlag(1);
@@ -129,14 +117,14 @@ export default function Colection() {
                 bidApprove({
                     address: collection,
                     id: id,
-                    price: itemData.marketdata.bidPrice,
+                    price: itemData.marketdata.bidPrice
                 });
-                NotificationManager.success(translateLang("approve_succeess"));
+                NotificationManager.success(translateLang('approve_succeess'));
                 setLoading(false);
             }
         } catch (err) {
             console.log(err.message);
-            NotificationManager.error(translateLang("approve_error"));
+            NotificationManager.error(translateLang('approve_error'));
         }
     };
 
@@ -146,24 +134,22 @@ export default function Colection() {
             try {
                 await cancelOrder({
                     nftAddress: collection,
-                    assetId: id,
+                    assetId: id
                 });
-                NotificationManager.success(
-                    translateLang("cancelorder_success")
-                );
+                NotificationManager.success(translateLang('cancelorder_success'));
 
                 setLoading(false);
             } catch (err) {
                 console.log(err.message);
-                NotificationManager.error(translateLang("cancelorder_error"));
+                NotificationManager.error(translateLang('cancelorder_error'));
                 setLoading(false);
             }
         }
     };
 
     const handleTransfer = () => {
-        if (state.auth.address === undefined) {
-            navigate("/signPage");
+        if (state.address === undefined) {
+            navigate('/signPage');
             return;
         }
         setBuyFlag(3);
@@ -174,7 +160,7 @@ export default function Colection() {
         <div>
             <section className="container">
                 {correctCollection === null ? (
-                    "Loading..."
+                    'Loading...'
                 ) : (
                     <>
                         <div className="row mt-md-5 pt-md-4">
@@ -182,53 +168,29 @@ export default function Colection() {
                                 <img
                                     src={
                                         itemData?.metadata?.image ||
-                                        "../../img/collections/coll-item-3.jpg"
+                                        '../../img/collections/coll-item-3.jpg'
                                     }
                                     className="img-fluid img-rounded mb-sm-30"
                                     alt=""
                                 />
                                 <div className="social-link">
-                                    {itemData?.metadata?.external_url1 !=
-                                        "" && (
-                                        <a
-                                            href={
-                                                itemData?.metadata
-                                                    ?.external_url1
-                                            }
-                                        >
+                                    {itemData?.metadata?.external_url1 != '' && (
+                                        <a href={itemData?.metadata?.external_url1}>
                                             <i className="fa fa-twitter-square"></i>
                                         </a>
                                     )}
-                                    {itemData?.metadata?.external_url2 !=
-                                        "" && (
-                                        <a
-                                            href={
-                                                itemData?.metadata
-                                                    ?.external_url2
-                                            }
-                                        >
+                                    {itemData?.metadata?.external_url2 != '' && (
+                                        <a href={itemData?.metadata?.external_url2}>
                                             <i className="fa fa-facebook-square"></i>
                                         </a>
                                     )}
-                                    {itemData?.metadata?.external_url3 !=
-                                        "" && (
-                                        <a
-                                            href={
-                                                itemData?.metadata
-                                                    ?.external_url3
-                                            }
-                                        >
+                                    {itemData?.metadata?.external_url3 != '' && (
+                                        <a href={itemData?.metadata?.external_url3}>
                                             <i className="fa fa-instagram"></i>
                                         </a>
                                     )}
-                                    {itemData?.metadata?.external_url4 !=
-                                        "" && (
-                                        <a
-                                            href={
-                                                itemData?.metadata
-                                                    ?.external_url4
-                                            }
-                                        >
+                                    {itemData?.metadata?.external_url4 != '' && (
+                                        <a href={itemData?.metadata?.external_url4}>
                                             <i className="fa fa-pinterest-square"></i>
                                         </a>
                                     )}
@@ -238,74 +200,49 @@ export default function Colection() {
                             <div className="col-md-6">
                                 <div className="item_info">
                                     {/* end time */}
-                                    {itemData?.marketdata?.endTime ===
-                                    "" ? null : (
+                                    {itemData?.marketdata?.endTime === '' ? null : (
                                         <span>
                                             <p>
-                                                {translateLang("saletime")}{" "}
+                                                {translateLang('saletime')}{' '}
                                                 {moment(
-                                                    Number(
-                                                        itemData?.marketdata
-                                                            ?.endTime
-                                                    )
-                                                ).format("lll")}
+                                                    Number(itemData?.marketdata?.endTime)
+                                                ).format('lll')}
                                             </p>
                                             <div className="spacer-10"></div>
                                             {timeFlag ? null : (
                                                 <div>
                                                     <span>
                                                         <h3>{expireTime[0]}</h3>
-                                                        <p>
-                                                            {translateLang(
-                                                                "day"
-                                                            )}
-                                                        </p>
+                                                        <p>{translateLang('day')}</p>
                                                     </span>
                                                     <span>
                                                         <h3>{expireTime[1]}</h3>
-                                                        <p>
-                                                            {translateLang(
-                                                                "hour"
-                                                            )}
-                                                        </p>
+                                                        <p>{translateLang('hour')}</p>
                                                     </span>
                                                     <span>
                                                         <h3>{expireTime[2]}</h3>
-                                                        <p>
-                                                            {translateLang(
-                                                                "minute"
-                                                            )}
-                                                        </p>
+                                                        <p>{translateLang('minute')}</p>
                                                     </span>
                                                     <span>
                                                         <h3>{expireTime[3]}</h3>
-                                                        <p>
-                                                            {translateLang(
-                                                                "second"
-                                                            )}
-                                                        </p>
+                                                        <p>{translateLang('second')}</p>
                                                     </span>
                                                 </div>
                                             )}
                                             <div className="spacer-10"></div>
-                                            <h3 style={{ color: "#a48b57" }}>
-                                                {itemData?.marketdata?.price ===
-                                                ""
+                                            <h3 style={{ color: '#a48b57' }}>
+                                                {itemData?.marketdata?.price === ''
                                                     ? null
-                                                    : itemData?.marketdata
-                                                          ?.price +
-                                                      " " +
+                                                    : itemData?.marketdata?.price +
+                                                      ' ' +
                                                       getCurrency(
-                                                          itemData.marketdata
-                                                              ?.acceptedToken
+                                                          itemData.marketdata?.acceptedToken
                                                       )?.label}
                                             </h3>
                                             <hr />
                                         </span>
                                     )}
-                                    <h2>
-                                        {itemData?.metadata?.name || "unknown"}
-                                    </h2>
+                                    <h2>{itemData?.metadata?.name || 'unknown'}</h2>
                                     <div className="spacer-10"></div>
                                     <div className="item_info_counts">
                                         <div className="item_info_type">
@@ -321,25 +258,19 @@ export default function Colection() {
                                     </div>
                                     <p>{itemData?.metadata?.description}</p>
                                     <div className="spacer-10"></div>
-                                    <h5>{translateLang("creator")}</h5>
+                                    <h5>{translateLang('creator')}</h5>
                                     <div className="item_author">
                                         <div className="author_list_pp">
                                             <span>
                                                 <img
                                                     className="lazy"
                                                     src={
-                                                        state.usersInfo[
-                                                            itemData?.creator
-                                                        ]?.image === undefined
-                                                            ? state
-                                                                  .collectionNFT[0]
-                                                                  .metadata
-                                                                  .image
-                                                            : state.usersInfo[
-                                                                  itemData
-                                                                      ?.creator
-                                                              ].image ||
-                                                              "../../img/author/author-1.jpg"
+                                                        state.usersInfo[itemData?.creator]
+                                                            ?.image === undefined
+                                                            ? state.collectionNFT[0].metadata.image
+                                                            : state.usersInfo[itemData?.creator]
+                                                                  .image ||
+                                                              '../../img/author/author-1.jpg'
                                                     }
                                                     alt=""
                                                 />
@@ -347,56 +278,32 @@ export default function Colection() {
                                             </span>
                                         </div>
                                         <div className="author_list_info">
-                                            <span>
-                                                {styledAddress(
-                                                    itemData?.creator
-                                                )}
-                                            </span>
+                                            <span>{styledAddress(itemData?.creator)}</span>
                                         </div>
                                     </div>
                                     <div className="spacer-40"></div>
                                     <div className="de_tab">
                                         <div className="row">
-                                            {itemData?.metadata?.attributes.map(
-                                                (item, index) => (
-                                                    <M_itemdetailRedux
-                                                        key={index}
-                                                        type={item.key}
-                                                        per={"+" + item.value}
-                                                    />
-                                                )
-                                            )}
+                                            {itemData?.metadata?.attributes.map((item, index) => (
+                                                <M_itemdetailRedux
+                                                    key={index}
+                                                    type={item.key}
+                                                    per={'+' + item.value}
+                                                />
+                                            ))}
                                         </div>
                                         <div className="spacer-40"></div>
                                         {pageFlag === 2 || pageFlag === 4 ? (
                                             <>
                                                 <ul className="de_nav">
-                                                    <li
-                                                        id="Mainbtn"
-                                                        className="active"
-                                                    >
-                                                        <span
-                                                            onClick={
-                                                                handleBtnClick
-                                                            }
-                                                        >
-                                                            {translateLang(
-                                                                "bid"
-                                                            )}
+                                                    <li id="Mainbtn" className="active">
+                                                        <span onClick={handleBtnClick}>
+                                                            {translateLang('bid')}
                                                         </span>
                                                     </li>
-                                                    <li
-                                                        id="Mainbtn1"
-                                                        className=""
-                                                    >
-                                                        <span
-                                                            onClick={
-                                                                handleBtnClick1
-                                                            }
-                                                        >
-                                                            {translateLang(
-                                                                "history"
-                                                            )}
+                                                    <li id="Mainbtn1" className="">
+                                                        <span onClick={handleBtnClick1}>
+                                                            {translateLang('history')}
                                                         </span>
                                                     </li>
                                                 </ul>
@@ -405,10 +312,7 @@ export default function Colection() {
                                                     {openMenu && (
                                                         <div className="tab-1 onStep fadeIn">
                                                             {itemData?.marketdata?.bidders.map(
-                                                                (
-                                                                    bidder,
-                                                                    index
-                                                                ) => (
+                                                                (bidder, index) => (
                                                                     <div className="p_list">
                                                                         <div className="p_list_pp">
                                                                             <span>
@@ -418,17 +322,14 @@ export default function Colection() {
                                                                                         state
                                                                                             .usersInfo[
                                                                                             bidder
-                                                                                        ]
-                                                                                            ?.image
+                                                                                        ]?.image
                                                                                     }
                                                                                     alt=""
                                                                                 />
                                                                             </span>
                                                                         </div>
                                                                         <div className="p_list_info">
-                                                                            {translateLang(
-                                                                                "bid"
-                                                                            )}{" "}
+                                                                            {translateLang('bid')}{' '}
                                                                             <b>
                                                                                 {
                                                                                     itemData
@@ -436,20 +337,20 @@ export default function Colection() {
                                                                                         ?.bidPrices[
                                                                                         index
                                                                                     ]
-                                                                                }{" "}
+                                                                                }{' '}
                                                                             </b>
                                                                             <span>
                                                                                 {translateLang(
-                                                                                    "by"
-                                                                                )}{" "}
+                                                                                    'by'
+                                                                                )}{' '}
                                                                                 <b>
                                                                                     {styledAddress(
                                                                                         bidder
                                                                                     )}
-                                                                                </b>{" "}
+                                                                                </b>{' '}
                                                                                 {translateLang(
-                                                                                    "at"
-                                                                                )}{" "}
+                                                                                    'at'
+                                                                                )}{' '}
                                                                                 {itemData
                                                                                     ?.marketdata
                                                                                     ?.bidTime
@@ -462,9 +363,9 @@ export default function Colection() {
                                                                                               ]
                                                                                           )
                                                                                       ).format(
-                                                                                          "lll"
+                                                                                          'lll'
                                                                                       )
-                                                                                    : ""}
+                                                                                    : ''}
                                                                             </span>
                                                                         </div>
                                                                     </div>
@@ -479,7 +380,7 @@ export default function Colection() {
                                     <div className="spacer-40"></div>
                                     <div>
                                         {itemData === null ? (
-                                            "Loading..."
+                                            'Loading...'
                                         ) : (
                                             <div className="mainside">
                                                 {pageFlag === 1 ? (
@@ -488,19 +389,15 @@ export default function Colection() {
                                                             className="btn-main"
                                                             onClick={handleSell}
                                                         >
-                                                            {translateLang(
-                                                                "btn_sell"
-                                                            )}
+                                                            {translateLang('btn_sell')}
                                                         </button>
 
                                                         {!itemData.isOffchain && (
                                                             <button
                                                                 className="btn-main"
-                                                                onClick={
-                                                                    handleTransfer
-                                                                }
+                                                                onClick={handleTransfer}
                                                             >
-                                                                {"Transfer"}
+                                                                {'Transfer'}
                                                             </button>
                                                         )}
                                                     </div>
@@ -516,13 +413,9 @@ export default function Colection() {
                                                         ) : (
                                                             <button
                                                                 className="btn-main"
-                                                                onClick={
-                                                                    handleCancel
-                                                                }
+                                                                onClick={handleCancel}
                                                             >
-                                                                {translateLang(
-                                                                    "btn_cancel"
-                                                                )}
+                                                                {translateLang('btn_cancel')}
                                                             </button>
                                                         )}
                                                         {loading ? (
@@ -535,13 +428,9 @@ export default function Colection() {
                                                         ) : (
                                                             <button
                                                                 className="btn-main"
-                                                                onClick={
-                                                                    handleApproveBid
-                                                                }
+                                                                onClick={handleApproveBid}
                                                             >
-                                                                {translateLang(
-                                                                    "btn_approvebid"
-                                                                )}
+                                                                {translateLang('btn_approvebid')}
                                                             </button>
                                                         )}
                                                     </div>
@@ -551,17 +440,13 @@ export default function Colection() {
                                                             className="btn-main"
                                                             onClick={handleBuy}
                                                         >
-                                                            {translateLang(
-                                                                "btn_buynow"
-                                                            )}
+                                                            {translateLang('btn_buynow')}
                                                         </button>
                                                         <button
                                                             className="btn-main"
                                                             onClick={handleBid}
                                                         >
-                                                            {translateLang(
-                                                                "btn_makeoffer"
-                                                            )}
+                                                            {translateLang('btn_makeoffer')}
                                                         </button>
                                                     </div>
                                                 )}

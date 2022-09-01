@@ -1,6 +1,6 @@
-import React from "react";
-import Reveal from "react-awesome-reveal";
-import { keyframes } from "@emotion/react";
+import React from 'react';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from '@emotion/react';
 
 const fadeInUp = keyframes`
   0% {
@@ -32,10 +32,8 @@ const slidermainparticle = () => (
             <div className="col-md-6">
                 <div className="spacer-single"></div>
                 <h6>
-                    {" "}
-                    <span className="text-uppercase color">
-                        Gigaland Market
-                    </span>
+                    {' '}
+                    <span className="text-uppercase color">Gigaland Market</span>
                 </h6>
                 <Reveal
                     className="onStep"
@@ -44,9 +42,7 @@ const slidermainparticle = () => (
                     duration={900}
                     triggerOnce
                 >
-                    <h1 className="col-white">
-                        Create, sell or collect digital items.
-                    </h1>
+                    <h1 className="col-white">Create, sell or collect digital items.</h1>
                 </Reveal>
                 <Reveal
                     className="onStep"
@@ -56,9 +52,8 @@ const slidermainparticle = () => (
                     triggerOnce
                 >
                     <p className="lead col-white">
-                        Unit of data stored on a digital ledger, called a
-                        blockchain, that certifies a digital asset to be unique
-                        and therefore not interchangeable
+                        Unit of data stored on a digital ledger, called a blockchain, that certifies
+                        a digital asset to be unique and therefore not interchangeable
                     </p>
                 </Reveal>
                 <div className="spacer-10"></div>
@@ -70,7 +65,7 @@ const slidermainparticle = () => (
                     triggerOnce
                 >
                     <span
-                        onClick={() => window.open("#", "_self")}
+                        onClick={() => window.open('#', '_self')}
                         className="btn-main inline lead"
                     >
                         Explore
@@ -126,11 +121,7 @@ const slidermainparticle = () => (
                     duration={1200}
                     triggerOnce
                 >
-                    <img
-                        src="./img/misc/women-with-vr.png"
-                        className="img-fluid"
-                        alt=""
-                    />
+                    <img src="./img/misc/women-with-vr.png" className="img-fluid" alt="" />
                 </Reveal>
             </div>
         </div>

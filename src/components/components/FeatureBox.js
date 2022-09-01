@@ -1,7 +1,7 @@
-import React from "react";
-import Reveal from "react-awesome-reveal";
-import { keyframes } from "@emotion/react";
-import { useBlockchainContext } from "../../context";
+import React from 'react';
+import Reveal from 'react-awesome-reveal';
+import { keyframes } from '@emotion/react';
+import { useBlockchainContext } from '../../context';
 
 const fadeInUp = keyframes`
   0% {
@@ -40,9 +40,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <h4 className="color">
-                                {translateLang("feature_title1")}
-                            </h4>
+                            <h4 className="color">{translateLang('feature_title1')}</h4>
                         </Reveal>
                         <Reveal
                             className="onStep"
@@ -51,9 +49,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <p className="feature-font">
-                                {translateLang("feature_txt1")}
-                            </p>
+                            <p className="feature-font">{translateLang('feature_txt1')}</p>
                         </Reveal>
                     </div>
                     <i className="wm icon_wallet"></i>
@@ -79,9 +75,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <h4 className="color">
-                                {translateLang("feature_title2")}
-                            </h4>
+                            <h4 className="color">{translateLang('feature_title2')}</h4>
                         </Reveal>
                         <Reveal
                             className="onStep"
@@ -90,9 +84,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <p className="feature-font">
-                                {translateLang("feature_txt2")}
-                            </p>
+                            <p className="feature-font">{translateLang('feature_txt2')}</p>
                         </Reveal>
                     </div>
                     <i className="wm icon_pencil-edit_alt"></i>
@@ -118,9 +110,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <h4 className="color">
-                                {translateLang("feature_title3")}
-                            </h4>
+                            <h4 className="color">{translateLang('feature_title3')}</h4>
                         </Reveal>
                         <Reveal
                             className="onStep"
@@ -129,9 +119,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <p className="feature-font">
-                                {translateLang("feature_txt3")}
-                            </p>
+                            <p className="feature-font">{translateLang('feature_txt3')}</p>
                         </Reveal>
                     </div>
                     <i className="wm icon_images"></i>
@@ -157,9 +145,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <h4 className="color">
-                                {translateLang("feature_title4")}
-                            </h4>
+                            <h4 className="color">{translateLang('feature_title4')}</h4>
                         </Reveal>
                         <Reveal
                             className="onStep"
@@ -168,9 +154,7 @@ const Featurebox = () => {
                             duration={600}
                             triggerOnce
                         >
-                            <p className="feature-font">
-                                {translateLang("feature_txt4")}
-                            </p>
+                            <p className="feature-font">{translateLang('feature_txt4')}</p>
                         </Reveal>
                     </div>
                     <i className="wm icon_tags_alt"></i>

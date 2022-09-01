@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import Footer from "../menu/footer";
-import SignIn from "../components/signin";
-import SignUp from "../components/signup";
+import React, { useState } from 'react';
+import Footer from '../menu/footer';
+import SignIn from '../components/signin';
+import SignUp from '../components/signup';
 
 const Sign = () => {
     const [authPage, setAutoPage] = useState(true);
@@ -9,11 +9,7 @@ const Sign = () => {
     return (
         <div>
             <section className="container sign">
-                {authPage ? (
-                    <SignIn auth={setAutoPage} />
-                ) : (
-                    <SignUp auth={setAutoPage} />
-                )}
+                {authPage ? <SignIn auth={setAutoPage} /> : <SignUp auth={setAutoPage} />}
             </section>
             <Footer />
         </div>

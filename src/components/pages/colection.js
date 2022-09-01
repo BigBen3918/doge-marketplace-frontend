@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
-import ColumnZero from "../components/ColumnZero";
-import CoulmnOne from "../components/CoulmnOne";
-import Footer from "../menu/footer";
-import { useBlockchainContext } from "../../context";
-import { copyToClipboard } from "../../utils";
-import { NotificationManager } from "react-notifications";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { createGlobalStyle } from 'styled-components';
+import ColumnZero from '../components/ColumnZero';
+import CoulmnOne from '../components/CoulmnOne';
+import Footer from '../menu/footer';
+import { useBlockchainContext } from '../../context';
+import { copyToClipboard } from '../../utils';
+import { NotificationManager } from 'react-notifications';
 
 export default function Collection() {
     const { collection } = useParams();
@@ -34,7 +34,7 @@ export default function Collection() {
                 if (bump.indexOf(correctItem.items[i].owner) === -1) {
                     bump.push(correctItem.items[i].owner);
                 }
-                if (correctItem.items[i].marketdata.price !== "") {
+                if (correctItem.items[i].marketdata.price !== '') {
                     sum += Number(correctItem.items[i].marketdata.price);
                     count++;
                 }
@@ -46,25 +46,23 @@ export default function Collection() {
 
     const handleBtnClick = () => {
         setOpenMenu(true);
-        document.getElementById("Mainbtn").classList.add("active");
-        document.getElementById("Mainbtn1").classList.remove("active");
+        document.getElementById('Mainbtn').classList.add('active');
+        document.getElementById('Mainbtn1').classList.remove('active');
     };
 
     const handleBtnClick1 = () => {
         setOpenMenu(false);
-        document.getElementById("Mainbtn1").classList.add("active");
-        document.getElementById("Mainbtn").classList.remove("active");
+        document.getElementById('Mainbtn1').classList.add('active');
+        document.getElementById('Mainbtn').classList.remove('active');
     };
 
     const handleaddressCopy = () => {
         copyToClipboard(correctItem.address)
             .then((res) => {
-                NotificationManager.success(
-                    translateLang("addresscopy_success")
-                );
+                NotificationManager.success(translateLang('addresscopy_success'));
             })
             .catch((err) => {
-                NotificationManager.error(translateLang("operation_error"));
+                NotificationManager.error(translateLang('operation_error'));
             });
     };
 
@@ -74,7 +72,7 @@ export default function Collection() {
                 id="profile_banner"
                 className="jumbotron breadcumb no-bg"
                 style={{
-                    backgroundImage: `url(${correctItem?.metadata?.coverImage})`,
+                    backgroundImage: `url(${correctItem?.metadata?.coverImage})`
                 }}
             >
                 <div className="mainbreadcumb"></div>
@@ -88,10 +86,7 @@ export default function Collection() {
                                 <div className="d_profile">
                                     <div className="profile_avatar">
                                         <div className="d_profile_img">
-                                            <img
-                                                src={correctItem.metadata.image}
-                                                alt=""
-                                            />
+                                            <img src={correctItem.metadata.image} alt="" />
                                             <i className="fa fa-check"></i>
                                         </div>
 
@@ -99,10 +94,7 @@ export default function Collection() {
                                             <h4>
                                                 {correctItem.metadata.name}
                                                 <div className="clearfix"></div>
-                                                <span
-                                                    id="wallet"
-                                                    className="profile_wallet"
-                                                >
+                                                <span id="wallet" className="profile_wallet">
                                                     {correctItem.address}
                                                 </span>
                                                 <button
@@ -117,46 +109,27 @@ export default function Collection() {
 
                                         <div className="collection_info">
                                             <p className="text-center">
-                                                {translateLang("by")}{" "}
-                                                <b className="color">
-                                                    Crypto-Coco
-                                                </b>
+                                                {translateLang('by')}{' '}
+                                                <b className="color">Crypto-Coco</b>
                                             </p>
                                             <div className="spacer-10"></div>
                                             <span>
                                                 <div>
-                                                    <h3>
-                                                        {
-                                                            correctItem.items
-                                                                .length
-                                                        }
-                                                    </h3>
-                                                    <p>
-                                                        {translateLang("items")}
-                                                    </p>
+                                                    <h3>{correctItem.items.length}</h3>
+                                                    <p>{translateLang('items')}</p>
                                                 </div>
                                                 <div>
                                                     <h3>{owners.length}</h3>
-                                                    <p>
-                                                        {translateLang(
-                                                            "owners"
-                                                        )}
-                                                    </p>
+                                                    <p>{translateLang('owners')}</p>
                                                 </div>
                                                 <div>
                                                     <h3>
                                                         {isNaN(avgAmount)
                                                             ? 0
-                                                            : avgAmount.toFixed(
-                                                                  2
-                                                              )}
+                                                            : avgAmount.toFixed(2)}
                                                         K
                                                     </h3>
-                                                    <p>
-                                                        {translateLang(
-                                                            "prices"
-                                                        )}
-                                                    </p>
+                                                    <p>{translateLang('prices')}</p>
                                                 </div>
                                             </span>
                                         </div>
@@ -173,12 +146,12 @@ export default function Collection() {
                                     <ul className="de_nav">
                                         <li id="Mainbtn" className="active">
                                             <span onClick={handleBtnClick}>
-                                                {translateLang("onsaled")}
+                                                {translateLang('onsaled')}
                                             </span>
                                         </li>
                                         <li id="Mainbtn1" className="">
                                             <span onClick={handleBtnClick1}>
-                                                {translateLang("owned")}
+                                                {translateLang('owned')}
                                             </span>
                                         </li>
                                     </ul>
@@ -198,7 +171,7 @@ export default function Collection() {
                     </section>
                 </div>
             ) : (
-                "Loading..."
+                'Loading...'
             )}
 
             <Footer />

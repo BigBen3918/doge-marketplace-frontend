@@ -1,23 +1,22 @@
-import React, { useState } from "react";
-import { NotificationManager } from "react-notifications";
+import React, { useState } from 'react';
+import { NotificationManager } from 'react-notifications';
 
-import Footer from "../menu/footer";
-import Action from "../../service";
-import { useBlockchainContext } from "../../context";
-import ConfirmModal from "../components/ConfirmModal";
+import Footer from '../menu/footer';
+import Action from '../../service';
+import { useBlockchainContext } from '../../context';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function CreateCollection() {
-    const [state, { translateLang, estimateMintContract }] =
-        useBlockchainContext();
+    const [state, { translateLang, estimateMintContract }] = useBlockchainContext();
 
     const [logoImage, _setLogoImage] = useState(null);
     const [selectedLogoFile, setSeletedLogoFile] = useState(null);
     const [bannerImage, _setBannerImage] = useState(null);
     const [selectedBannerFile, setSeletedBannerFile] = useState(null);
-    const [name, setName] = useState("");
-    const [extLink, setExtLink] = useState("");
-    const [desc, setDesc] = useState("");
-    const [fee, setFee] = useState("");
+    const [name, setName] = useState('');
+    const [extLink, setExtLink] = useState('');
+    const [desc, setDesc] = useState('');
+    const [fee, setFee] = useState('');
     const [loading, setLoading] = useState(false);
     const [modalShow, setModalShow] = useState(false);
 
@@ -25,48 +24,42 @@ export default function CreateCollection() {
         setModalShow(false);
         try {
             if (!selectedLogoFile) {
-                NotificationManager.error(translateLang("chooselogo_error"));
+                NotificationManager.error(translateLang('chooselogo_error'));
                 return;
             }
             if (!selectedBannerFile) {
-                NotificationManager.error(translateLang("choosebanner_error"));
+                NotificationManager.error(translateLang('choosebanner_error'));
                 return;
             }
-            if (name.trim() === "") {
-                NotificationManager.error(
-                    translateLang("fillcollection_error")
-                );
+            if (name.trim() === '') {
+                NotificationManager.error(translateLang('fillcollection_error'));
                 return;
             }
             if (fee < 0) {
-                NotificationManager.error(translateLang("fillfee_error"));
+                NotificationManager.error(translateLang('fillfee_error'));
                 return;
             }
             setLoading(true);
             var formData = new FormData();
-            formData.append("logoImage", selectedLogoFile);
-            formData.append("bannerImage", selectedBannerFile);
-            formData.append("name", name.trim());
-            formData.append("extUrl", extLink.trim());
-            formData.append("desc", desc.trim());
-            formData.append("fee", fee);
+            formData.append('logoImage', selectedLogoFile);
+            formData.append('bannerImage', selectedBannerFile);
+            formData.append('name', name.trim());
+            formData.append('extUrl', extLink.trim());
+            formData.append('desc', desc.trim());
+            formData.append('fee', fee);
 
             const uploadData = await Action.create_collection(formData);
             if (uploadData) {
-                NotificationManager.success(
-                    translateLang("createcollection_success")
-                );
+                NotificationManager.success(translateLang('createcollection_success'));
                 reset();
             } else {
-                NotificationManager.error(
-                    translateLang("createcollection_error")
-                );
+                NotificationManager.error(translateLang('createcollection_error'));
             }
             setLoading(false);
         } catch (err) {
             setLoading(false);
             console.log(err);
-            NotificationManager.error(translateLang("operation_error"));
+            NotificationManager.error(translateLang('operation_error'));
         }
     };
 
@@ -76,9 +69,9 @@ export default function CreateCollection() {
         _setBannerImage(null);
         setSeletedLogoFile(null);
         setSeletedBannerFile(null);
-        setName("");
-        setExtLink("");
-        setDesc("");
+        setName('');
+        setExtLink('');
+        setDesc('');
     };
 
     const handleLogoImgChange = async (event) => {
@@ -93,7 +86,7 @@ export default function CreateCollection() {
                 setSeletedLogoFile(newImage);
             } catch (err) {
                 console.log(err);
-                NotificationManager.error(translateLang("imageloading_error"));
+                NotificationManager.error(translateLang('imageloading_error'));
             }
         }
     };
@@ -110,7 +103,7 @@ export default function CreateCollection() {
                 setSeletedBannerFile(newImage);
             } catch (err) {
                 console.log(err);
-                NotificationManager.error(translateLang("imageloading_error"));
+                NotificationManager.error(translateLang('imageloading_error'));
             }
         }
     };
@@ -145,7 +138,7 @@ export default function CreateCollection() {
                         <div className="row m-10-hor">
                             <div className="col-12">
                                 <h1 className="text-center">
-                                    {translateLang("createcollection_title")}
+                                    {translateLang('createcollection_title')}
                                 </h1>
                             </div>
                         </div>
@@ -159,12 +152,11 @@ export default function CreateCollection() {
                         <div id="form-create-item" className="form-border">
                             <div className="field-set">
                                 <h5>
-                                    {translateLang("logoimage")}{" "}
-                                    <b style={{ color: "red" }}>*</b>
+                                    {translateLang('logoimage')} <b style={{ color: 'red' }}>*</b>
                                 </h5>
                                 <p>
-                                    This image will also be used for navigation.
-                                    350 * 350 recommended.
+                                    This image will also be used for navigation. 350 * 350
+                                    recommended.
                                 </p>
                                 <div className="c-create-file">
                                     <p className="file_name">
@@ -181,7 +173,7 @@ export default function CreateCollection() {
                                             <input
                                                 type="button"
                                                 className="btn-main"
-                                                value={translateLang("browse")}
+                                                value={translateLang('browse')}
                                             />
                                             <input
                                                 id="upload_file"
@@ -196,15 +188,12 @@ export default function CreateCollection() {
                                 <div className="spacer-single"></div>
 
                                 <h5>
-                                    {translateLang("bannerimage")}{" "}
-                                    <b style={{ color: "red" }}>*</b>
+                                    {translateLang('bannerimage')} <b style={{ color: 'red' }}>*</b>
                                 </h5>
                                 <p>
-                                    This image will appear at the top of your
-                                    collection page. Avoid including too much
-                                    text in this banner image, as the dimensions
-                                    change on different devices. 1400 * 350
-                                    recommended.
+                                    This image will appear at the top of your collection page. Avoid
+                                    including too much text in this banner image, as the dimensions
+                                    change on different devices. 1400 * 350 recommended.
                                 </p>
                                 <div className="d-create-file">
                                     <p className="file_name">
@@ -218,7 +207,7 @@ export default function CreateCollection() {
                                         <input
                                             type="button"
                                             className="btn-main"
-                                            value={translateLang("browse")}
+                                            value={translateLang('browse')}
                                         />
                                         <input
                                             id="upload_file"
@@ -232,8 +221,7 @@ export default function CreateCollection() {
 
                                 <div className="spacer-single"></div>
                                 <h5>
-                                    {translateLang("name")}{" "}
-                                    <b style={{ color: "red" }}>*</b>
+                                    {translateLang('name')} <b style={{ color: 'red' }}>*</b>
                                 </h5>
                                 <input
                                     type="text"
@@ -247,13 +235,11 @@ export default function CreateCollection() {
 
                                 <div className="spacer-30"></div>
 
-                                <h5>{translateLang("externallink")}</h5>
+                                <h5>{translateLang('externallink')}</h5>
                                 <p>
-                                    Crypto-Coco will include a link to this URL
-                                    on this item"'"s detail page, so that users
-                                    can click to learn more about it. You are
-                                    welcome to link to your own webpage with
-                                    more details.
+                                    Crypto-Coco will include a link to this URL on this item"'"s
+                                    detail page, so that users can click to learn more about it. You
+                                    are welcome to link to your own webpage with more details.
                                 </p>
                                 <input
                                     type="text"
@@ -266,11 +252,10 @@ export default function CreateCollection() {
 
                                 <div className="spacer-30"></div>
 
-                                <h5>{translateLang("description")}</h5>
+                                <h5>{translateLang('description')}</h5>
                                 <p>
-                                    The description will be included on the
-                                    item"'"s detail page underneath its image.
-                                    Markdown syntax is supported.
+                                    The description will be included on the item"'"s detail page
+                                    underneath its image. Markdown syntax is supported.
                                 </p>
                                 <textarea
                                     data-autoresize
@@ -283,12 +268,11 @@ export default function CreateCollection() {
 
                                 <div className="spacer-30"></div>
 
-                                <h5>{translateLang("percentagefee")}</h5>
+                                <h5>{translateLang('percentagefee')}</h5>
                                 <p>
-                                    Collect a fee when a user re-sells an item
-                                    you originally created. This is deducted
-                                    from the final sale price and paid monthly
-                                    to a payout address of your choosing.
+                                    Collect a fee when a user re-sells an item you originally
+                                    created. This is deducted from the final sale price and paid
+                                    monthly to a payout address of your choosing.
                                 </p>
                                 <input
                                     type="number"
@@ -305,7 +289,7 @@ export default function CreateCollection() {
                                         type="button"
                                         id="submit"
                                         className="btn-main"
-                                        value={translateLang("btn_createitem")}
+                                        value={translateLang('btn_createitem')}
                                         onClick={() => setModalShow(true)}
                                     />
                                 ) : (

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import DateTimeField from "@1stquad/react-bootstrap-datetimepicker";
-import moment from "moment";
-import { useBlockchainContext } from "../../context";
-import { NotificationManager } from "react-notifications";
-import { useNavigate } from "react-router-dom";
-import Action from "../../service";
-import { toBigNum } from "../../utils";
-import ConfirmModal from "./ConfirmModal";
+import React, { useEffect, useState } from 'react';
+import DateTimeField from '@1stquad/react-bootstrap-datetimepicker';
+import moment from 'moment';
+import { useBlockchainContext } from '../../context';
+import { NotificationManager } from 'react-notifications';
+import { useNavigate } from 'react-router-dom';
+import Action from '../../service';
+import { toBigNum } from '../../utils';
+import ConfirmModal from './ConfirmModal';
 
 export default function Responsive(props) {
     const navigate = useNavigate();
@@ -21,12 +21,12 @@ export default function Responsive(props) {
             onSaleGas,
             ApproveNFTGas,
             onLazySaleGas,
-            checkNFTApprove,
-        },
+            checkNFTApprove
+        }
     ] = useBlockchainContext();
     const [correctCollection, setCorrectCollection] = useState(null);
     const [currency, setCurrency] = useState(state.currencies[0].value);
-    const [price, setPrice] = useState("");
+    const [price, setPrice] = useState('');
     const [date, setDate] = useState(new Date());
     const [modalShow, setModalShow] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export default function Responsive(props) {
             if (correctCollection !== null && !correctCollection.isOffchain) {
                 const validation = await checkNFTApprove({
                     assetId: correctCollection.tokenID,
-                    nftAddress: collection,
+                    nftAddress: collection
                 });
                 setApproveFlag(validation);
             }
@@ -54,10 +54,8 @@ export default function Responsive(props) {
     useEffect(() => {
         for (let i = 0; i < state.collectionNFT.length; i++) {
             if (state.collectionNFT[i].address === collection) {
-                var itemData = state.collectionNFT[i].items.find(
-                    (item) => item.tokenID === id
-                );
-                if (!itemData) navigate("/Auction");
+                var itemData = state.collectionNFT[i].items.find((item) => item.tokenID === id);
+                if (!itemData) navigate('/Auction');
                 else setCorrectCollection(itemData);
                 break;
             }
@@ -69,7 +67,7 @@ export default function Responsive(props) {
     };
 
     const handlelist = async () => {
-        if (price === "") return;
+        if (price === '') return;
         if (!moment(date).isValid()) return;
         setModalShow(false);
 
@@ -81,27 +79,25 @@ export default function Responsive(props) {
                     assetId: correctCollection.tokenID,
                     currency: currency,
                     price: price,
-                    expiresAt: moment(date).valueOf(),
+                    expiresAt: moment(date).valueOf()
                 });
 
                 if (txOnSale) {
-                    NotificationManager.success(
-                        translateLang("listing_success")
-                    );
-                    navigate("/explore");
-                } else NotificationManager.error(translateLang("listingerror"));
+                    NotificationManager.success(translateLang('listing_success'));
+                    navigate('/explore');
+                } else NotificationManager.error(translateLang('listingerror'));
                 setLoading(false);
             } else {
                 const lazyAction = await Action.lazy_onsale({
                     nftAddress: collection,
                     assetId: correctCollection.tokenID,
                     priceGwei: toBigNum(price, 18),
-                    expiresAt: moment(date).valueOf(),
+                    expiresAt: moment(date).valueOf()
                 });
 
                 if (!lazyAction.success) {
                     setLoading(false);
-                    NotificationManager.error(translateLang("listingerror"));
+                    NotificationManager.error(translateLang('listingerror'));
                     return;
                 }
 
@@ -110,21 +106,19 @@ export default function Responsive(props) {
                     priceGwei: toBigNum(price, 18),
                     currency: currency,
                     expiresAt: moment(date).valueOf(),
-                    singature: lazyAction.result,
+                    singature: lazyAction.result
                 });
 
                 if (txOnSale) {
-                    NotificationManager.success(
-                        translateLang("listing_success")
-                    );
-                    navigate("/explore");
-                } else NotificationManager.error(translateLang("listingerror"));
+                    NotificationManager.success(translateLang('listing_success'));
+                    navigate('/explore');
+                } else NotificationManager.error(translateLang('listingerror'));
                 setLoading(false);
             }
         } catch (err) {
             console.log(err);
             setLoading(false);
-            NotificationManager.error(translateLang("operation_error"));
+            NotificationManager.error(translateLang('operation_error'));
         }
     };
 
@@ -135,7 +129,7 @@ export default function Responsive(props) {
                 nftAddress: collection,
                 assetId: correctCollection.tokenID,
                 priceGwei: toBigNum(price, 18),
-                expiresAt: moment(date).valueOf(),
+                expiresAt: moment(date).valueOf()
             });
 
             gas = await onLazySaleGas({
@@ -143,7 +137,7 @@ export default function Responsive(props) {
                 priceGwei: toBigNum(price, 18),
                 currency: currency,
                 expiresAt: moment(date).valueOf(),
-                singature: lazyAction.result,
+                singature: lazyAction.result
             });
         } else {
             gas = await onSaleGas({
@@ -151,7 +145,7 @@ export default function Responsive(props) {
                 assetId: correctCollection.tokenID,
                 currency: currency,
                 price: price,
-                expiresAt: moment(date).valueOf(),
+                expiresAt: moment(date).valueOf()
             });
         }
 
@@ -163,13 +157,13 @@ export default function Responsive(props) {
         setLoading(true);
         let txOnSale = await approveNFT({
             nftAddress: collection,
-            assetId: correctCollection.tokenID,
+            assetId: correctCollection.tokenID
         });
 
         if (txOnSale) {
-            NotificationManager.success("Successfully Approve");
+            NotificationManager.success('Successfully Approve');
             setApproveFlag(true);
-        } else NotificationManager.error("Failed Approve");
+        } else NotificationManager.error('Failed Approve');
         setLoading(false);
     };
 
@@ -177,7 +171,7 @@ export default function Responsive(props) {
         if (correctCollection) {
             let gas = await ApproveNFTGas({
                 nftAddress: collection,
-                assetId: correctCollection.tokenID,
+                assetId: correctCollection.tokenID
             });
 
             return gas;
@@ -186,64 +180,53 @@ export default function Responsive(props) {
 
     return (
         <>
-            <section className="container" style={{ paddingTop: "20px" }}>
+            <section className="container" style={{ paddingTop: '20px' }}>
                 {correctCollection === null ? (
-                    "Loading..."
+                    'Loading...'
                 ) : (
                     <div className="row">
                         <div className="col-lg-7 offset-lg-1 mb-5">
                             <div id="form-create-item" className="form-border">
                                 <div className="field-set">
                                     <div>
-                                        <h5>{translateLang("method")}</h5>
+                                        <h5>{translateLang('method')}</h5>
                                         <p
                                             className="form-control"
                                             style={{
-                                                backgroundColor: "#ffc0c0",
-                                                boxShadow: "0 0 5 0 #d05e3c",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                gap: "10px",
+                                                backgroundColor: '#ffc0c0',
+                                                boxShadow: '0 0 5 0 #d05e3c',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '10px'
                                             }}
                                         >
                                             <i
                                                 className="arrow_right-up"
                                                 style={{
-                                                    fontWeight: "bolder",
+                                                    fontWeight: 'bolder'
                                                 }}
                                             />
-                                            <span>
-                                                {translateLang("sellnote")}
-                                            </span>
+                                            <span>{translateLang('sellnote')}</span>
                                         </p>
                                         <div className="spacer-single"></div>
-                                        <h5>{translateLang("sellprice")}</h5>
+                                        <h5>{translateLang('sellprice')}</h5>
                                         <div className="price">
                                             <div
                                                 style={{
-                                                    flex: "1 1 0",
+                                                    flex: '1 1 0'
                                                 }}
                                             >
                                                 <select
                                                     className="form-control"
                                                     onChange={(e) => {
-                                                        setCurrency(
-                                                            e.target.value
-                                                        );
+                                                        setCurrency(e.target.value);
                                                     }}
                                                 >
-                                                    {state.currencies.map(
-                                                        (currency, index) => (
-                                                            <option
-                                                                value={
-                                                                    currency.value
-                                                                }
-                                                                key={index}
-                                                            >
-                                                                {currency.label}
-                                                            </option>
-                                                        )
-                                                    )}
+                                                    {state.currencies.map((currency, index) => (
+                                                        <option value={currency.value} key={index}>
+                                                            {currency.label}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             </div>
                                             <input
@@ -252,36 +235,32 @@ export default function Responsive(props) {
                                                 id="item_price"
                                                 className="form-control"
                                                 style={{
-                                                    flex: "4 4 0",
+                                                    flex: '4 4 0'
                                                 }}
-                                                placeholder={translateLang(
-                                                    "amount"
-                                                )}
+                                                placeholder={translateLang('amount')}
                                                 value={price}
-                                                onChange={(e) =>
-                                                    setPrice(e.target.value)
-                                                }
+                                                onChange={(e) => setPrice(e.target.value)}
                                             />
                                         </div>
                                         <div className="spacer-30"></div>
-                                        <h5>{translateLang("expiredate")}</h5>
+                                        <h5>{translateLang('expiredate')}</h5>
                                         <DateTimeField
                                             dateTime={date}
                                             onChange={handle}
-                                            mode={"datetime"}
-                                            format={"MM/DD/YYYY hh:mm A"}
-                                            inputFormat={"DD/MM/YYYY hh:mm A"}
+                                            mode={'datetime'}
+                                            format={'MM/DD/YYYY hh:mm A'}
+                                            inputFormat={'DD/MM/YYYY hh:mm A'}
                                             minDate={new Date()}
                                             showToday={true}
-                                            startOfWeek={"week"}
+                                            startOfWeek={'week'}
                                             readonly
                                         />
                                     </div>
 
                                     <hr />
-                                    <h5>{translateLang("fees")}</h5>
+                                    <h5>{translateLang('fees')}</h5>
                                     <div className="fee">
-                                        <p>{translateLang("servicefee")}</p>
+                                        <p>{translateLang('servicefee')}</p>
                                         <p>0.2%</p>
                                     </div>
 
@@ -293,28 +272,24 @@ export default function Responsive(props) {
                                                 aria-hidden="true"
                                             ></span>
                                         </button>
-                                    ) : approveFlag ||
-                                      correctCollection.isOffchain ? (
+                                    ) : approveFlag || correctCollection.isOffchain ? (
                                         <button
                                             className="btn-main"
                                             disabled={
-                                                price === "" ||
-                                                !moment(date).isValid()
+                                                price === '' || !moment(date).isValid()
                                                     ? true
                                                     : false
                                             }
                                             onClick={() => setModalShow(true)}
                                         >
-                                            {translateLang(
-                                                "btn_completelisting"
-                                            )}
+                                            {translateLang('btn_completelisting')}
                                         </button>
                                     ) : (
                                         <button
                                             className="btn-main"
                                             onClick={() => setModalShow(true)}
                                         >
-                                            {"Approve"}
+                                            {'Approve'}
                                         </button>
                                     )}
                                 </div>
@@ -322,24 +297,20 @@ export default function Responsive(props) {
                         </div>
 
                         <div className="col-lg-3 col-sm-12 col-xs-12">
-                            <div style={{ position: "sticky", top: "162px" }}>
-                                <h5>{translateLang("previewitem")}</h5>
+                            <div style={{ position: 'sticky', top: '162px' }}>
+                                <h5>{translateLang('previewitem')}</h5>
                                 <div className="nft__item m-0">
                                     <div className="author_list_pp">
                                         <span>
                                             <img
                                                 className="lazy"
                                                 src={
-                                                    state.usersInfo[
-                                                        correctCollection.owner
-                                                    ]?.image === undefined
-                                                        ? state.collectionNFT[0]
-                                                              ?.metadata.image
-                                                        : state.usersInfo[
-                                                              correctCollection
-                                                                  .owner
-                                                          ].image ||
-                                                          "../../img/author/author-1.jpg"
+                                                    state.usersInfo[correctCollection.owner]
+                                                        ?.image === undefined
+                                                        ? state.collectionNFT[0]?.metadata.image
+                                                        : state.usersInfo[correctCollection.owner]
+                                                              .image ||
+                                                          '../../img/author/author-1.jpg'
                                                 }
                                                 alt=""
                                             />
@@ -350,9 +321,8 @@ export default function Responsive(props) {
                                         <span>
                                             <img
                                                 src={
-                                                    correctCollection.metadata
-                                                        .image ||
-                                                    "../../img/collections/coll-item-3.jpg"
+                                                    correctCollection.metadata.image ||
+                                                    '../../img/collections/coll-item-3.jpg'
                                                 }
                                                 id="get_file_2"
                                                 className="lazy nft__item_preview"
@@ -364,25 +334,21 @@ export default function Responsive(props) {
                                         <div className="sell_preview">
                                             <div>
                                                 <p>
-                                                    {correctCollection?.metadata
-                                                        ?.name.length > 15
+                                                    {correctCollection?.metadata?.name.length > 15
                                                         ? correctCollection.metadata?.name.slice(
                                                               0,
                                                               15
-                                                          ) + "..."
-                                                        : correctCollection
-                                                              .metadata?.name}
+                                                          ) + '...'
+                                                        : correctCollection.metadata?.name}
                                                 </p>
                                             </div>
                                             <div>
                                                 <p>
-                                                    {price === ""
-                                                        ? "0  ETH"
+                                                    {price === ''
+                                                        ? '0  ETH'
                                                         : price?.length > 15
-                                                        ? price.slice(0, 15) +
-                                                          "..." +
-                                                          "  ETH"
-                                                        : price + "  ETH"}
+                                                        ? price.slice(0, 15) + '...' + '  ETH'
+                                                        : price + '  ETH'}
                                                 </p>
                                             </div>
                                         </div>

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { NotificationManager } from "react-notifications";
-import QRCode from "qrcode.react";
-import { useBlockchainContext } from "../../context";
-import { copyToClipboard } from "../../utils";
-import styled from "styled-components";
-import scriptLoader from "react-async-script-loader";
-import TokenCard from "./tokenCard";
-import Action from "../../service";
+import React, { useState, useEffect } from 'react';
+import { NotificationManager } from 'react-notifications';
+import QRCode from 'qrcode.react';
+import { useBlockchainContext } from '../../context';
+import { copyToClipboard } from '../../utils';
+import styled from 'styled-components';
+import scriptLoader from 'react-async-script-loader';
+import TokenCard from './tokenCard';
+import Action from '../../service';
 
 const Card = styled.div`
     display: flex;
@@ -17,9 +17,9 @@ const Card = styled.div`
 const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
     const [state, { translateLang, CoinTransfer }] = useBlockchainContext();
     const [showSend, setShowSend] = useState(false);
-    const [toAddress, setToAddress] = useState("");
+    const [toAddress, setToAddress] = useState('');
     const [amount, setAmount] = useState(0);
-    const [selectedCoin, setSelectCoin] = useState("");
+    const [selectedCoin, setSelectCoin] = useState('');
     const [loading, setLoading] = useState(false);
     const [showCredit, setShowCredit] = useState(false);
     const [creditAmount, setCreditAmount] = useState(0);
@@ -37,22 +37,20 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
         if (isScriptLoaded && isScriptLoadSucceed) {
             setStripe(
                 window.Stripe(
-                    "pk_test_51LSOMUAWSmSN13IcFbFAuHzeHEP2XUGZGxN4juEiaK9R0neGILKvY1Bd8KUGeKgZOvRk3BK0aMBuDm56C6cnGRZE00JfRMtX7M"
+                    'pk_test_51LSOMUAWSmSN13IcFbFAuHzeHEP2XUGZGxN4juEiaK9R0neGILKvY1Bd8KUGeKgZOvRk3BK0aMBuDm56C6cnGRZE00JfRMtX7M'
                 )
             );
         }
     }, [isScriptLoaded, isScriptLoadSucceed]);
 
     const handleaddressCopy = () => {
-        copyToClipboard(state.auth.address)
+        copyToClipboard(state.address)
             .then((res) => {
-                NotificationManager.success(
-                    translateLang("addresscopy_success")
-                );
+                NotificationManager.success(translateLang('addresscopy_success'));
             })
             .catch((err) => {
                 console.log(err);
-                NotificationManager.error(translateLang("operation_error"));
+                NotificationManager.error(translateLang('operation_error'));
             });
     };
 
@@ -62,28 +60,28 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
     };
 
     const HandleSend = async () => {
-        if (toAddress === "") {
-            NotificationManager.error("please input send address");
+        if (toAddress === '') {
+            NotificationManager.error('please input send address');
             return;
         }
         if (amount <= 0) {
-            NotificationManager.error("please input amount");
+            NotificationManager.error('please input amount');
             return;
         }
         setLoading(true);
         const result = await CoinTransfer({
             coinType: selectedCoin,
             toAddress: toAddress,
-            amount: amount,
+            amount: amount
         });
         if (result) {
-            NotificationManager.success("Successfully sending");
+            NotificationManager.success('Successfully sending');
             setShowSend(false);
-            setToAddress("");
+            setToAddress('');
             setAmount(0);
             setLoading(false);
         } else {
-            NotificationManager.error("Failed sending");
+            NotificationManager.error('Failed sending');
             setLoading(false);
         }
     };
@@ -92,25 +90,25 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
         try {
             setLoading(true);
             if (creditAmount > 1) {
-                NotificationManager.warning("Amount must be less than 1");
+                NotificationManager.warning('Amount must be less than 1');
                 setLoading(false);
                 return;
             }
 
             const session = await Action.buy_credit({
-                buyAmount: creditAmount,
+                buyAmount: creditAmount
             });
 
             const result = await stripe.redirectToCheckout({
-                sessionId: session.data.id,
+                sessionId: session.data.id
             });
 
             if (result) {
-                NotificationManager.success("Successfully Buy");
+                NotificationManager.success('Successfully Buy');
                 setShowCredit(false);
                 setLoading(false);
             } else {
-                NotificationManager.error("Failed Buy");
+                NotificationManager.error('Failed Buy');
                 setLoading(false);
             }
         } catch (err) {
@@ -129,7 +127,7 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                             <input
                                 type="text"
                                 className="form-control"
-                                value={state.auth.address}
+                                value={state.address}
                                 disabled
                             />
                         </span>
@@ -157,11 +155,11 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                         </span>
 
                         <div className="spacer-20"></div>
-                        <div style={{ display: "flex", gap: "10px" }}>
+                        <div style={{ display: 'flex', gap: '10px' }}>
                             <input
                                 type="button"
                                 className="btn-main"
-                                value={translateLang("btn_cancel")}
+                                value={translateLang('btn_cancel')}
                                 onClick={() => setShowSend(false)}
                             />
                             {loading ? (
@@ -175,7 +173,7 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                                 <input
                                     type="button"
                                     className="btn-main"
-                                    value={"Send"}
+                                    value={'Send'}
                                     onClick={HandleSend}
                                 />
                             )}
@@ -185,11 +183,11 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                     <div className="field-set">
                         <div
                             className="text_copy noselect"
-                            style={{ color: "grey", textAlign: "left" }}
+                            style={{ color: 'grey', textAlign: 'left' }}
                             onClick={handleaddressCopy}
                         >
-                            <span>{state.auth.address}</span>
-                            <span style={{ padding: "0 10px" }}>
+                            <span>{state.address}</span>
+                            <span style={{ padding: '0 10px' }}>
                                 <i className="bg-color-2 i-boxed icon_pencil-edit"></i>
                             </span>
                         </div>
@@ -198,9 +196,9 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                             <>
                                 <span className="centered sell_preview">
                                     <QRCode
-                                        value={state.auth.address}
+                                        value={state.address}
                                         size={250}
-                                        level={"H"}
+                                        level={'H'}
                                         includeMargin={true}
                                     />
                                     <button
@@ -211,20 +209,13 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                                     </button>
                                 </span>
                                 <div className="spacer-20"></div>
-                                <h5>{translateLang("mybalance")}</h5>
+                                <h5>{translateLang('mybalance')}</h5>
                                 <Card>
                                     {state.currencies.map((item, index) => (
-                                        <div
-                                            onClick={() =>
-                                                HandleTokenClick(item)
-                                            }
-                                            key={index}
-                                        >
+                                        <div onClick={() => HandleTokenClick(item)} key={index}>
                                             <TokenCard
                                                 key={index}
-                                                balance={Number(
-                                                    state.balances[index]
-                                                ).toFixed(2)}
+                                                balance={Number(state.balances[index]).toFixed(2)}
                                                 label={item.label}
                                             />
                                         </div>
@@ -240,16 +231,13 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                                         className="form-control"
                                         placeholder="Please enter amount"
                                         value={creditAmount}
-                                        onChange={(e) =>
-                                            setCreditAmount(e.target.value)
-                                        }
+                                        onChange={(e) => setCreditAmount(e.target.value)}
                                     />
                                     <div>Max: 1 ETH</div>
                                 </div>
                                 <div className="spacer-single"></div>
                                 <p className="centered">
-                                    Checkout:{" "}
-                                    {creditAmount * state.prices.ETHJPYPrice}¥
+                                    Checkout: {creditAmount * state.prices.ETHJPYPrice}¥
                                 </p>
                                 <div className="spacer-single"></div>
                                 <div className="attribute">
@@ -267,10 +255,7 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                                             ></span>
                                         </button>
                                     ) : (
-                                        <button
-                                            className="btn-main"
-                                            onClick={HandleCredit}
-                                        >
+                                        <button className="btn-main" onClick={HandleCredit}>
                                             Buy
                                         </button>
                                     )}
@@ -279,18 +264,9 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
                                 <div className="requests">
                                     {requests?.map((item, index) => (
                                         <span key={index}>
-                                            <p>
-                                                {Number(item.amount).toFixed(2)}{" "}
-                                                ETH
-                                            </p>
-                                            <p>
-                                                {Number(
-                                                    item.amount * item.price
-                                                ).toFixed(2)}
-                                            </p>
-                                            <p className="color">
-                                                {item.status}
-                                            </p>
+                                            <p>{Number(item.amount).toFixed(2)} ETH</p>
+                                            <p>{Number(item.amount * item.price).toFixed(2)}</p>
+                                            <p className="color">{item.status}</p>
                                         </span>
                                     ))}
                                 </div>
@@ -303,4 +279,4 @@ const Wallet = ({ isScriptLoaded, isScriptLoadSucceed }) => {
     );
 };
 
-export default scriptLoader("https://js.stripe.com/v3/")(Wallet);
+export default scriptLoader('https://js.stripe.com/v3/')(Wallet);
