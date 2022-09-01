@@ -24,19 +24,16 @@ const fadeInUp = keyframes`
 
 const GlobalStyles = createGlobalStyle`
   header#myHeader.navbar.sticky.white {
-    background: #ecbdb0;
+    background: black;
     border-bottom: 0;
-    box-shadow: 0 4px 20px 0 rgba(10,10,10, .8);
+    box-shadow: 0 4px 20px 0 rgba(200,200,255, .8);
   }
   header#myHeader.navbar .search #quick_search{
-    color: #d05e3c;
+    color: yellow;
     background: rgba(255, 255, 255, .1);
   }
-  header#myHeader.navbar.white .btn, .navbar.white a, .navbar.sticky.white a{
-    color: #d05e3c;
-  }
   header#myHeader .dropdown-toggle::after{
-    color: #d05e3c;
+    color: yellow;
   }
   header#myHeader .logo .d-block{
     display: none !important;
@@ -77,7 +74,10 @@ export default function Homethree() {
             <GlobalStyles />
             <section className="jumbotron no-bg">
                 <div className="container">
-                    <div className="row align-items-center">
+                    <div className="row align-items-center slider-content">
+                        <div className="col-lg-6 px-0">
+                            <SliderCarousel />
+                        </div>
                         <div className="col-lg-6">
                             <div className="spacer-single"></div>
                             <Reveal
@@ -131,9 +131,6 @@ export default function Homethree() {
                                 <div className="mb-sm-30"></div>
                             </Reveal>
                             <div className="spacer-double"></div>
-                        </div>
-                        <div className="col-lg-6 px-0">
-                            <SliderCarousel />
                         </div>
                     </div>
                 </div>

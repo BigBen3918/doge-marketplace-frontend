@@ -2,18 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Footer from "../menu/footer";
 import moment from "moment";
-import { createGlobalStyle } from "styled-components";
 import M_itemdetailRedux from "../components/M_ItemdetailRedex";
 import { useBlockchainContext } from "../../context";
 import BuyModal from "../components/BuyModal";
 import { styledAddress } from "../../utils";
 import { NotificationManager } from "react-notifications";
-
-const GlobalStyles = createGlobalStyle`
-  header#myHeader.navbar.white {
-    background: #ecbdb0;
-  }
-`;
 
 export default function Colection() {
     const { id, collection } = useParams();
@@ -179,8 +172,6 @@ export default function Colection() {
 
     return (
         <div>
-            <GlobalStyles />
-
             <section className="container">
                 {correctCollection === null ? (
                     "Loading..."

@@ -51,14 +51,14 @@ const SignIn = (props) => {
                     onChange={(e) => {
                         userName(e.target.value);
                     }}
-                ></input>
+                />
                 <input
                     placeholder={translateLang("signin_txt2")}
                     type="password"
                     onChange={(e) => {
                         passWord(e.target.value);
                     }}
-                ></input>
+                />
             </div>
             <div className="signin-button" onClick={() => signIn()}>
                 {translateLang("signin_title")}
