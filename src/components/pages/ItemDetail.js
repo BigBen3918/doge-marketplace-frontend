@@ -308,12 +308,12 @@ export default function Colection() {
                                     </h2>
                                     <div className="spacer-10"></div>
                                     <div className="item_info_counts">
-                                        <div className="item_info_type">
+                                        {/* <div className="item_info_type">
                                             <i className="fa fa-image"></i>NFT
                                         </div>
                                         <div className="item_info_views">
                                             <i className="fa fa-eye"></i>250
-                                        </div>
+                                        </div> */}
                                         <div className="item_info_like">
                                             <i className="fa fa-heart"></i>
                                             {itemData?.likes?.length}

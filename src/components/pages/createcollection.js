@@ -17,13 +17,24 @@ export default function CreateCollection() {
     const [name, setName] = useState("");
     const [extLink, setExtLink] = useState("");
     const [desc, setDesc] = useState("");
-    const [fee, setFee] = useState("");
+    const [address, setAddress] = useState("");
     const [loading, setLoading] = useState(false);
     const [modalShow, setModalShow] = useState(false);
+
+    const handleVerify = async () => {
+        if (address.trim() === "") {
+            NotificationManager.error("Please enter contract address");
+            return;
+        }
+    };
 
     const handleSubmit = async () => {
         setModalShow(false);
         try {
+            if (address.trim() === "") {
+                NotificationManager.error("Please enter contract address");
+                return;
+            }
             if (!selectedLogoFile) {
                 NotificationManager.error(translateLang("chooselogo_error"));
                 return;
@@ -38,18 +49,14 @@ export default function CreateCollection() {
                 );
                 return;
             }
-            if (fee < 0) {
-                NotificationManager.error(translateLang("fillfee_error"));
-                return;
-            }
             setLoading(true);
             var formData = new FormData();
+            formData.append("address", address);
             formData.append("logoImage", selectedLogoFile);
             formData.append("bannerImage", selectedBannerFile);
             formData.append("name", name.trim());
             formData.append("extUrl", extLink.trim());
             formData.append("desc", desc.trim());
-            formData.append("fee", fee);
 
             const uploadData = await Action.create_collection(formData);
             if (uploadData) {
@@ -156,8 +163,37 @@ export default function CreateCollection() {
             <section className="container">
                 <div className="row">
                     <div className="col-lg-10 offset-lg-1 mb-5">
-                        <div id="form-create-item" className="form-border">
+                        <div id="form-create-item">
                             <div className="field-set">
+                                <h5>
+                                    {"Contract Address "}
+                                    <b style={{ color: "red" }}>*</b>
+                                </h5>
+                                <p>
+                                    This address's all nfts will show to your
+                                    collection.
+                                </p>
+                                <div className="contract__address">
+                                    <input
+                                        type="text"
+                                        name="contract_address"
+                                        className="form-control"
+                                        placeholder="0x0000..."
+                                        onChange={(e) =>
+                                            setAddress(e.target.value)
+                                        }
+                                        value={address}
+                                    />
+                                    <button
+                                        className="btn-main"
+                                        onClick={handleVerify}
+                                    >
+                                        Verify
+                                    </button>
+                                </div>
+
+                                <div className="spacer-single"></div>
+
                                 <h5>
                                     {translateLang("logoimage")}{" "}
                                     <b style={{ color: "red" }}>*</b>
@@ -279,24 +315,6 @@ export default function CreateCollection() {
                                     placeholder="provide a detailed description of your nft item"
                                     onChange={(e) => setDesc(e.target.value)}
                                     value={desc}
-                                />
-
-                                <div className="spacer-30"></div>
-
-                                <h5>{translateLang("percentagefee")}</h5>
-                                <p>
-                                    Collect a fee when a user re-sells an item
-                                    you originally created. This is deducted
-                                    from the final sale price and paid monthly
-                                    to a payout address of your choosing.
-                                </p>
-                                <input
-                                    type="number"
-                                    name="item_link"
-                                    className="form-control"
-                                    placeholder="e.g. 2.5"
-                                    onChange={(e) => setFee(e.target.value)}
-                                    value={fee}
                                 />
 
                                 <div className="spacer-30"></div>

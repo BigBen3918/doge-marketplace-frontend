@@ -3,7 +3,7 @@ import Breakpoint, {
     BreakpointProvider,
     setDefaultBreakpoints,
 } from "react-socks";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { useBlockchainContext } from "../../context";
 
@@ -228,7 +228,7 @@ export default function Header() {
                                         </div>
                                     </div>
 
-                                    <div className="navbar-item">
+                                    {/* <div className="navbar-item">
                                         <NavLink
                                             to="/lazy-mint"
                                             onClick={() => btn_icon(!showmenu)}
@@ -236,7 +236,7 @@ export default function Header() {
                                             {translateLang("lazymint")}
                                             <span className="lines"></span>
                                         </NavLink>
-                                    </div>
+                                    </div> */}
                                 </div>
                             )}
                         </Breakpoint>
@@ -312,12 +312,12 @@ export default function Header() {
                                     </div>
                                 </div>
 
-                                <div className="navbar-item">
+                                {/* <div className="navbar-item">
                                     <NavLink to="/lazy-mint">
                                         {translateLang("lazymint")}
                                         <span className="lines"></span>
                                     </NavLink>
-                                </div>
+                                </div> */}
                             </div>
                         </Breakpoint>
                     </BreakpointProvider>

@@ -37,9 +37,9 @@ export default function Profile() {
         );
     }, []);
 
-    const setLang = (e) => {
-        setLanguage({ newLang: e.target.value });
-    };
+    // const setLang = (e) => {
+    //     setLanguage({ newLang: e.target.value });
+    // };
 
     const handleaddressCopy = () => {
         copyToClipboard(state.auth.address)
@@ -112,24 +112,6 @@ export default function Profile() {
             <div className="row">
                 <div className="col-lg-5 col-md-6 col-sm-6 col-xs-12">
                     <div className="field-set">
-                        <h5>{translateLang("mybalance")}</h5>
-                        <select className="form-control" defaultChecked={1}>
-                            {state.currencies.map((item, index) => (
-                                <option key={index}>
-                                    {Number(state.balances[index]).toFixed(2)}
-                                    {"  "}
-                                    {item.label}
-                                    {"   "}(
-                                    {index === 0
-                                        ? Number(
-                                              state.balances[index] *
-                                                  state.prices["ETHEURPrice"]
-                                          ).toFixed(2) + "$"
-                                        : state.balances[index] + "$"}
-                                    )
-                                </option>
-                            ))}
-                        </select>
                         <div className="spacer-20"></div>
                         <h5>{translateLang("walletaddress")}</h5>
                         <div
@@ -145,7 +127,7 @@ export default function Profile() {
 
                         <div className="spacer-20"></div>
 
-                        <h5>{translateLang("language")}</h5>
+                        {/* <h5>{translateLang("language")}</h5>
                         <select
                             className="form-control"
                             onChange={(e) => setLang(e)}
@@ -154,8 +136,8 @@ export default function Profile() {
                             <option value="en">EN</option>
                             <option value="jp">JP</option>
                         </select>
+                        <div className="spacer-20"></div> */}
 
-                        <div className="spacer-20"></div>
                         {edit ? (
                             <>
                                 <h5>{translateLang("username")}</h5>

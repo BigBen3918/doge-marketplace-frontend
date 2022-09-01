@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import MyNFT from "../components/mynfts";
 import Profile from "../components/profile";
-import Wallet from "../components/wallet";
 import Footer from "../menu/footer";
 import { createGlobalStyle } from "styled-components";
 import { useBlockchainContext } from "../../context";
@@ -31,19 +30,11 @@ export default function Author() {
         setOpenMenu(0);
         document.getElementById("Mainbtn0").classList.add("active");
         document.getElementById("Mainbtn1").classList.remove("active");
-        document.getElementById("Mainbtn2").classList.remove("active");
     };
     const handleBtnClick1 = () => {
         setOpenMenu(1);
         document.getElementById("Mainbtn0").classList.remove("active");
         document.getElementById("Mainbtn1").classList.add("active");
-        document.getElementById("Mainbtn2").classList.remove("active");
-    };
-    const handleBtnClick2 = () => {
-        setOpenMenu(2);
-        document.getElementById("Mainbtn0").classList.remove("active");
-        document.getElementById("Mainbtn1").classList.remove("active");
-        document.getElementById("Mainbtn2").classList.add("active");
     };
 
     return (
@@ -102,11 +93,6 @@ export default function Author() {
                                         {translateLang("profile")}
                                     </span>
                                 </li>
-                                <li id="Mainbtn2">
-                                    <span onClick={handleBtnClick2}>
-                                        {translateLang("wallet")}
-                                    </span>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -120,11 +106,6 @@ export default function Author() {
                 {openMenu === 1 && (
                     <div id="zero1" className="onStep fadeIn">
                         <Profile />
-                    </div>
-                )}
-                {openMenu === 2 && (
-                    <div id="zero2" className="onStep fadeIn">
-                        <Wallet />
                     </div>
                 )}
             </section>
