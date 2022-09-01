@@ -8,12 +8,6 @@ import { useBlockchainContext } from "../../context";
 import { copyToClipboard } from "../../utils";
 import { NotificationManager } from "react-notifications";
 
-const GlobalStyles = createGlobalStyle`
-  header#myHeader.navbar.white {
-    background: #ecbdb0;
-  }
-`;
-
 export default function Collection() {
     const { collection } = useParams();
     const [state, { translateLang }] = useBlockchainContext();
@@ -76,8 +70,6 @@ export default function Collection() {
 
     return (
         <div>
-            <GlobalStyles />
-
             <section
                 id="profile_banner"
                 className="jumbotron breadcumb no-bg"

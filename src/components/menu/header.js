@@ -96,25 +96,25 @@ export default function Header() {
                         <div className="navbar-title navbar-item">
                             <NavLink to="/">
                                 <img
-                                    src="img/logo.png"
-                                    className="img-fluid d-block"
+                                    src="/img/logo.png"
+                                    className="d-block"
                                     alt="#"
                                 />
                                 <img
-                                    src="img/logo.png"
-                                    className="img-fluid d-3"
+                                    src="/img/logo.png"
+                                    className="d-3"
                                     alt="#"
                                 />
                                 <img
-                                    src="img/logo.png"
-                                    className="img-fluid d-none"
+                                    src="/img/logo.png"
+                                    className="d-none"
                                     alt="#"
                                 />
                             </NavLink>
                         </div>
                     </div>
 
-                    <div className="search">
+                    {/* <div className="search">
                         <input
                             id="quick_search"
                             className="xs-hide"
@@ -122,7 +122,7 @@ export default function Header() {
                             placeholder={translateLang("seachtext")}
                             type="text"
                         />
-                    </div>
+                    </div> */}
 
                     <BreakpointProvider>
                         <Breakpoint l down>
