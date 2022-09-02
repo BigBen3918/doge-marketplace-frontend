@@ -208,7 +208,6 @@ export default function Header() {
                                         <div
                                             className="dropdown-custom dropdown-toggle btn"
                                             onMouseEnter={handleBtnClick1}
-                                            onClick={() => navigate('/explore')}
                                             onMouseLeave={closeMenu1}>
                                             {translateLang('explore')}
                                             <span className="lines"></span>
@@ -238,7 +237,6 @@ export default function Header() {
                                         <div
                                             className="dropdown-custom dropdown-toggle btn"
                                             onMouseEnter={handleBtnClick2}
-                                            onClick={() => navigate('/create/nft')}
                                             onMouseLeave={closeMenu2}>
                                             {translateLang('create')}
                                             <span className="lines"></span>
