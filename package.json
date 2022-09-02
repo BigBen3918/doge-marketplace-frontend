@@ -46,7 +46,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build && mv build ../crypto-coco-server",
+        "build": "react-scripts build && mv build ../doge-marketplace-server",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
