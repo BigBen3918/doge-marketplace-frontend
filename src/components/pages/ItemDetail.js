@@ -272,6 +272,29 @@ export default function Colection() {
                                             <span>{styledAddress(itemData?.creator)}</span>
                                         </div>
                                     </div>
+                                    <h5>{'Owner'}</h5>
+                                    <div className="item_author">
+                                        <div className="author_list_pp">
+                                            <span>
+                                                <img
+                                                    className="lazy"
+                                                    src={
+                                                        state.usersInfo[itemData?.owner]?.image ===
+                                                        undefined
+                                                            ? state.collectionNFT[0].metadata.image
+                                                            : state.usersInfo[itemData?.owner]
+                                                                  .image ||
+                                                              '../../img/author/author-1.jpg'
+                                                    }
+                                                    alt=""
+                                                />
+                                                <i className="fa fa-check"></i>
+                                            </span>
+                                        </div>
+                                        <div className="author_list_info">
+                                            <span>{styledAddress(itemData?.owner)}</span>
+                                        </div>
+                                    </div>
                                     <div className="spacer-40"></div>
                                     <div className="de_tab">
                                         <div className="row">
