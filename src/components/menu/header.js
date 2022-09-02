@@ -268,9 +268,9 @@ export default function Header() {
 
                     <div className="mainside">
                         <button className="btn-main" onClick={handleConnect}>
-                            {wallet.status != 'connected'
-                                ? 'Connect'
-                                : wallet.account.slice(0, 4) + '...' + wallet.account.slice(-4)}
+                            {wallet.status == 'connected'
+                                ? wallet.account?.slice(0, 4) + '...' + wallet.account?.slice(-4)
+                                : 'Connect'}
                         </button>
                     </div>
                 </div>
