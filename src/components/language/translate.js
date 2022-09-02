@@ -80,7 +80,7 @@ export const translations = {
         // All NFTs and collection
         allnft_title: 'Explore NFTs',
         allcollection_title: 'Explore Collections',
-        onsaled: 'onSaled',
+        onsaled: 'on Sale',
         owned: 'Owned',
         by: 'by',
         at: 'at',

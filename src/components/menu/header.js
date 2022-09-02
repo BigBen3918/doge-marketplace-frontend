@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Breakpoint, { BreakpointProvider, setDefaultBreakpoints } from 'react-socks';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useOnclickOutside from 'react-cool-onclickoutside';
 import { useBlockchainContext } from '../../context';
 import { useWallet } from 'use-wallet';
@@ -25,14 +25,16 @@ export default function Header() {
     const [openMenu1, setOpenMenu1] = useState(false);
     const [openMenu2, setOpenMenu2] = useState(false);
     const [openMenu3, setOpenMenu3] = useState(false);
-
+    const navigate = useNavigate();
     const wallet = useWallet();
 
     const handleBtnClick1 = () => {
         setOpenMenu1(!openMenu1);
+        navigate('/explore');
     };
     const handleBtnClick2 = () => {
         setOpenMenu2(!openMenu2);
+        navigate('/create/nft');
     };
     const handleBtnClick3 = () => {
         setOpenMenu3(!openMenu3);
