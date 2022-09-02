@@ -120,7 +120,7 @@ export default function Collection() {
                                                     <h3>{owners.length}</h3>
                                                     <p>{translateLang('owners')}</p>
                                                 </div>
-                                                <div>
+                                                {/* <div>
                                                     <h3>
                                                         {isNaN(avgAmount)
                                                             ? 0
@@ -128,7 +128,7 @@ export default function Collection() {
                                                         K
                                                     </h3>
                                                     <p>{translateLang('prices')}</p>
-                                                </div>
+                                                </div> */}
                                             </span>
                                         </div>
                                     </div>
