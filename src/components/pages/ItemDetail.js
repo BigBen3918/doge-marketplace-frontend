@@ -272,6 +272,7 @@ export default function Colection() {
                                             <span>{styledAddress(itemData?.creator)}</span>
                                         </div>
                                     </div>
+                                    <div className="spacer-10"></div>
                                     <h5>{'Owner'}</h5>
                                     <div className="item_author">
                                         <div className="author_list_pp">

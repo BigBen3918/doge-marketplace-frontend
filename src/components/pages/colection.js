@@ -73,8 +73,7 @@ export default function Collection() {
                 className="jumbotron breadcumb no-bg"
                 style={{
                     backgroundImage: `url(${correctItem?.metadata?.coverImage})`
-                }}
-            >
+                }}>
                 <div className="mainbreadcumb"></div>
             </section>
 
@@ -100,18 +99,17 @@ export default function Collection() {
                                                 <button
                                                     id="btn_copy"
                                                     title="Copy Text"
-                                                    onClick={handleaddressCopy}
-                                                >
+                                                    onClick={handleaddressCopy}>
                                                     Copy
                                                 </button>
                                             </h4>
                                         </div>
 
                                         <div className="collection_info">
-                                            <p className="text-center">
+                                            {/* <p className="text-center">
                                                 {translateLang('by')}{' '}
                                                 <b className="color">Crypto-Coco</b>
-                                            </p>
+                                            </p> */}
                                             <div className="spacer-10"></div>
                                             <span>
                                                 <div>

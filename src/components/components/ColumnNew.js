@@ -81,13 +81,10 @@ export default function Responsive() {
                                 <img
                                     className="lazy"
                                     src={
-                                        // state.usersInfo[nft.owner]?.image ===
-                                        //     undefined
-                                        //     ? state.collectionNFT[0]?.metadata
-                                        //         .image
-                                        //     : state.usersInfo[nft.owner]
-                                        //         .image ||
-                                        './img/author/author-1.jpg'
+                                        state.usersInfo[nft.owner]?.image === undefined
+                                            ? state.collectionNFT[0]?.metadata.image
+                                            : state.usersInfo[nft.owner].image ||
+                                              './img/author/author-1.jpg'
                                     }
                                     alt=""
                                 />
