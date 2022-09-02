@@ -34,7 +34,10 @@ export default function CreateCollection() {
                     address: address
                 }
             );
-            console.log(result.data.success);
+            if (result.data.success) {
+                setVerify(result.data.success);
+                NotificationManager.success('Successfully Verified');
+            }
             setLoading(false);
         } catch (err) {
             NotificationManager.error('Server Error');

@@ -11,7 +11,8 @@ import { NotificationManager } from 'react-notifications';
 export default function Colection() {
     const { id, collection } = useParams();
     const navigate = useNavigate();
-    const [state, { buyNFT, cancelOrder, translateLang, bidApprove }] = useBlockchainContext();
+    const [state, { buyNFT, cancelOrder, translateLang, bidApprove, getCurrency }] =
+        useBlockchainContext();
     const [openMenu, setOpenMenu] = useState(true);
     const [correctCollection, setCorrectCollection] = useState(null);
     const [pageFlag, setPageFlag] = useState(0); // 1 is mine, 2 is saled mine, 3 is others, 4 is saled others
@@ -78,10 +79,6 @@ export default function Colection() {
     const handleBuy = async () => {
         try {
             setLoading(true);
-            if (state.balances[0] < Number(itemData?.marketdata.price)) {
-                return;
-            }
-
             await buyNFT({
                 nftAddress: itemData?.collectionAddress,
                 assetId: itemData?.tokenID,
@@ -101,7 +98,7 @@ export default function Colection() {
         try {
             if (itemData !== null) {
                 setLoading(true);
-                bidApprove({
+                await bidApprove({
                     address: collection,
                     id: id,
                     price: itemData.marketdata.bidPrice
@@ -224,6 +221,15 @@ export default function Colection() {
                                                 </div>
                                             )}
                                             <div className="spacer-10"></div>
+                                            <h3 style={{ color: '#a48b57' }}>
+                                                {itemData?.marketdata?.price === ''
+                                                    ? null
+                                                    : itemData?.marketdata?.price +
+                                                      ' ' +
+                                                      getCurrency(
+                                                          itemData.marketdata?.acceptedToken
+                                                      )?.label}
+                                            </h3>
                                             <hr />
                                         </span>
                                     )}
@@ -407,16 +413,32 @@ export default function Colection() {
                                                     </div>
                                                 ) : pageFlag === 3 ? null : (
                                                     <div>
-                                                        <button
-                                                            className="btn-main"
-                                                            onClick={handleBuy}>
-                                                            {translateLang('btn_buynow')}
-                                                        </button>
-                                                        <button
-                                                            className="btn-main"
-                                                            onClick={() => setModalShow(true)}>
-                                                            {translateLang('btn_makeoffer')}
-                                                        </button>
+                                                        {loading ? (
+                                                            <button className="btn-main">
+                                                                <span
+                                                                    className="spinner-border spinner-border-sm"
+                                                                    aria-hidden="true"></span>
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                className="btn-main"
+                                                                onClick={handleBuy}>
+                                                                {translateLang('btn_buynow')}
+                                                            </button>
+                                                        )}
+                                                        {loading ? (
+                                                            <button className="btn-main">
+                                                                <span
+                                                                    className="spinner-border spinner-border-sm"
+                                                                    aria-hidden="true"></span>
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                className="btn-main"
+                                                                onClick={() => setModalShow(true)}>
+                                                                {translateLang('btn_makeoffer')}
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>

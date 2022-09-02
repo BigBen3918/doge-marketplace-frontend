@@ -31,6 +31,17 @@ function reducer(state, { type, payload }) {
     };
 }
 
+const Currency = [
+    {
+        label: 'ETH',
+        value: addresses.WETH
+    },
+    {
+        label: 'BUSD',
+        value: addresses.TestToken
+    }
+];
+
 const INIT_STATE = {
     allNFT: [],
     collectionNFT: [],
@@ -44,6 +55,7 @@ const INIT_STATE = {
         image: ''
     },
     lang: 'en',
+    currencies: Currency,
     addresses: addresses
 };
 
@@ -172,6 +184,24 @@ export default function Provider({ children }) {
 
         const origin = location.state?.from?.pathname || '/';
         navigate(origin);
+    };
+
+    // show method
+    const getCurrency = (tokenaddress = '') => {
+        try {
+            let currency = state.currencies.filter(
+                (c) => c.value.toLowerCase() === tokenaddress.toLowerCase()
+            );
+            if (currency.length === 0) {
+                throw new Error('unsupported currency');
+            }
+            return currency[0];
+        } catch (err) {
+            return {
+                label: 'Invalid Currency',
+                value: 'Unknown'
+            };
+        }
     };
 
     /* ------------ NFT Section ------------- */
@@ -366,6 +396,7 @@ export default function Provider({ children }) {
                         setLanguage,
                         translateLang,
                         approveNFT,
+                        getCurrency,
                         checkNFTApprove
                     }
                 ],
@@ -383,6 +414,7 @@ export default function Provider({ children }) {
                     setLanguage,
                     translateLang,
                     approveNFT,
+                    getCurrency,
                     checkNFTApprove
                 ]
             )}>

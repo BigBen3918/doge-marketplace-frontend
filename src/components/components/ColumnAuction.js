@@ -17,6 +17,7 @@ export default function Responsive(props) {
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
     const [approveFlag, setApproveFlag] = useState(false);
+    const [currency, setCurrency] = useState(state.currencies[0].value);
 
     useEffect(() => {
         const initialDate = new Date();
@@ -62,6 +63,7 @@ export default function Responsive(props) {
                 let txOnSale = await onsaleNFT({
                     nftAddress: collection,
                     assetId: correctCollection.tokenID,
+                    currency: currency,
                     price: price,
                     expiresAt: moment(date).valueOf()
                 });
@@ -75,6 +77,7 @@ export default function Responsive(props) {
                 const lazyAction = await Action.lazy_onsale({
                     nftAddress: collection,
                     assetId: correctCollection.tokenID,
+                    currency: currency,
                     priceGwei: toBigNum(price, 18),
                     expiresAt: moment(date).valueOf()
                 });
@@ -151,6 +154,22 @@ export default function Responsive(props) {
                                         <div className="spacer-single"></div>
                                         <h5>{translateLang('sellprice')}</h5>
                                         <div className="price">
+                                            <div
+                                                style={{
+                                                    flex: '1 1 0'
+                                                }}>
+                                                <select
+                                                    className="form-control"
+                                                    onChange={(e) => {
+                                                        setCurrency(e.target.value);
+                                                    }}>
+                                                    {state.currencies.map((currency, index) => (
+                                                        <option value={currency.value} key={index}>
+                                                            {currency.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
                                             <input
                                                 type="number"
                                                 name="item_price"
