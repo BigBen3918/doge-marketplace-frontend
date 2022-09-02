@@ -30,11 +30,9 @@ export default function Header() {
 
     const handleBtnClick1 = () => {
         setOpenMenu1(!openMenu1);
-        navigate('/explore');
     };
     const handleBtnClick2 = () => {
         setOpenMenu2(!openMenu2);
-        navigate('/create/nft');
     };
     const handleBtnClick3 = () => {
         setOpenMenu3(!openMenu3);
@@ -210,6 +208,7 @@ export default function Header() {
                                         <div
                                             className="dropdown-custom dropdown-toggle btn"
                                             onMouseEnter={handleBtnClick1}
+                                            onClick={() => navigate('/explore')}
                                             onMouseLeave={closeMenu1}>
                                             {translateLang('explore')}
                                             <span className="lines"></span>
@@ -239,6 +238,7 @@ export default function Header() {
                                         <div
                                             className="dropdown-custom dropdown-toggle btn"
                                             onMouseEnter={handleBtnClick2}
+                                            onClick={() => navigate('/create/nft')}
                                             onMouseLeave={closeMenu2}>
                                             {translateLang('create')}
                                             <span className="lines"></span>
