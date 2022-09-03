@@ -35,9 +35,11 @@ export default function Header() {
         if (searchKey.trim() !== '' && focused) {
             setSearchModal(true);
         } else {
-            setSearchModal(false);
+            setTimeout(() => {
+                setSearchModal(false);
+            }, 200);
         }
-    }, [searchKey, focused]);
+    }, [searchKey]);
 
     const collectionFilter = useCallback(
         (item) => {
@@ -81,7 +83,7 @@ export default function Header() {
 
     const collectionDatas = useMemo(() => {
         try {
-            return state.collectionNFT.filter(collectionFilter).slice(0, 20);
+            return state.collectionNFT.filter(collectionFilter).splice(0, 20);
         } catch (err) {
             return [];
         }
@@ -89,15 +91,11 @@ export default function Header() {
 
     const nftDatas = useMemo(() => {
         try {
-            return state.allNFT.filter(nftFilter).slice(0, 20);
+            return state.allNFT.filter(nftFilter).splice(0, 20);
         } catch (err) {
             return [];
         }
     }, [state.allNFT, nftFilter]);
-
-    useEffect(() => {
-        console.log(collectionDatas, nftDatas);
-    }, [collectionDatas, nftDatas, searchKey]);
 
     const handleConnect = () => {
         if (wallet.status == 'connected') {
@@ -205,7 +203,13 @@ export default function Header() {
                                 onBlur={() => setFocused(false)}
                             />
 
-                            {searchModal && <SearchModal className="xs-hide" />}
+                            {searchModal && (
+                                <SearchModal
+                                    className="xs-hide"
+                                    collectionDatas={collectionDatas}
+                                    nftDatas={nftDatas}
+                                />
+                            )}
                         </div>
 
                         <BreakpointProvider>
@@ -299,7 +303,12 @@ export default function Header() {
                                                 onFocus={() => setFocused(true)}
                                                 onBlur={() => setFocused(false)}
                                             />
-                                            {searchModal && <SearchModal />}
+                                            {searchModal && (
+                                                <SearchModal
+                                                    collectionDatas={collectionDatas}
+                                                    nftDatas={nftDatas}
+                                                />
+                                            )}
                                         </div>
                                         <div className="spacer-single"></div>
                                     </div>
