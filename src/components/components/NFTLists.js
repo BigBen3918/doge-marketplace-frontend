@@ -48,10 +48,10 @@ export default function NFTLists(props) {
         });
       return;
     } else {
-      if (!state.auth.isAuth) {
-        navigate('/signPage');
-        return;
-      }
+      // if (!state.auth.isAuth) {
+      //   navigate('/signPage');
+      //   return;
+      // }
       navigate(`/ItemDetail/${item.collectionAddress}/${item.tokenID}`);
       return;
     }
@@ -77,7 +77,7 @@ export default function NFTLists(props) {
                   className="lazy"
                   src={
                     state.usersInfo[nft.owner]?.image === undefined
-                      ? state.collectionNFT[0]?.metadata.image
+                      ? './img/author/author-1.jpg'
                       : state.usersInfo[nft.owner].image ||
                       './img/author/author-1.jpg'
                   }

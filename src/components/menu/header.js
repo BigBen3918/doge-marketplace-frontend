@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Breakpoint, { BreakpointProvider, setDefaultBreakpoints } from 'react-socks';
 import { Link, useNavigate } from 'react-router-dom';
 import useOnclickOutside from 'react-cool-onclickoutside';
@@ -27,6 +27,49 @@ export default function Header() {
   const [openMenu3, setOpenMenu3] = useState(false);
   const navigate = useNavigate();
   const wallet = useWallet();
+
+  //search
+  const [searchWord, setSearchWord] = useState("");
+  const collectionFilter = useCallback((item) => {
+    const searchParams = ["address", "name", "description"];
+    return searchParams.some((newItem) => {
+      try {
+        return (item["metadata"][newItem]?.toString().toLowerCase().indexOf(searchWord.toLowerCase()) > -1);
+      } catch (err) {
+        return false;
+      }
+    })
+  }, [searchWord]);
+
+  const nftFilter = useCallback((item) => {
+    const searchParams = ["owner", "name", "description", "collectionAddress"];
+    return searchParams.some((newItem) => {
+      try {
+        return (item[newItem]?.toString().toLowerCase().indexOf(searchWord.toLowerCase()) > -1) || (item["metadata"][newItem]?.toString().toLowerCase().indexOf(searchWord.toLowerCase()) > -1);
+      } catch (err) {
+        return false;
+      }
+    })
+  }, [searchWord]);
+
+  const collectionDatas = useMemo(() => {
+    try {
+      return (state.collectionNFT.filter(collectionFilter)).slice(0, 20);
+    } catch (err) {
+      return [];
+    }
+  }, [state.collectionNFT, collectionFilter]);
+  const nftDatas = useMemo(() => {
+    try {
+      return (state.allNFT.filter(nftFilter)).slice(0, 20);
+    } catch (err) {
+      return [];
+    }
+  }, [state.allNFT, nftFilter]);
+
+  useEffect(() => {
+    console.log(collectionDatas, nftDatas);
+  }, [collectionDatas, nftDatas, searchWord])
 
   const handleBtnClick1 = () => {
     setOpenMenu1(!openMenu1);
@@ -70,10 +113,10 @@ export default function Header() {
           image: null
         }
       });
-      localStorage.setItem('isConnected',false)
+      localStorage.setItem('isConnected', false)
     } else {
       wallet.connect();
-      localStorage.setItem('isConnected',true)
+      localStorage.setItem('isConnected', true)
     }
   };
 
@@ -122,15 +165,16 @@ export default function Header() {
             </div>
           </div>
 
-          {/* <div className="search">
-                        <input
-                            id="quick_search"
-                            className="xs-hide"
-                            name="quick_search"
-                            placeholder={translateLang("seachtext")}
-                            type="text"
-                        />
-                    </div> */}
+          <div className="search">
+            <input
+              id="quick_search"
+              className="xs-hide"
+              name="quick_search"
+              placeholder={translateLang("seachtext")}
+              type="text"
+              onChange={(e) => setSearchWord(e.target.value)}
+            />
+          </div>
 
           <BreakpointProvider>
             <Breakpoint l down>
