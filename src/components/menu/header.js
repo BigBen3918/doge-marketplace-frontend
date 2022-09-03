@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Breakpoint, { BreakpointProvider, setDefaultBreakpoints } from 'react-socks';
 import { Link, useNavigate } from 'react-router-dom';
 import useOnclickOutside from 'react-cool-onclickoutside';
@@ -39,6 +39,87 @@ export default function Header() {
         }
     }, [searchKey, focused]);
 
+    const collectionFilter = useCallback(
+        (item) => {
+            const searchParams = ['address', 'name', 'description'];
+            return searchParams.some((newItem) => {
+                try {
+                    return (
+                        item['metadata'][newItem]
+                            ?.toString()
+                            .toLowerCase()
+                            .indexOf(searchKey.toLowerCase()) > -1
+                    );
+                } catch (err) {
+                    return false;
+                }
+            });
+        },
+        [searchKey]
+    );
+
+    const nftFilter = useCallback(
+        (item) => {
+            const searchParams = ['owner', 'name', 'description', 'collectionAddress'];
+            return searchParams.some((newItem) => {
+                try {
+                    return (
+                        item[newItem]?.toString().toLowerCase().indexOf(searchKey.toLowerCase()) >
+                            -1 ||
+                        item['metadata'][newItem]
+                            ?.toString()
+                            .toLowerCase()
+                            .indexOf(searchKey.toLowerCase()) > -1
+                    );
+                } catch (err) {
+                    return false;
+                }
+            });
+        },
+        [searchKey]
+    );
+
+    const collectionDatas = useMemo(() => {
+        try {
+            return state.collectionNFT.filter(collectionFilter).slice(0, 20);
+        } catch (err) {
+            return [];
+        }
+    }, [state.collectionNFT, collectionFilter]);
+
+    const nftDatas = useMemo(() => {
+        try {
+            return state.allNFT.filter(nftFilter).slice(0, 20);
+        } catch (err) {
+            return [];
+        }
+    }, [state.allNFT, nftFilter]);
+
+    useEffect(() => {
+        console.log(collectionDatas, nftDatas);
+    }, [collectionDatas, nftDatas, searchKey]);
+
+    const handleConnect = () => {
+        if (wallet.status == 'connected') {
+            wallet.reset();
+            dispatch({
+                type: 'auth',
+                payload: {
+                    isAuth: false,
+                    name: '',
+                    email: '',
+                    bio: '',
+                    address: '',
+                    image: null
+                }
+            });
+            localStorage.setItem('isConnected', false);
+        } else {
+            wallet.connect();
+            localStorage.setItem('isConnected', true);
+        }
+    };
+
     const handleBtnClick1 = () => {
         setOpenMenu1(!openMenu1);
     };
@@ -66,27 +147,6 @@ export default function Header() {
     const ref3 = useOnclickOutside(() => {
         closeMenu3();
     });
-
-    const handleConnect = () => {
-        if (wallet.status == 'connected') {
-            wallet.reset();
-            dispatch({
-                type: 'auth',
-                payload: {
-                    isAuth: false,
-                    name: '',
-                    email: '',
-                    bio: '',
-                    address: '',
-                    image: null
-                }
-            });
-            localStorage.setItem('isConnected', false);
-        } else {
-            wallet.connect();
-            localStorage.setItem('isConnected', true);
-        }
-    };
 
     useEffect(() => {
         if (localStorage.getItem('isConnected')) {

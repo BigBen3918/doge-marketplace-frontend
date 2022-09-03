@@ -22,122 +22,120 @@ import { useBlockchainContext } from '../context';
 import Provider from '../context';
 
 const httpLink = createHttpLink({
-    uri: process.env.REACT_APP_GRAPQLENDPOINT
+  uri: process.env.REACT_APP_GRAPQLENDPOINT
 });
 
 const authLink = setContext((_, { headers }) => {
-    // get the authentication token from local storage if it exists
-    const token = localStorage.getItem('marketplace_session');
-    // return the headers to the context so httpLink can read them
-    return {
-        headers: {
-            ...headers,
-            authorization: token ? token : ''
-        }
-    };
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('marketplace_session');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? token : ''
+    }
+  };
 });
 
 const client = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache()
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
 });
 
 const PrivateRoute = ({ children }) => {
-    const location = useLocation();
+  const location = useLocation();
 
-    const [state, {}] = useBlockchainContext();
+  const [state, { }] = useBlockchainContext();
 
-    if (!state.auth.isAuth) {
-        return <Navigate to="/signPage" replace state={{ from: location }} />;
-    }
+  if (!state.auth.isAuth) {
+    return <Navigate to="/signPage" replace state={{ from: location }} />;
+  }
 
-    return children;
+  return children;
 };
 
 export default function App() {
-    return (
-        <div className="wraper">
-            <Router>
-                <ApolloProvider client={client}>
-                    <UseWalletProvider
-                        chainId={4002}
-                        connectors={{
-                            walletconnect: {
-                                rpcUrl: 'https://rpc.testnet.fantom.network/'
-                            }
-                        }}>
-                        <Provider>
-                            <GlobalStyles />
-                            <Header />
-                            <Routes>
-                                <Route exact path="/" element={<Home />} />
-                                <Route path="/explore" element={<Explore />} />
-                                <Route path="/Collections" element={<Collections />} />
-                                <Route path="/signPage" element={<Wallet />} />
-                                <Route
-                                    exact
-                                    path="/collection/:collection"
-                                    element={<Collection />}
-                                />
+  return (
+    <div className="wraper">
+      <Router>
+        <ApolloProvider client={client}>
+          <UseWalletProvider
+            chainId={4002}
+            connectors={{
+              walletconnect: {
+                rpcUrl: 'https://rpc.testnet.fantom.network/'
+              }
+            }}>
+            <Provider>
+              <GlobalStyles />
+              <Header />
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route path="/explore" element={<Explore />} />
+                <Route path="/Collections" element={<Collections />} />
+                <Route path="/signPage" element={<Wallet />} />
+                <Route
+                  exact
+                  path="/collection/:collection"
+                  element={<Collection />}
+                />
 
-                                <Route
-                                    exact
-                                    path="/ItemDetail/:collection/:id"
-                                    element={
-                                        <PrivateRoute>
-                                            <ItemDetail />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route
-                                    path="/Author"
-                                    element={
-                                        <PrivateRoute>
-                                            <Author />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route
-                                    path="/create/collection"
-                                    element={
-                                        <PrivateRoute>
-                                            <CreateCollection />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route
-                                    path="/create/nft"
-                                    element={
-                                        <PrivateRoute>
-                                            <Create />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route
-                                    path="/lazy-mint"
-                                    element={
-                                        <PrivateRoute>
-                                            <LazyCreate />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route
-                                    exact
-                                    path="/Auction/:collection/:id"
-                                    element={
-                                        <PrivateRoute>
-                                            <Auction />
-                                        </PrivateRoute>
-                                    }
-                                />
-                            </Routes>
-                            <ScrollToTopBtn />
-                        </Provider>
-                    </UseWalletProvider>
-                </ApolloProvider>
-            </Router>
-        </div>
-    );
+                <Route
+                  exact
+                  path="/ItemDetail/:collection/:id"
+                  element={
+                    <ItemDetail />
+                  }
+                />
+                <Route
+                  path="/Author"
+                  element={
+                    <PrivateRoute>
+                      <Author />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/create/collection"
+                  element={
+                    <PrivateRoute>
+                      <CreateCollection />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/create/nft"
+                  element={
+                    <PrivateRoute>
+                      <Create />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/lazy-mint"
+                  element={
+                    <PrivateRoute>
+                      <LazyCreate />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/Auction/:collection/:id"
+                  element={
+                    <PrivateRoute>
+                      <Auction />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+              <ScrollToTopBtn />
+            </Provider>
+          </UseWalletProvider>
+        </ApolloProvider>
+      </Router>
+    </div>
+  );
 }
 
 const GlobalStyles = createGlobalStyle`

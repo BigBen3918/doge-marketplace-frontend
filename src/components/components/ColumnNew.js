@@ -47,10 +47,10 @@ export default function Responsive() {
                 });
             return;
         } else {
-            if (state.auth.address === undefined) {
-                navigate('/signPage');
-                return;
-            }
+            // if (state.auth.address === undefined) {
+            //     navigate('/signPage');
+            //     return;
+            // }
             navigate(`/ItemDetail/${item.collectionAddress}/${item.tokenID}`);
             return;
         }
