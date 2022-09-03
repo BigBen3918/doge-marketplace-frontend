@@ -39,7 +39,7 @@ export default function Header() {
                 setSearchModal(false);
             }, 200);
         }
-    }, [searchKey]);
+    }, [searchKey, focused]);
 
     const collectionFilter = useCallback(
         (item) => {
