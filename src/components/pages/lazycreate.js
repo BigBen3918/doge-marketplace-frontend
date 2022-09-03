@@ -211,7 +211,7 @@ export default function LazyCreate() {
 
                                 <h5>{translateLang('externallink')}</h5>
                                 <p>
-                                    Crypto-Coco will include a link to this URL on this item"'"s
+                                    CLOUD9 will include a link to this URL on this item{"'"}s
                                     detail page, so that users can click to learn more about it. You
                                     are welcome to link to your own webpage with more details.
                                 </p>
@@ -266,7 +266,7 @@ export default function LazyCreate() {
 
                                 <h5>{translateLang('description')}</h5>
                                 <p>
-                                    The description will be included on the item"'"s detail page
+                                    The description will be included on the item{"'"}s detail page
                                     underneath its image. Markdown syntax is supported.
                                 </p>
                                 <textarea

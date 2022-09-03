@@ -108,7 +108,7 @@ export default function Collection() {
                                         <div className="collection_info">
                                             {/* <p className="text-center">
                                                 {translateLang('by')}{' '}
-                                                <b className="color">Crypto-Coco</b>
+                                                <b className="color">CLOUD9</b>
                                             </p> */}
                                             <div className="spacer-10"></div>
                                             <span>

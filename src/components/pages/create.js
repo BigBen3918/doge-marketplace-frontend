@@ -229,7 +229,7 @@ export default function Createpage() {
 
                                 <h5>{translateLang('externallink')}</h5>
                                 <p>
-                                    Crypto-Coco will include a link to this URL on this item"'"s
+                                    CLOUD9 will include a link to this URL on this item{"'"}s
                                     detail page, so that users can click to learn more about it. You
                                     are welcome to link to your own webpage with more details.
                                 </p>
@@ -284,7 +284,7 @@ export default function Createpage() {
 
                                 <h5>{translateLang('description')}</h5>
                                 <p>
-                                    The description will be included on the item"'"s detail page
+                                    The description will be included on the item{"'"}s detail page
                                     underneath its image. Markdown syntax is supported.
                                 </p>
                                 <textarea
@@ -303,7 +303,7 @@ export default function Createpage() {
                                 <select
                                     className="form-control"
                                     onChange={(e) => handleCollectionChange(e)}>
-                                    <option value={Addresses.NFT1}>Crypto-Coco Art</option>
+                                    <option value={Addresses.NFT1}>CLOUD9 Art</option>
                                     {collections.map((item, index) => (
                                         <option key={index} value={item.owner}>
                                             {item.name}

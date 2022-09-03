@@ -3,12 +3,12 @@ export const translations = {
         // home
         home_txt1: 'Discover, collect, and sell special NFTs',
         home_txt2:
-            'The NFT marketplace will be linked to the entire Crypto-Coco blockchain, allowing users to trade NFTs at hyper-fast speeds and unbeatable prices that’ll put every other blockchain to shame. Since the marketplace is in our blockchain ecosystem, there’s no need to connect it to a separate wallet, apps, etc.',
+            'The NFT marketplace will be linked to the entire Doge blockchain, allowing users to trade NFTs at hyper-fast speeds and unbeatable prices that’ll put every other blockchain to shame. Since the marketplace is in our blockchain ecosystem, there’s no need to connect it to a separate wallet, apps, etc.',
         notablecollection: 'Notable Collections',
         createandsell: 'Create and sell',
         feature_title1: 'Set up your wallet',
         feature_txt1:
-            'Once you’ve set up your wallet of choice, connect it to Crypto-Coco by clicking the wallet in the top right corner.',
+            'Once you’ve set up your wallet of choice, connect it to CLOUD9 by clicking the wallet in the top right corner.',
         feature_title2: 'Create your collection',
         feature_txt2:
             'Click My Collections and set up your collection. Add social links, a description, profile & banner images, and set a secondary sales fee.',
@@ -170,12 +170,12 @@ export const translations = {
         // home
         home_txt1: '特別なNFTを発見、収集、販売する',
         home_txt2:
-            'NFTマーケットプレイスは、Crypto-Cocoブロックチェーン全体にリンクされ、ユーザーがNFTを超高速で無敵の価格で取引できるようになり、他のすべてのブロックチェーンが恥ずかしい思いをします。 マーケットプレイスはブロックチェーンエコシステム内にあるため、別のウォレットやアプリなどに接続する必要はありません。',
+            'NFTマーケットプレイスは、CLOUD9ブロックチェーン全体にリンクされ、ユーザーがNFTを超高速で無敵の価格で取引できるようになり、他のすべてのブロックチェーンが恥ずかしい思いをします。 マーケットプレイスはブロックチェーンエコシステム内にあるため、別のウォレットやアプリなどに接続する必要はありません。',
         notablecollection: '注目すべきコレクション',
         createandsell: '作成して販売する',
         feature_title1: 'ウォレットをセットアップする',
         feature_txt1:
-            '選択したウォレットを設定したら、右上隅にあるウォレットをクリックしてCrypto-Cocoに接続します。',
+            '選択したウォレットを設定したら、右上隅にあるウォレットをクリックしてCLOUD9に接続します。',
         feature_title2: 'コレクションを作成する',
         feature_txt2:
             '[マイコレクション]をクリックして、コレクションを設定します。 ソーシャルリンク、説明、プロフィール、バナー画像を追加し、二次販売手数料を設定します。',

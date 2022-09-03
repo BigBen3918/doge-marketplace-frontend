@@ -943,12 +943,12 @@ p.lead {
     position: fixed;
     top: 0;
     width: 100%;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border-bottom: 0;
     transition: all 0.6s ease;
 }
 .navbar.sticky.white {
-    box-shadow: 0 4px 20px 0 #ecbdb0;
+    box-shadow: 0 4px 20px 0 #0f0f0f;
 }
 .navbar.sticky.white .btn {
     color: #d05e3c;
@@ -1593,7 +1593,7 @@ footer.footer-light .subfooter .social-icons span {
 footer.footer-light .subfooter .social-icons span i {
     text-shadow: none;
     color: #d05e3c;
-    background: #ecbdb0;
+    background: #0f0f0f;
     padding: 12px 10px 8px 10px;
     width: 34px;
     height: 34px;
@@ -2316,7 +2316,7 @@ address.s1 span .btn:before {
     border-radius: 3px;
 }
 .feature-box.s1 .inner {
-    background: #ecbdb0;
+    background: #0f0f0f;
 }
 .feature-box.s1:hover .inner i {
     background: none;
@@ -2453,13 +2453,13 @@ i.font60 {
 .feature-box.f-boxed {
     overflow: none;
     padding: 50px;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border-radius: 6px;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
     transition: 0.7s;
 }
 .feature-box.f-boxed:hover {
-    background: #ecbdb0;
+    background: #0f0f0f;
     transition: 0.7s;
 }
 .text-light .feature-box.f-boxed {
@@ -2667,7 +2667,7 @@ i.font60 {
 }
 .nft .slick-prev {
     left: -12px;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border-radius: 45px;
     display: block;
     width: 45px;
@@ -2683,7 +2683,7 @@ i.font60 {
     font-style: normal;
     font-weight: normal;
     color: #d05e3c;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 45px;
     display: block;
@@ -2697,7 +2697,7 @@ i.font60 {
 }
 .nft .slick-next {
     right: -12px;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border-radius: 45px;
     display: block;
     width: 45px;
@@ -2712,7 +2712,7 @@ i.font60 {
     font-style: normal;
     font-weight: normal;
     color: #d05e3c;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 45px;
     display: block;
@@ -2837,7 +2837,7 @@ i.font60 {
     font-size: 0.8rem;
     position: absolute;
     right: 20px;
-    background: #ecbdb0;
+    background: #0f0f0f;
     padding: 6px 10px;
     border-radius: 30px;
     -moz-border-radius: 30px;
@@ -3262,7 +3262,7 @@ i.font60 {
     cursor: pointer;
 }
 .select1 .css-wenqhu-control {
-    background-color: #ecbdb0;
+    background-color: #0f0f0f;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .select1 .css-wenqhu-control > div > div {
@@ -3735,7 +3735,7 @@ img.img-rounded {
 }
 .box-login {
     padding: 40px;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border-radius: 5px;
 }
 .box-login p {

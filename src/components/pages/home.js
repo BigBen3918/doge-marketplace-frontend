@@ -89,7 +89,7 @@ export default function Homethree() {
                             >
                                 <h6 className="">
                                     <span className="text-uppercase color">
-                                        Crypto-Coco NFT {translateLang('marketplace')}
+                                        CLOUD9 NFT {translateLang('marketplace')}
                                     </span>
                                 </h6>
                             </Reveal>

@@ -2788,7 +2788,7 @@ address {
 }
 
 .feature-box.s1 .inner {
-    background: #ecbdb0;
+    background: #0f0f0f;
 }
 
 .feature-box.s1:hover .inner i {
@@ -3218,7 +3218,7 @@ i.font60 {
 
     .slick-prev {
         left: -12px;
-        background: #ecbdb0;
+        background: #0f0f0f;
         border-radius: 45px;
         display: block;
         width: 45px;
@@ -3234,7 +3234,7 @@ i.font60 {
             font-style: normal;
             font-weight: normal;
             color: $white;
-            background: #ecbdb0;
+            background: #0f0f0f;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 45px;
             display: block;
@@ -3251,7 +3251,7 @@ i.font60 {
 
     .slick-next {
         right: -12px;
-        background: #ecbdb0;
+        background: #0f0f0f;
         border-radius: 45px;
         display: block;
         width: 45px;
@@ -3266,7 +3266,7 @@ i.font60 {
             font-style: normal;
             font-weight: normal;
             color: $white;
-            background: #ecbdb0;
+            background: #0f0f0f;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 45px;
             display: block;
@@ -3417,7 +3417,7 @@ i.font60 {
     font-size: 0.8rem;
     position: absolute;
     right: 20px;
-    background: #ecbdb0;
+    background: #0f0f0f;
     padding: 6px 10px;
     border-radius: 30px;
     -moz-border-radius: 30px;
@@ -3838,6 +3838,10 @@ i.font60 {
     font-size: 14px;
     margin-bottom: 30px;
     margin-top: -14px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content:space-around;
 
     .dropdownSelect {
         display: inline-block;
@@ -3876,11 +3880,10 @@ i.font60 {
     display: inline-block;
     margin-right: 0px;
     position: relative;
-    top: 14px;
 
     input[type='text'] {
-        padding: 8px 12px;
-        width: 200px;
+        padding: 8px 8px;
+        width: 400px;
         float: left;
         color: $white;
         border-radius: 5px 0 0 5px;
@@ -3890,7 +3893,7 @@ i.font60 {
         border-right-width: 1px;
         border-right: none;
         background: none;
-        box-shadow: 2px 2px 20px 0px #d05e3b8e;
+        box-shadow: 1px 1px 10px 0px #d05e3b8e;
         font-size: 16px;
     }
 
@@ -3917,7 +3920,7 @@ i.font60 {
 
 .select1 {
     .css-wenqhu-control {
-        background-color: #ecbdb0;
+        background-color: #0f0f0f;
         border: 1px solid rgba(255, 255, 255, 0.1);
 
         & > div > div {
@@ -4402,7 +4405,6 @@ img.img-rounded {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     color: $white;
-
     &:focus {
         background: rgb(0, 66, 62);
         color: $white;
@@ -4550,7 +4552,7 @@ img.img-rounded {
 
 .box-login {
     padding: 40px;
-    background: #ecbdb0;
+    background: #0f0f0f;
     border-radius: 5px;
 
     p {

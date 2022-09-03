@@ -17,6 +17,7 @@ import Action from '../service';
 
 import { translations } from '../components/language/translate';
 import { useWallet } from 'use-wallet';
+import { NotificationManager } from 'react-notifications';
 
 const BlockchainContext = createContext();
 
@@ -86,6 +87,8 @@ export default function Provider({ children }) {
 
                 const result = await Action.user_login(wallet.account);
                 updateAuth(result);
+            } else if (wallet.status === 'error') {
+                NotificationManager.warning("Please connect metamask to Fantom Testnet");
             }
         })();
     }, [wallet.status]);
@@ -183,7 +186,7 @@ export default function Provider({ children }) {
         });
 
         const origin = location.state?.from?.pathname || '/';
-        navigate(origin);
+        // navigate(origin);
     };
 
     // show method
