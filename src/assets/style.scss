@@ -1107,8 +1107,7 @@ p.lead {
             }
 
             .search {
-                display: inline-block;
-                // position: relative;
+                display: flex;
                 top: -9px;
 
                 #quick_search {
@@ -1225,9 +1224,6 @@ p.lead {
     @media screen and (max-width: 445px) {
         .logo {
             height: 80px;
-            img {
-                visibility: hidden;
-            }
         }
     }
 
@@ -5333,7 +5329,26 @@ img.img-rounded {
 @media only screen and (max-width: 600px) {
 }
 
+@media only screen and (min-width: 505px) {
+    .sm-style {
+        display: none;
+    }
+    
+    .lg-style {
+        display: block;
+    }
+}
+
 @media only screen and (max-width: 505px) {
+    .sm-style {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .lg-style {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 420px) {

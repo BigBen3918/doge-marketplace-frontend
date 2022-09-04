@@ -216,6 +216,16 @@ export default function Header() {
                             <Breakpoint l down>
                                 {showmenu && (
                                     <div className="menu">
+                                        <button
+                                            className="btn-main sm-style"
+                                            onClick={handleConnect}>
+                                            {wallet.status == 'connected'
+                                                ? wallet.account?.slice(0, 4) +
+                                                  '...' +
+                                                  wallet.account?.slice(-4)
+                                                : 'Connect'}
+                                        </button>
+
                                         <div className="navbar-item">
                                             <div ref={ref1}>
                                                 <div
@@ -384,7 +394,7 @@ export default function Header() {
                             </Breakpoint>
                         </BreakpointProvider>
 
-                        <div className="mainside">
+                        <div className="mainside lg-style">
                             <button className="btn-main" onClick={handleConnect}>
                                 {wallet.status == 'connected'
                                     ? wallet.account?.slice(0, 4) +
