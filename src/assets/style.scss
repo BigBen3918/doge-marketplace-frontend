@@ -1954,9 +1954,8 @@ p.lead {
 /*** footer ***/
 footer {
     &.footer-light {
-        padding: 5% 0 0 0;
         box-shadow: 0px 0px 6px 0px rgb(0, 148, 138);
-        background-color: white;
+        background-color: rgb(0, 0, 0);
         text-align: center;
 
         > div {
@@ -1964,20 +1963,48 @@ footer {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                width: 100%;
+                gap: 30px;
 
-                img {
-                    padding: 30px;
+                span {
+                    width: 50px;
+                    height: 50px;
+                    color: white;
+                    font-size: 25px;
+                    background-color: #2e9bf6;
+                    border-radius: 50%;
+                    position: relative;
+                    transition: 0.3s ease-in-out;
+                    border: 3px solid #2e9bf6;
+                    cursor: pointer;
 
-                    @media screen and (max-width: 500px) {
-                        padding: 0;
-                        width: 100%;
+                    svg {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
                     }
+
+                    &:hover {
+                        background-color: $black;
+                        color: #2e9bf6;
+                    }
+                }
+
+                @media screen and (max-width: 300px) {
+                    gap: 10px;
                 }
             }
         }
 
+        h2 {
+            color: $color;
+            padding: 30px;
+            margin: 0;
+        }
+
         h4 {
-            color: $black_col;
+            color: $white;
             padding: 30px;
             margin: 0;
         }
@@ -5176,7 +5203,7 @@ img.img-rounded {
     z-index: 2;
 }
 
-.backPannel{
+.backPannel {
     width: 5000px;
     height: 5000px;
     position: absolute;
@@ -5337,7 +5364,7 @@ img.img-rounded {
     .sm-style {
         display: none;
     }
-    
+
     .lg-style {
         display: block;
     }
@@ -5349,7 +5376,7 @@ img.img-rounded {
         display: flex;
         justify-content: center;
     }
-    
+
     .lg-style {
         display: none;
     }
