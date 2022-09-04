@@ -99,7 +99,7 @@ export const translations = {
         lazymint: 'Lazy Mint',
         btn_login: 'Login',
         btn_logout: 'Log Out',
-        seachtext: 'Search Item here...',
+        seachtext: 'Search...',
 
         // Footer
         marketplace: 'Marketplace',
