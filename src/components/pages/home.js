@@ -29,11 +29,11 @@ const GlobalStyles = createGlobalStyle`
     box-shadow: 0 4px 20px 0 rgba(200,200,255, .8);
   }
   header#myHeader.navbar .search #quick_search{
-    color: yellow;
+    color: #2e9bf6;
     background: rgba(255, 255, 255, .1);
   }
   header#myHeader .dropdown-toggle::after{
-    color: yellow;
+    color: #2e9bf6;
   }
   header#myHeader .logo .d-block{
     display: none !important;
