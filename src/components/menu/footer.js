@@ -1,4 +1,5 @@
 import React from 'react';
+import { BsTwitter, BsTelegram, BsDiscord } from 'react-icons/bs';
 import { useBlockchainContext } from '../../context';
 
 const Footer = () => {
@@ -6,10 +7,21 @@ const Footer = () => {
     return (
         <footer className="footer-light">
             <div className="container">
+                <h2>Follow Us</h2>
                 <div>
-                    <img src="/img/footer_logo.png" alt="" />
+                    <span>
+                        <BsTwitter />
+                    </span>
+                    <span>
+                        <BsTelegram />
+                    </span>
+                    <span>
+                        <BsDiscord />
+                    </span>
                 </div>
-                <h4>&copy; Copyright {new Date().getFullYear()} All Right Resserved</h4>
+                <div>
+                    <h4>&copy; Copyright {new Date().getFullYear()} All Right Resserved</h4>
+                </div>
             </div>
         </footer>
     );
