@@ -54,14 +54,14 @@ export default function Header() {
 
   const collectionDatas = useMemo(() => {
     try {
-      return (state.collectionNFT.filter(collectionFilter)).slice(0, 20);
+      return (state.collectionNFT.filter(collectionFilter)).slice(0,3);
     } catch (err) {
       return [];
     }
   }, [state.collectionNFT, collectionFilter]);
   const nftDatas = useMemo(() => {
     try {
-      return (state.allNFT.filter(nftFilter)).slice(0, 20);
+      return (state.allNFT.filter(nftFilter)).slice(0, 3);
     } catch (err) {
       return [];
     }
