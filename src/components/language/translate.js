@@ -1,7 +1,7 @@
 export const translations = {
     en: {
         // home
-        home_txt1: 'Explore, collect, and trade NFTs',
+        home_txt1: 'Explore collect and trade NFTs',
         home_txt2:
             'Welcome to your Cloud 9. A place where passion meets creativity and your creativity meets ecstasy. Cloud 9 is a community first NFT marketplace all within DogeChain.',
         notablecollection: 'Notable Collections',
