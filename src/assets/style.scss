@@ -3908,7 +3908,7 @@ i.font60 {
     display: flex;
     align-content: center;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
 
     .dropdownSelect {
         display: inline-block;
@@ -4078,8 +4078,7 @@ i.font60 {
 .d_coll .profile_avatar img,
 .d_coll .profile_name {
     display: block;
-    margin: 0 auto;
-    text-align: center;
+    text-align: left;
 }
 
 .profile_avatar img {
@@ -4114,7 +4113,7 @@ i.font60 {
 
 .d_coll .d_profile_img {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     align-content: center;
 }
@@ -4740,12 +4739,17 @@ img.img-rounded {
     span {
         display: flex;
         gap: 30px;
-        justify-content: center;
+        justify-content: flex-start;
+        margin-left: 20px;
 
         div {
             display: flex;
             flex-direction: column;
             justify-content: center;
+
+            h3 {
+                margin: 0;
+            }
         }
     }
 }

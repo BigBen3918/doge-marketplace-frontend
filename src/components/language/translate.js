@@ -1,9 +1,9 @@
 export const translations = {
     en: {
         // home
-        home_txt1: 'Discover, collect, and sell special NFTs',
+        home_txt1: 'Explore collect and trade NFTs',
         home_txt2:
-            'The NFT marketplace will be linked to the entire Doge blockchain, allowing users to trade NFTs at hyper-fast speeds and unbeatable prices that’ll put every other blockchain to shame. Since the marketplace is in our blockchain ecosystem, there’s no need to connect it to a separate wallet, apps, etc.',
+            'Welcome to your Cloud 9. A place where passion meets creativity and your creativity meets ecstasy. Cloud 9 is a community first NFT marketplace all within DogeChain.',
         notablecollection: 'Notable Collections',
         createandsell: 'Create and sell',
         feature_title1: 'Set up your wallet',
@@ -99,7 +99,7 @@ export const translations = {
         lazymint: 'Lazy Mint',
         btn_login: 'Login',
         btn_logout: 'Log Out',
-        seachtext: 'Search Item here...',
+        seachtext: 'Search...',
 
         // Footer
         marketplace: 'Marketplace',

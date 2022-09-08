@@ -83,24 +83,9 @@ export default function Homethree() {
                             <Reveal
                                 className="onStep"
                                 keyframes={fadeInUp}
-                                delay={0}
-                                duration={600}
-                                triggerOnce
-                            >
-                                <h6 className="">
-                                    <span className="text-uppercase color">
-                                        CLOUD9 NFT {translateLang('marketplace')}
-                                    </span>
-                                </h6>
-                            </Reveal>
-                            <div className="spacer-10"></div>
-                            <Reveal
-                                className="onStep"
-                                keyframes={fadeInUp}
                                 delay={300}
                                 duration={600}
-                                triggerOnce
-                            >
+                                triggerOnce>
                                 <h1 className="">{translateLang('home_txt1')}</h1>
                             </Reveal>
                             <Reveal
@@ -108,8 +93,7 @@ export default function Homethree() {
                                 keyframes={fadeInUp}
                                 delay={600}
                                 duration={600}
-                                triggerOnce
-                            >
+                                triggerOnce>
                                 <p className=" lead">{translateLang('home_txt2')}</p>
                             </Reveal>
                             <div className="spacer-10"></div>
@@ -118,8 +102,7 @@ export default function Homethree() {
                                 keyframes={fadeInUp}
                                 delay={800}
                                 duration={900}
-                                triggerOnce
-                            >
+                                triggerOnce>
                                 <Link to="/explore" className="btn-main lead">
                                     {translateLang('explore')}
                                 </Link>
@@ -168,7 +151,7 @@ export default function Homethree() {
                 <div className="spacer-double"></div>
             </section> */}
 
-            <section className="container no-top">
+            {/* <section className="container no-top">
                 <div className="row">
                     <div className="col-lg-12">
                         <h2 className="style-2">{translateLang('createandsell')}</h2>
@@ -177,7 +160,7 @@ export default function Homethree() {
                 <div className="container px-0">
                     <FeatureBox />
                 </div>
-            </section>
+            </section> */}
 
             <Footer />
         </div>
