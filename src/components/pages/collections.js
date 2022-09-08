@@ -35,6 +35,7 @@ export default function Collections() {
                                     <img
                                         src={item.metadata.coverImage}
                                         className="card-img-top"
+                                        style={{ height: '200px' }}
                                         alt=""
                                     />
                                 </div>
@@ -48,7 +49,7 @@ export default function Collections() {
                                     <p className="card-text text-center">
                                         {item.metadata.description === ''
                                             ? 'No description'
-                                            : item.metadata.description > 15
+                                            : item.metadata.description.length > 15
                                             ? item.metadata.description.slice(0, 15) + '...'
                                             : item.metadata.description}
                                     </p>
