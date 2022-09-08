@@ -114,7 +114,11 @@ export default function Profile() {
                             className="text_copy noselect"
                             style={{ color: 'grey', textAlign: 'left' }}
                             onClick={handleaddressCopy}>
-                            <span>{state.auth.address}</span>
+                            <span>
+                                {state.auth.address.slice(0, 8) +
+                                    '...' +
+                                    state.auth.address.slice(-4)}
+                            </span>
                             <span style={{ padding: '0 10px' }}>
                                 <i className="bg-color-2 i-boxed icon_pencil-edit"></i>
                             </span>

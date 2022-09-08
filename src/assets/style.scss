@@ -4067,6 +4067,8 @@ i.font60 {
 .profile_name {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 
     .profile_username {
         font-size: 16px;
@@ -4077,7 +4079,6 @@ i.font60 {
 
 .d_coll .profile_avatar img,
 .d_coll .profile_name {
-    display: block;
     text-align: left;
 }
 
@@ -4120,6 +4121,22 @@ i.font60 {
 
 .profile_name {
     margin-left: 20px;
+
+    > div {
+        display: flex;
+
+        a {
+            cursor: pointer;
+            font-size: 30px;
+            padding: 15px;
+            color: $white;
+            transition: 0.3s ease-in-out;
+
+            &:hover {
+                color: #2e9bf6 !important;
+            }
+        }
+    }
 }
 
 .profile_name h4 {
@@ -4129,13 +4146,10 @@ i.font60 {
 
 .profile_wallet {
     font-size: 16px;
-    display: block;
+    display: flex;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
-    overflow: hidden;
-    float: left;
     color: #727272;
 }
 
@@ -4145,11 +4159,10 @@ i.font60 {
 }
 
 #btn_copy {
-    position: absolute;
-    font-size: 12px;
-    padding: 4px 10px;
-    line-height: 1em;
-    border: solid 1px #dddddd;
+    font-size: 20px;
+    background: transparent;
+    border: 0;
+    color: $white;
     display: inline-block;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -4157,8 +4170,7 @@ i.font60 {
     outline: none;
 
     &:hover {
-        color: $white;
-        border: 0;
+        color: $color !important;
     }
 }
 
@@ -5343,7 +5355,6 @@ img.img-rounded {
     .profile_name {
         margin-left: 0;
         margin-top: 20px;
-        display: block;
         width: 100%;
     }
 

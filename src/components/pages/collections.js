@@ -29,8 +29,7 @@ export default function Collections() {
                         <div
                             className="col-lg-4 col-md-6 mb30"
                             key={index}
-                            onClick={() => handle(item.address)}
-                        >
+                            onClick={() => handle(item.address)}>
                             <div className="card">
                                 <div>
                                     <img
@@ -45,18 +44,12 @@ export default function Collections() {
                                     </span>
                                     <div className="spacer-10"></div>
                                     <h4 className="card-title text-center">{item.metadata.name}</h4>
-                                    <p className="text-center">
-                                        {translateLang('by')}{' '}
-                                        <b className="color">
-                                            {item.metadata.fee_recipent.slice(0, 5) +
-                                                '...' +
-                                                item.metadata.fee_recipent.slice(-4)}
-                                        </b>
-                                    </p>
                                     <div className="spacer-10"></div>
                                     <p className="card-text text-center">
                                         {item.metadata.description === ''
                                             ? 'No description'
+                                            : item.metadata.description > 15
+                                            ? item.metadata.description.slice(0, 15) + '...'
                                             : item.metadata.description}
                                     </p>
                                 </div>

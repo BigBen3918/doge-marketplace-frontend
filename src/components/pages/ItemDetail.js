@@ -345,7 +345,8 @@ export default function Colection() {
                                                                                         state
                                                                                             .usersInfo[
                                                                                             bidder
-                                                                                        ]?.image
+                                                                                        ]?.image ||
+                                                                                        '../../img/author/author-1.jpg'
                                                                                     }
                                                                                     alt=""
                                                                                 />

@@ -14,7 +14,9 @@ export default function CreateCollection() {
     const [bannerImage, _setBannerImage] = useState(null);
     const [selectedBannerFile, setSeletedBannerFile] = useState(null);
     const [name, setName] = useState('');
-    const [extLink, setExtLink] = useState('');
+    const [extLink1, setExtLink1] = useState('');
+    const [extLink2, setExtLink2] = useState('');
+    const [extLink3, setExtLink3] = useState('');
     const [desc, setDesc] = useState('');
     const [address, setAddress] = useState('');
     const [loading, setLoading] = useState(false);
@@ -73,7 +75,9 @@ export default function CreateCollection() {
             formData.append('logoImage', selectedLogoFile);
             formData.append('bannerImage', selectedBannerFile);
             formData.append('name', name.trim());
-            formData.append('extUrl', extLink.trim());
+            formData.append('extUrl1', extLink1.trim());
+            formData.append('extUrl2', extLink2.trim());
+            formData.append('extUrl3', extLink3.trim());
             formData.append('desc', desc.trim());
 
             const uploadData = await Action.create_collection(formData);
@@ -98,7 +102,9 @@ export default function CreateCollection() {
         setSeletedLogoFile(null);
         setSeletedBannerFile(null);
         setName('');
-        setExtLink('');
+        setExtLink1('');
+        setExtLink2('');
+        setExtLink3('');
         setDesc('');
     };
 
@@ -290,18 +296,45 @@ export default function CreateCollection() {
                                 <div className="spacer-30"></div>
                                 <h5>{translateLang('externallink')}</h5>
                                 <p>
-                                    CLOUD9 will include a link to this URL on this item{"'"}s
-                                    detail page, so that users can click to learn more about it. You
-                                    are welcome to link to your own webpage with more details.
+                                    CLOUD9 will include a link to this URL on this item{"'"}s detail
+                                    page, so that users can click to learn more about it. You are
+                                    welcome to link to your own webpage with more details.
                                 </p>
-                                <input
-                                    type="text"
-                                    name="item_link"
-                                    className="form-control"
-                                    placeholder="https://yoursite.io/item/123"
-                                    onChange={(e) => setExtLink(e.target.value)}
-                                    value={extLink}
-                                />
+                                <div className="social">
+                                    <span>
+                                        <i className="fa fa-twitter-square"></i>
+                                        <input
+                                            type="text"
+                                            name="item_link"
+                                            className="form-control"
+                                            placeholder="https://twitter.com/"
+                                            onChange={(e) => setExtLink1(e.target.value)}
+                                            value={extLink1}
+                                        />
+                                    </span>
+                                    <span>
+                                        <i className="fa fa-facebook-square"></i>
+                                        <input
+                                            type="text"
+                                            name="item_link"
+                                            className="form-control"
+                                            placeholder="https://facebook.com/"
+                                            onChange={(e) => setExtLink2(e.target.value)}
+                                            value={extLink2}
+                                        />
+                                    </span>
+                                    <span>
+                                        <i className="fa fa-instagram"></i>
+                                        <input
+                                            type="text"
+                                            name="item_link"
+                                            className="form-control"
+                                            placeholder="https://instagram.com/"
+                                            onChange={(e) => setExtLink3(e.target.value)}
+                                            value={extLink3}
+                                        />
+                                    </span>
+                                </div>
                                 <div className="spacer-30"></div>
                                 <h5>{translateLang('description')}</h5>
                                 <p>

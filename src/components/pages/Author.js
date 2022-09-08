@@ -51,7 +51,7 @@ export default function Author() {
                                                     : state.auth.email}
                                             </span>
                                             <span id="wallet" className="profile_wallet">
-                                                {state.auth.address}
+                                                {state.auth.address.slice(0, 20) + '...'}
                                             </span>
                                         </h4>
                                     </div>

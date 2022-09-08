@@ -10,7 +10,9 @@ const GET_COLLECTIONNFTS = gql`
                 description
                 coverImage
                 image
-                external_url
+                external_url1
+                external_url2
+                external_url3
                 fee
                 fee_recipent
             }

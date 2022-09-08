@@ -46,31 +46,30 @@ export default function Responsive() {
 
     return (
         <div className="row">
-            {mynfts !== null
-                ? mynfts.map((nft, index) => (
-                      <div
-                          key={index}
-                          className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
-                          onClick={() => handleItem(nft)}
-                      >
-                          <div className="nft__item">
-                              <div className="nft__item_wrap" style={{ height: `${height}px` }}>
-                                  <Outer>
-                                      <span>
-                                          <img
-                                              onLoad={(e) => onImgLoad(e)}
-                                              src={nft.metadata.image}
-                                              className="lazy nft__item_preview"
-                                              alt=""
-                                          />
-                                      </span>
-                                  </Outer>
-                              </div>
-                              <div className="nft__item_info">
-                                  <span>
-                                      <h4>{nft.metadata.name}</h4>
-                                  </span>
-                                  {/* <div className="nft__item_price">
+            {mynfts !== null && mynfts.length !== 0 ? (
+                mynfts.map((nft, index) => (
+                    <div
+                        key={index}
+                        className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
+                        onClick={() => handleItem(nft)}>
+                        <div className="nft__item">
+                            <div className="nft__item_wrap" style={{ height: `${height}px` }}>
+                                <Outer>
+                                    <span>
+                                        <img
+                                            onLoad={(e) => onImgLoad(e)}
+                                            src={nft.metadata.image}
+                                            className="lazy nft__item_preview"
+                                            alt=""
+                                        />
+                                    </span>
+                                </Outer>
+                            </div>
+                            <div className="nft__item_info">
+                                <span>
+                                    <h4>{nft.metadata.name}</h4>
+                                </span>
+                                {/* <div className="nft__item_price">
                                       {10} ETH
                                       <span>
                                           {nft.marketdata.bidders.length}
@@ -79,15 +78,17 @@ export default function Responsive() {
                                   <div className="nft__item_action">
                                       <span>Place a bid</span>
                                   </div> */}
-                                  <div className="nft__item_like" style={{ color: '#c5a86a' }}>
-                                      <i className="fa fa-heart"></i>
-                                      <span>{nft.likes.length}</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  ))
-                : 'No Data...'}
+                                <div className="nft__item_like" style={{ color: '#c5a86a' }}>
+                                    <i className="fa fa-heart"></i>
+                                    <span>{nft.likes.length}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            ) : (
+                <h1 style={{ textAlign: 'center', padding: '73px' }}>No Data</h1>
+            )}
         </div>
     );
 }

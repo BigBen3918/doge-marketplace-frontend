@@ -229,9 +229,9 @@ export default function Createpage() {
 
                                 <h5>{translateLang('externallink')}</h5>
                                 <p>
-                                    CLOUD9 will include a link to this URL on this item{"'"}s
-                                    detail page, so that users can click to learn more about it. You
-                                    are welcome to link to your own webpage with more details.
+                                    CLOUD9 will include a link to this URL on this item{"'"}s detail
+                                    page, so that users can click to learn more about it. You are
+                                    welcome to link to your own webpage with more details.
                                 </p>
                                 <div className="social">
                                     <span>
@@ -389,7 +389,7 @@ export default function Createpage() {
                     <div className="col-lg-3 col-sm-12 col-xs-12">
                         <h5>{translateLang('previewitem')}</h5>
                         <div className="nft__item m-0">
-                            <div className="author_list_pp">
+                            {/* <div className="author_list_pp">
                                 <span>
                                     <img
                                         className="lazy"
@@ -398,7 +398,7 @@ export default function Createpage() {
                                     />
                                     <i className="fa fa-check"></i>
                                 </span>
-                            </div>
+                            </div> */}
                             <div className="nft__item_wrap">
                                 <span>
                                     <img
