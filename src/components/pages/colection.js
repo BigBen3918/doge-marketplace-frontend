@@ -11,13 +11,27 @@ import { BsTwitter, BsFacebook, BsInstagram } from 'react-icons/bs';
 
 export default function Collection() {
     const navigate = useNavigate();
-
     const { collection } = useParams();
     const [state, { translateLang }] = useBlockchainContext();
     const [openMenu, setOpenMenu] = useState(true);
     const [correctItem, setCorrectItem] = useState(null);
     const [owners, setOwners] = useState([]);
     const [avgAmount, setAvgAmount] = useState(0);
+    const [floorPrice, setFloorPrice] = useState(0);
+    const [volumn, setVolumn] = useState(0);
+
+    useEffect(() => {
+        if (state.orderList.length !== 0) {
+            let bump = 0;
+            const currentVolumn = state.orderList.filter((item) => {
+                return item.contractAddress === collection;
+            });
+            currentVolumn.map((item) => {
+                bump += Number(item.price);
+            });
+            setVolumn(bump.toFixed(3));
+        }
+    }, [state.orderList]);
 
     useEffect(() => {
         if (!collection) return;
@@ -36,15 +50,20 @@ export default function Collection() {
             let bump = [];
             let count = 0;
             let sum = 0;
+            let floorBump = [];
             for (let i = 0; i < correctItem.items.length; i++) {
                 if (bump.indexOf(correctItem.items[i].owner) === -1) {
                     bump.push(correctItem.items[i].owner);
                 }
                 if (correctItem.items[i].marketdata.price !== '') {
+                    floorBump.push(Number(correctItem.items[i].marketdata.price));
                     sum += Number(correctItem.items[i].marketdata.price);
                     count++;
                 }
             }
+            floorBump.sort();
+            if (floorBump.length === 0) setFloorPrice(0);
+            else setFloorPrice(floorBump[0]);
             setOwners(bump);
             setAvgAmount(sum / count / 1000);
         }
@@ -144,6 +163,14 @@ export default function Collection() {
                                                 <div>
                                                     <h3>{owners.length}</h3>
                                                     <p>{translateLang('owners')}</p>
+                                                </div>
+                                                <div>
+                                                    <h3>{volumn}</h3>
+                                                    <p>{'Volumn'}</p>
+                                                </div>
+                                                <div>
+                                                    <h3>{floorPrice}</h3>
+                                                    <p>{'Floor'}</p>
                                                 </div>
                                                 {/* <div>
                                                     <h3>

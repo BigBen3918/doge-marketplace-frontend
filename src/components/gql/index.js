@@ -123,4 +123,18 @@ const GET_PRICES = gql`
     }
 `;
 
-export { GET_COLLECTIONNFTS, GET_ALLNFTS, GET_USERSINFO, GET_PRICES };
+const GET_ORDER = gql`
+    query GetOrder {
+        getOrder {
+            orderId
+            contractAddress
+            assetId
+            price
+            acceptedToken
+            assetOwner
+            status
+        }
+    }
+`;
+
+export { GET_COLLECTIONNFTS, GET_ALLNFTS, GET_USERSINFO, GET_PRICES, GET_ORDER };
