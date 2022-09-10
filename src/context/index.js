@@ -392,18 +392,13 @@ export default function Provider({ children }) {
     };
 
     const bidApprove = async (props) => {
-        try {
-            const { address, id, price } = props;
+        const { address, id, price } = props;
 
-            const signedMarketplaceContract = marketplaceContract.connect(state.signer);
-            const tx = await signedMarketplaceContract.acceptBid(address, id, toBigNum(price, 18));
-            await tx.wait();
+        const signedMarketplaceContract = marketplaceContract.connect(state.signer);
+        const tx = await signedMarketplaceContract.acceptBid(address, id, toBigNum(price, 18));
+        await tx.wait();
 
-            return true;
-        } catch (err) {
-            console.log(err);
-            return false;
-        }
+        return true;
     };
 
     return (

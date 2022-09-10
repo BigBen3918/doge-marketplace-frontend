@@ -29,7 +29,7 @@ export default function Collection() {
             currentVolumn.map((item) => {
                 bump += Number(item.price);
             });
-            setVolumn(bump.toFixed(3));
+            setVolumn(parseFloat(bump.toFixed(3)));
         }
     }, [state.orderList]);
 
@@ -63,7 +63,7 @@ export default function Collection() {
             }
             floorBump.sort();
             if (floorBump.length === 0) setFloorPrice(0);
-            else setFloorPrice(floorBump[0]);
+            else setFloorPrice(parseFloat(floorBump[0].toFixed(3)));
             setOwners(bump);
             setAvgAmount(sum / count / 1000);
         }
