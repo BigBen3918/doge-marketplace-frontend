@@ -24,7 +24,7 @@ export default function Collection() {
         if (state.orderList.length !== 0) {
             let bump = 0;
             const currentVolumn = state.orderList.filter((item) => {
-                return item.contractAddress === collection;
+                return item.contractAddress === collection && item.status === 'success';
             });
             currentVolumn.map((item) => {
                 bump += Number(item.price);
